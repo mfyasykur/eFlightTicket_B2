@@ -7,5 +7,5 @@ public record CityDTO(Long id,
                       String cityCode,
                       String imageUrl,
                       String description,
-                      List<AirportDTO> airportDTOList) {
+                      List<AirportDTO> airportEntities) {
 }

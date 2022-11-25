@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "Country")
+@Table(name = "Countries")
 public class CountryEntity {
 
     @Id
@@ -29,5 +29,5 @@ public class CountryEntity {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "city_id")
-    private List<CityEntity> cityEntityList;
+    private List<CityEntity> cityEntities;
 }
