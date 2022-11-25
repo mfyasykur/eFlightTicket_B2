@@ -13,7 +13,6 @@ public interface CountryService {
     List<CountryEntity> findAll();
     CountryEntity findById(Long id);
 
-    
     CountryDTO mapToDto(CountryEntity countryEntity);
     CountryEntity mapToEntity(CountryDTO countryDTO);
 }
