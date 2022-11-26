@@ -7,5 +7,5 @@ public record CountryDTO(Long id,
                          String countryCode,
                          String imageUrl,
                          String description,
-                         List<CityDTO> cityDTOList) {
+                         List<CityDTO> cityEntities) {
 }
