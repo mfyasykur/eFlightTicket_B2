@@ -48,4 +48,11 @@ public class CityController {
     public Boolean delete(@PathVariable Long id){
         return cityService.delete(id);
     }
+
+    @PostMapping("/addToCountry/{countryId}")
+    public CityDTO addCityToCountry(@PathVariable Long countryId, @RequestBody CityDTO request){
+        CityEntity cityEntity = cityService.mapToEntity(request);
+        CityEntity result = cityService.addCity(countryId, cityEntity);
+        return cityService.mapToDto(result);
+    }
 }
