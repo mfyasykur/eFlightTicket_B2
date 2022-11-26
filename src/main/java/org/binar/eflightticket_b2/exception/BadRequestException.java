@@ -20,5 +20,5 @@ public class BadRequestException extends RuntimeException{
     public Map<String, String> getErrorMessage() {
         return errorMessage;
     }
-    
+
 }
