@@ -13,7 +13,7 @@ public class SwaggerConfig {
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("B2 E-Flight Reservation REST API")
+                        .title("B2 E-Flight Ticket Reservation REST API")
                         .description("Under production :: not release yet")
                 );
     }
