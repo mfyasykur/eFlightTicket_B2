@@ -3,6 +3,7 @@ package org.binar.eflightticket_b2.service.impl;
 import org.binar.eflightticket_b2.dto.UsersDTO;
 import org.binar.eflightticket_b2.entity.Users;
 import org.binar.eflightticket_b2.exception.BadRequestException;
+import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.UserRepository;
 import org.binar.eflightticket_b2.service.UserService;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 
 @Service
+
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -22,7 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Users addUsers(UsersDTO usersDTO) {
+    public Users addUser(UsersDTO usersDTO) {
         if (userRepository.findUsersByUsername(usersDTO.getUsername()).isPresent()){
             log.info("username has taken");
             HashMap<String, String> errorMessage = new HashMap<>();
@@ -42,8 +44,20 @@ public class UserServiceImpl implements UserService {
                 .firstName(usersDTO.getFirstName())
                 .lastName(usersDTO.getLastName())
                 .build();
-        log.info("successfully added data");
+        log.info("successfully persist data user to database");
         return userRepository.save(users);
     }
 
+    @Override
+    public Users deleteUser(String username) {
+        Users user = userRepository.findUsersByUsername(username)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException ex = new ResourceNotFoundException("username", username, String.class);
+                    ex.setApiResponse();
+                    throw ex;
+                });
+        userRepository.delete(user);
+        log.info("succcessfully delete data user in database");
+        return user;
+    }
 }
