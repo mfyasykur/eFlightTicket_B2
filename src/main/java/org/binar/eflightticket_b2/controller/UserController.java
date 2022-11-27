@@ -45,6 +45,17 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, OK);
     }
 
+    @GetMapping("/getuser/{username}")
+    public ResponseEntity<ApiResponse> getUserByUsername(@PathVariable ("username") @NotBlank String username){
+        UsersDTO userByUsername = userService.getUserByUsername(username);
+        ApiResponse apiResponse = new ApiResponse(
+                Boolean.TRUE
+                , "Successfully retrieve user data with username : " +userByUsername.getUsername()
+                , userByUsername);
+        log.info("successfully retrieve user data with username {} ", userByUsername.getUsername());
+        return new ResponseEntity<>(apiResponse, OK);
+    }
+
 
 
 
