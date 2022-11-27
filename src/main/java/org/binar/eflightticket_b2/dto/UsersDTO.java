@@ -2,6 +2,7 @@ package org.binar.eflightticket_b2.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.*;
 
 @Getter
 @Setter
+@Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class UsersDTO {
 
@@ -32,6 +34,8 @@ public class UsersDTO {
     @Size(min = 2, max = 20, message = "lastName length must be minimum 2 and maximum 20 character")
     private String lastName;
 
+    private String phoneNumber;
 
+    private String photoProfile;
 
 }

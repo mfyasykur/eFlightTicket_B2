@@ -8,5 +8,6 @@ public interface UserService {
 
     Users addUser(UsersDTO usersDTO);
     Users deleteUser(String username);
+    UsersDTO getUserByUsername (String username);
 
 }
