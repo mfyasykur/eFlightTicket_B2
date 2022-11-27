@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("users")
@@ -39,9 +40,9 @@ public class UserController {
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable ("username") @NotBlank String username){
         Users deletedUser = userService.deleteUser(username);
         ApiResponse apiResponse = new ApiResponse(
-                Boolean.TRUE, "Successfully added user data with username : " +deletedUser.getUsername());
+                Boolean.TRUE, "Successfully delete user data with username : " +deletedUser.getUsername());
         log.info("successfully deleted user data  with username {} ", username);
-        return new ResponseEntity<>(apiResponse, CREATED);
+        return new ResponseEntity<>(apiResponse, OK);
     }
 
 
