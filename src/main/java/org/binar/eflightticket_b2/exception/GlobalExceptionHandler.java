@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -92,6 +93,23 @@ public class GlobalExceptionHandler {
                         .description("check for valid data")
                         .build(), BAD_REQUEST
         );
+    }
 
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<APIError> resourceNotFoundException(ResourceNotFoundException ex, HttpServletRequest request){
+        String logFormat = String.format("%s not found with %s: '%s'", ex.getResourceName(), ex.getFieldName(), ex.getFieldValue());
+        log.error(logFormat);
+        return new ResponseEntity<>(
+                APIError.builder()
+                        .timestamp(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()))
+                        .status(NOT_FOUND.value())
+                        .error(NOT_FOUND.name())
+                        .message(ex.getMessageMap())
+                        .path(request.getRequestURI())
+                        .request(request.getMethod())
+                        .description("check for valid data")
+                        .build(), NOT_FOUND
+        );
     }
 }
