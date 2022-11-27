@@ -2,8 +2,8 @@ package org.binar.eflightticket_b2.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.binar.eflightticket_b2.dto.CityDTO;
-import org.binar.eflightticket_b2.entity.CityEntity;
-import org.binar.eflightticket_b2.entity.CountryEntity;
+import org.binar.eflightticket_b2.entity.City;
+import org.binar.eflightticket_b2.entity.Country;
 import org.binar.eflightticket_b2.repository.CityRepository;
 import org.binar.eflightticket_b2.service.CityService;
 import org.binar.eflightticket_b2.service.CountryService;
@@ -27,18 +27,18 @@ public class CityServiceImpl implements CityService {
     CountryService countryService;
     
     @Override
-    public CityEntity add(CityEntity cityEntity) {
-        return cityRepository.save(cityEntity);
+    public City add(City city) {
+        return cityRepository.save(city);
     }
 
     @Override
-    public CityEntity update(Long id, CityEntity cityEntity) {
-        CityEntity result = findById(id);
+    public City update(Long id, City city) {
+        City result = findById(id);
         if (result != null) {
-            result.setCityName(cityEntity.getCityName());
-            result.setCityCode(cityEntity.getCityCode());
-            result.setImageUrl(cityEntity.getImageUrl());
-            result.setDescription(cityEntity.getDescription());
+            result.setCityName(city.getCityName());
+            result.setCityCode(city.getCityCode());
+            result.setImageUrl(city.getImageUrl());
+            result.setDescription(city.getDescription());
             return cityRepository.save(result);
         }
         return null;
@@ -46,7 +46,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public Boolean delete(Long id) {
-        CityEntity result = findById(id);
+        City result = findById(id);
         if (result != null) {
             cityRepository.deleteById(id);
             return true;
@@ -56,31 +56,31 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public List<CityEntity> findAll() {
+    public List<City> findAll() {
         return cityRepository.findAll();
     }
 
     @Override
-    public CityEntity findById(Long id) {
-        Optional<CityEntity> result = cityRepository.findById(id);
+    public City findById(Long id) {
+        Optional<City> result = cityRepository.findById(id);
         return result.orElse(null);
     }
 
     @Override
-    public CityEntity addCity(Long countryId, CityEntity cityEntity) {
-        CountryEntity countryEntity = countryService.findById(countryId);
-        if (countryEntity != null) {
-            cityEntity = cityRepository.save(cityEntity);
-            if (countryEntity.getCityEntities() != null) {
-                List<CityEntity> cityEntities = countryEntity.getCityEntities();
-                cityEntities.add(cityEntity);
-                countryEntity.setCityEntities(cityEntities);
+    public City addCity(Long countryId, City city) {
+        Country country = countryService.findById(countryId);
+        if (country != null) {
+            city = cityRepository.save(city);
+            if (country.getCityEntities() != null) {
+                List<City> cityEntities = country.getCityEntities();
+                cityEntities.add(city);
+                country.setCityEntities(cityEntities);
             }
             else{
-                countryEntity.setCityEntities(Collections.singletonList(cityEntity));
+                country.setCityEntities(Collections.singletonList(city));
             }
-            countryService.add(countryEntity);
-            return cityEntity;
+            countryService.add(country);
+            return city;
         }
         return null;
     }
@@ -89,12 +89,12 @@ public class CityServiceImpl implements CityService {
     ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public CityDTO mapToDto(CityEntity cityEntity) {
-        return mapper.convertValue(cityEntity, CityDTO.class);
+    public CityDTO mapToDto(City city) {
+        return mapper.convertValue(city, CityDTO.class);
     }
 
     @Override
-    public CityEntity mapToEntity(CityDTO cityDTO) {
-        return mapper.convertValue(cityDTO, CityEntity.class);
+    public City mapToEntity(CityDTO cityDTO) {
+        return mapper.convertValue(cityDTO, City.class);
     }
 }

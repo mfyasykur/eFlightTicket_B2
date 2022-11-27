@@ -1,21 +1,21 @@
 package org.binar.eflightticket_b2.service;
 
 import org.binar.eflightticket_b2.dto.CityDTO;
-import org.binar.eflightticket_b2.entity.CityEntity;
+import org.binar.eflightticket_b2.entity.City;
 
 import java.util.List;
 
 public interface CityService {
 
-    CityEntity add(CityEntity cityEntity);
-    CityEntity update(Long id, CityEntity cityEntity);
+    City add(City city);
+    City update(Long id, City city);
     Boolean delete(Long id);
-    List<CityEntity> findAll();
-    CityEntity findById(Long id);
+    List<City> findAll();
+    City findById(Long id);
 
-    CityEntity addCity(Long countryId, CityEntity cityEntity);
+    City addCity(Long countryId, City city);
 
 
-    CityDTO mapToDto(CityEntity cityEntity);
-    CityEntity mapToEntity(CityDTO cityDTO);
+    CityDTO mapToDto(City city);
+    City mapToEntity(CityDTO cityDTO);
 }

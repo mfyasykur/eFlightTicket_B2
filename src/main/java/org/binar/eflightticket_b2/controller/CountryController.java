@@ -1,7 +1,7 @@
 package org.binar.eflightticket_b2.controller;
 
 import org.binar.eflightticket_b2.dto.CountryDTO;
-import org.binar.eflightticket_b2.entity.CountryEntity;
+import org.binar.eflightticket_b2.entity.Country;
 import org.binar.eflightticket_b2.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +17,15 @@ public class CountryController {
     CountryService countryService;
     @PostMapping("/add")
     public CountryDTO add(@RequestBody CountryDTO request){
-        final CountryEntity countryEntity = countryService.mapToEntity(request);
-        final CountryEntity result = countryService.add(countryEntity);
+        final Country country = countryService.mapToEntity(request);
+        final Country result = countryService.add(country);
         return countryService.mapToDto(result);
     }
 
     @PutMapping("/update/{id}")
     public CountryDTO update(@PathVariable Long id, @RequestBody CountryDTO request){
-        final CountryEntity countryEntity = countryService.mapToEntity(request);
-        final CountryEntity result = countryService.update(id, countryEntity);
+        final Country country = countryService.mapToEntity(request);
+        final Country result = countryService.update(id, country);
         return countryService.mapToDto(result);
     }
     
@@ -36,7 +36,7 @@ public class CountryController {
     }
     
     @GetMapping("/get/{id}")
-    public CountryEntity findOne(@PathVariable Long id){
+    public Country findOne(@PathVariable Long id){
         return countryService.findById(id);
     }
     
