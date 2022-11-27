@@ -6,6 +6,7 @@ import org.binar.eflightticket_b2.entity.Users;
 
 public interface UserService {
 
-    Users addUsers(UsersDTO usersDTO);
+    Users addUser(UsersDTO usersDTO);
+    Users deleteUser(String username);
 
 }
