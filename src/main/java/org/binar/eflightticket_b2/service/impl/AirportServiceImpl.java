@@ -2,8 +2,8 @@ package org.binar.eflightticket_b2.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.binar.eflightticket_b2.dto.AirportDTO;
-import org.binar.eflightticket_b2.entity.AirportEntity;
-import org.binar.eflightticket_b2.entity.CityEntity;
+import org.binar.eflightticket_b2.entity.Airport;
+import org.binar.eflightticket_b2.entity.City;
 import org.binar.eflightticket_b2.repository.AirportRepository;
 import org.binar.eflightticket_b2.service.AirportService;
 import org.binar.eflightticket_b2.service.CityService;
@@ -27,16 +27,16 @@ public class AirportServiceImpl implements AirportService {
     CityService cityService;
 
     @Override
-    public AirportEntity add(AirportEntity airportEntity) {
-        return airportRepository.save(airportEntity);
+    public Airport add(Airport airport) {
+        return airportRepository.save(airport);
     }
 
     @Override
-    public AirportEntity update(Long id, AirportEntity airportEntity) {
-        AirportEntity result = findById(id);
+    public Airport update(Long id, Airport airport) {
+        Airport result = findById(id);
         if (result != null) {
-            result.setAirportName(airportEntity.getAirportName());
-            result.setAirportCode(airportEntity.getAirportCode());
+            result.setAirportName(airport.getAirportName());
+            result.setAirportCode(airport.getAirportCode());
             return airportRepository.save(result);
         }
         return null;
@@ -44,7 +44,7 @@ public class AirportServiceImpl implements AirportService {
 
     @Override
     public Boolean delete(Long id) {
-        AirportEntity result = findById(id);
+        Airport result = findById(id);
         if (result != null) {
             airportRepository.deleteById(id);
             return true;
@@ -54,31 +54,31 @@ public class AirportServiceImpl implements AirportService {
     }
 
     @Override
-    public List<AirportEntity> findAll() {
+    public List<Airport> findAll() {
         return airportRepository.findAll();
     }
 
     @Override
-    public AirportEntity findById(Long id) {
-        Optional<AirportEntity> result = airportRepository.findById(id);
+    public Airport findById(Long id) {
+        Optional<Airport> result = airportRepository.findById(id);
         return result.orElse(null);
     }
 
     @Override
-    public AirportEntity addAirport(Long cityId, AirportEntity airportEntity) {
-        CityEntity cityEntity = cityService.findById(cityId);
-        if (cityEntity != null) {
-            airportEntity = airportRepository.save(airportEntity);
-            if (cityEntity.getAirportEntities() != null) {
-                List<AirportEntity> airportEntities = cityEntity.getAirportEntities();
-                airportEntities.add(airportEntity);
-                cityEntity.setAirportEntities(airportEntities);
+    public Airport addAirport(Long cityId, Airport airport) {
+        City city = cityService.findById(cityId);
+        if (city != null) {
+            airport = airportRepository.save(airport);
+            if (city.getAirportEntities() != null) {
+                List<Airport> airportEntities = city.getAirportEntities();
+                airportEntities.add(airport);
+                city.setAirportEntities(airportEntities);
             }
             else{
-                cityEntity.setAirportEntities(Collections.singletonList(airportEntity));
+                city.setAirportEntities(Collections.singletonList(airport));
             }
-            cityService.add(cityEntity);
-            return airportEntity;
+            cityService.add(city);
+            return airport;
         }
         return null;
     }
@@ -87,13 +87,13 @@ public class AirportServiceImpl implements AirportService {
     ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public AirportDTO mapToDto(AirportEntity airportEntity) {
-        return mapper.convertValue(airportEntity, AirportDTO.class);
+    public AirportDTO mapToDto(Airport airport) {
+        return mapper.convertValue(airport, AirportDTO.class);
     }
 
     @Override
-    public AirportEntity mapToEntity(AirportDTO airportDTO) {
-        return mapper.convertValue(airportDTO, AirportEntity.class);
+    public Airport mapToEntity(AirportDTO airportDTO) {
+        return mapper.convertValue(airportDTO, Airport.class);
     }
 
 }

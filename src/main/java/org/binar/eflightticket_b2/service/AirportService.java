@@ -1,20 +1,20 @@
 package org.binar.eflightticket_b2.service;
 
 import org.binar.eflightticket_b2.dto.AirportDTO;
-import org.binar.eflightticket_b2.entity.AirportEntity;
+import org.binar.eflightticket_b2.entity.Airport;
 
 import java.util.List;
 
 public interface AirportService {
-    AirportEntity add(AirportEntity airportEntity);
-    AirportEntity update(Long id, AirportEntity airportEntity);
+    Airport add(Airport airport);
+    Airport update(Long id, Airport airport);
     Boolean delete(Long id);
-    List<AirportEntity> findAll();
-    AirportEntity findById(Long id);
+    List<Airport> findAll();
+    Airport findById(Long id);
 
-    AirportEntity addAirport(Long cityId, AirportEntity airportEntity);
+    Airport addAirport(Long cityId, Airport airport);
 
 
-    AirportDTO mapToDto(AirportEntity airportEntity);
-    AirportEntity mapToEntity(AirportDTO airportDTO);
+    AirportDTO mapToDto(Airport airport);
+    Airport mapToEntity(AirportDTO airportDTO);
 }

@@ -1,4 +1,5 @@
 package org.binar.eflightticket_b2.entity;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,18 +9,18 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "City")
-public class CityEntity {
+@Table(name = "Countries")
+public class Country {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "city_name")
-    private String cityName;
+    @Column(name = "country_name")
+    private String countryName;
 
-    @Column(name = "city_code")
-    private String cityCode;
+    @Column(name = "country_code")
+    private String countryCode;
 
     @Column(name = "image")
     private String imageUrl;
@@ -27,6 +28,6 @@ public class CityEntity {
     private String description;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "airport_id")
-    private List<AirportEntity> airportEntities;
+    @JoinColumn(name = "city_id")
+    private List<City> cityEntities;
 }

@@ -1,7 +1,7 @@
 package org.binar.eflightticket_b2.controller;
 
 import org.binar.eflightticket_b2.dto.AirportDTO;
-import org.binar.eflightticket_b2.entity.AirportEntity;
+import org.binar.eflightticket_b2.entity.Airport;
 import org.binar.eflightticket_b2.service.AirportService;
 import org.binar.eflightticket_b2.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +22,15 @@ public class AirportController {
 
     @PostMapping("/add")
     public AirportDTO add(@RequestBody AirportDTO request){
-        final AirportEntity airportEntity = airportService.mapToEntity(request);
-        final AirportEntity result = airportService.add(airportEntity);
+        final Airport airport = airportService.mapToEntity(request);
+        final Airport result = airportService.add(airport);
         return airportService.mapToDto(result);
     }
 
     @PutMapping("/update/{id}")
     public AirportDTO update(@PathVariable Long id, @RequestBody AirportDTO request){
-        final AirportEntity airportEntity = airportService.mapToEntity(request);
-        final AirportEntity result = airportService.update(id, airportEntity);
+        final Airport airport = airportService.mapToEntity(request);
+        final Airport result = airportService.update(id, airport);
         return airportService.mapToDto(result);
     }
 
@@ -41,7 +41,7 @@ public class AirportController {
     }
 
     @GetMapping("/get/{id}")
-    public AirportEntity findOne(@PathVariable Long id){
+    public Airport findOne(@PathVariable Long id){
         return airportService.findById(id);
     }
 
@@ -52,8 +52,8 @@ public class AirportController {
 
     @PostMapping("/addToCity/{cityId}")
     public AirportDTO addAirportToCity(@PathVariable Long cityId, @RequestBody AirportDTO request){
-        AirportEntity airportEntity = airportService.mapToEntity(request);
-        AirportEntity result = airportService.addAirport(cityId, airportEntity);
+        Airport airport = airportService.mapToEntity(request);
+        Airport result = airportService.addAirport(cityId, airport);
         return airportService.mapToDto(result);
     }
 }
