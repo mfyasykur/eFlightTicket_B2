@@ -29,7 +29,7 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse> addUser(@Valid @RequestBody UsersDTO user){
-        Users savedUser = userService.addUsers(user);
+        Users savedUser = userService.addUser(user);
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE, "Successfully added user data with id : " +savedUser.getId());
         log.info("successfully added user data");
