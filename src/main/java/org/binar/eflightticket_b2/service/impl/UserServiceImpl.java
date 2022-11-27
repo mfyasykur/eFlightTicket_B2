@@ -18,6 +18,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final Logger log =  LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final String ERROR  = "ERROR";
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -28,13 +29,13 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findUsersByUsername(usersDTO.getUsername()).isPresent()){
             log.info("username has taken");
             HashMap<String, String> errorMessage = new HashMap<>();
-            errorMessage.put("error", "username has taken");
+            errorMessage.put(ERROR, "username has taken");
             throw new BadRequestException(errorMessage);
         }
         if (userRepository.findUsersByEmail(usersDTO.getEmail()).isPresent()){
             log.info("email has taken");
             HashMap<String, String> errorMessage = new HashMap<>();
-            errorMessage.put("error", "email has taken");
+            errorMessage.put(ERROR, "email has taken");
             throw new BadRequestException(errorMessage);
         }
         Users users = Users.builder()
@@ -54,10 +55,31 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> {
                     ResourceNotFoundException ex = new ResourceNotFoundException("username", username, String.class);
                     ex.setApiResponse();
+                    log.info(ex.getMessageMap().get("error"));
                     throw ex;
                 });
         userRepository.delete(user);
         log.info("succcessfully delete data user in database");
         return user;
+    }
+
+    @Override
+    public UsersDTO getUserByUsername(String username) {
+        Users user = userRepository.findUsersByUsername(username)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException ex = new ResourceNotFoundException("username", username, String.class);
+                    ex.setApiResponse();
+                    log.info(ex.getMessageMap().get("error"));
+                    throw ex;
+                });
+        log.info("succcessfully retrieve data user in database");
+        return UsersDTO.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
     }
 }
