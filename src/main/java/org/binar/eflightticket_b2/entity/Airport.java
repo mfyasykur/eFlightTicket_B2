@@ -9,10 +9,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "Airport")
-public class Airport {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Airport extends BaseEntity {
 
     @Column(name = "airport_name")
     private String airportName;

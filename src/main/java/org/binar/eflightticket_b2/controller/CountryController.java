@@ -31,7 +31,7 @@ public class CountryController {
     
     @GetMapping("/get/all")
     public List<CountryDTO> findAll(){
-        return countryService.findAll().stream().map(countryEntity -> countryService.mapToDto(countryEntity))
+        return countryService.findAll().stream().map(country -> countryService.mapToDto(country))
                 .collect(Collectors.toList());
     }
     

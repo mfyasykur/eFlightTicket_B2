@@ -28,5 +28,5 @@ public class City {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "airport_id")
-    private List<Airport> airportEntities;
+    private List<Airport> airports;
 }
