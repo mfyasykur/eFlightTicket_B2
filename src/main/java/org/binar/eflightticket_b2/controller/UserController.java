@@ -45,7 +45,7 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, OK);
     }
 
-    @GetMapping("/getuser/{username}")
+    @GetMapping("/get/{username}")
     public ResponseEntity<ApiResponse> getUserByUsername(@PathVariable ("username") @NotBlank String username){
         UsersDTO userByUsername = userService.getUserByUsername(username);
         ApiResponse apiResponse = new ApiResponse(
