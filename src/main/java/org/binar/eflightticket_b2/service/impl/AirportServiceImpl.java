@@ -69,13 +69,13 @@ public class AirportServiceImpl implements AirportService {
         City city = cityService.findById(cityId);
         if (city != null) {
             airport = airportRepository.save(airport);
-            if (city.getAirportEntities() != null) {
-                List<Airport> airportEntities = city.getAirportEntities();
+            if (city.getAirports() != null) {
+                List<Airport> airportEntities = city.getAirports();
                 airportEntities.add(airport);
-                city.setAirportEntities(airportEntities);
+                city.setAirports(airportEntities);
             }
             else{
-                city.setAirportEntities(Collections.singletonList(airport));
+                city.setAirports(Collections.singletonList(airport));
             }
             cityService.add(city);
             return airport;

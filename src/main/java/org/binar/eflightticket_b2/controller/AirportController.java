@@ -36,7 +36,7 @@ public class AirportController {
 
     @GetMapping("/get/all")
     public List<AirportDTO> findAll(){
-        return airportService.findAll().stream().map(airportEntity -> airportService.mapToDto(airportEntity))
+        return airportService.findAll().stream().map(airport -> airportService.mapToDto(airport))
                 .collect(Collectors.toList());
     }
 

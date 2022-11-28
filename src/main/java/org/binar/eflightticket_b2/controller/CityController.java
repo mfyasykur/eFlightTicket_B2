@@ -35,7 +35,7 @@ public class CityController {
 
     @GetMapping("/get/all")
     public List<CityDTO> findAll(){
-        return cityService.findAll().stream().map(cityEntity -> cityService.mapToDto(cityEntity))
+        return cityService.findAll().stream().map(city -> cityService.mapToDto(city))
                 .collect(Collectors.toList());
     }
 
