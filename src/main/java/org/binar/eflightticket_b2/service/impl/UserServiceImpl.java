@@ -6,6 +6,7 @@ import org.binar.eflightticket_b2.exception.BadRequestException;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.UserRepository;
 import org.binar.eflightticket_b2.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,11 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final Logger log =  LoggerFactory.getLogger(UserServiceImpl.class);
     private static final String ERROR  = "ERROR";
+    private ModelMapper mapper;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper mapper) {
         this.userRepository = userRepository;
+        this.mapper = mapper;
     }
 
     @Override
