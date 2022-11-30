@@ -68,18 +68,16 @@ public class CountryServiceImpl implements CountryService {
                 });
     }
 
-//    @Override
-//    public Country findByCountryCode(String countryCode) {
-//        try{
-//
-//            return countryRepository.findByCountryCode(countryCode);
-//        }catch (ResourceNotFoundException exception){
-//            exception.setApiResponse();
-//            throw exception;
-//
-//        }
-//
-//    }
+    @Override
+    public Country findByCountryCode(String countryCode) {
+        Country byCountryCode = countryRepository.findByCountryCode(countryCode);
+        if (byCountryCode != null) {
+            return byCountryCode;
+        }
+        ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "countryCode", countryCode);
+        exception.setApiResponse();
+        throw exception;
+    }
     ModelMapper mapper = new ModelMapper();
 
     @Override

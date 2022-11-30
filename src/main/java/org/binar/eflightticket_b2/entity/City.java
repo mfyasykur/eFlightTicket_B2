@@ -21,7 +21,7 @@ public class City extends BaseEntity{
 
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "airport_id")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "city")
+//    @JoinColumn(name = "airport_id")
     private List<Airport> airports;
 }

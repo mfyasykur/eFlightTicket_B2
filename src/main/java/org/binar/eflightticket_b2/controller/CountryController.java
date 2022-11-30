@@ -59,7 +59,7 @@ public class CountryController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<ApiResponse> findById(@PathVariable Long id){
+    public ResponseEntity<ApiResponse> findById(@PathVariable("id") Long id){
 
         Country country = countryService.findById(id);
         CountryDTO result = countryService.mapToDto(country);
@@ -71,18 +71,18 @@ public class CountryController {
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
-//    @GetMapping("/get/{countryCode}")
-//    public ResponseEntity<ApiResponse> findByCountryCode(@PathVariable String countryCode) {
-//        Country country = countryService.findByCountryCode(countryCode);
-//        CountryDTO result = countryService.mapToDto(country);
-//        ApiResponse apiResponse = new ApiResponse(
-//                Boolean.TRUE,
-//                "successfully retrieved country with id : " + country.getId(),
-//                result
-//        );
-//
-//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-//    }
+    @GetMapping("/getCountry/{countryCode}")
+    public ResponseEntity<ApiResponse> findByCountryCode(@PathVariable("countryCode") String countryCode) {
+        Country country = countryService.findByCountryCode(countryCode);
+        CountryDTO result = countryService.mapToDto(country);
+        ApiResponse apiResponse = new ApiResponse(
+                Boolean.TRUE,
+                "successfully retrieved country with id : " + country.getId(),
+                result
+        );
+
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
 
 
     @DeleteMapping("delete/{id}")

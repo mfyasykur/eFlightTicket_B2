@@ -98,7 +98,7 @@ public class AirportController {
     @PostMapping("/addToCity/{cityId}")
     public ResponseEntity<ApiResponse> addAirportToCity(@PathVariable Long cityId, @RequestBody AirportDTO request){
         Airport airport = airportService.mapToEntity(request);
-        Airport result = airportService.addAirport(cityId, airport);
+        Airport result = airportService.addAirport(cityId, request);
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE,
                 "Successfully add airport with id : " + airport.getId() + " to City",

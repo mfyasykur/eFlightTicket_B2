@@ -6,16 +6,20 @@ import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.CityRepository;
 import org.binar.eflightticket_b2.service.CityService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class CityServiceImpl implements CityService {
 
     private static final String ENTITY = "city";
+    private final Logger log =  LoggerFactory.getLogger(CityServiceImpl.class);
     @Autowired
     CityRepository cityRepository;
 
@@ -60,12 +64,18 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City findById(Long id) {
-        return cityRepository.findById(id)
-                .orElseThrow(() -> {
-                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    exception.setApiResponse();
-                    throw exception;
-                });
+        Optional<City> byId = cityRepository.findById(id);
+        if(byId.isPresent()){
+            log.info("Success {}", byId.get().getAirports().get(0).getAirportCode());
+        }
+        return byId.get();
+
+//        return cityRepository.findById(id)
+//                .orElseThrow(() -> {
+//                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
+//                    exception.setApiResponse();
+//                    throw exception;
+//                });
     }
 
     //    @Override

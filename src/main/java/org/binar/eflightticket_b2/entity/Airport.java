@@ -15,4 +15,8 @@ public class Airport extends BaseEntity {
 
     @Column(name = "airport_code")
     private String airportCode;
+
+    @ManyToOne()
+    @JoinColumn(name = "city_id", referencedColumnName = "id")
+    private City city;
 }

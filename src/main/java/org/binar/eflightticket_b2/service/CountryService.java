@@ -13,7 +13,7 @@ public interface CountryService {
     List<Country> findAll();
     Country findById(Long id);
 
-//    Country findByCountryCode(String countryCode);
+    Country findByCountryCode(String countryCode);
 
     CountryDTO mapToDto(Country country);
     Country mapToEntity(CountryDTO countryDTO);

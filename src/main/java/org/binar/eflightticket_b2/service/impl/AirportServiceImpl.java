@@ -8,6 +8,8 @@ import org.binar.eflightticket_b2.repository.AirportRepository;
 import org.binar.eflightticket_b2.service.AirportService;
 import org.binar.eflightticket_b2.service.CityService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,9 @@ import java.util.List;
 public class AirportServiceImpl implements AirportService {
 
     private static final String ENTITY = "airport";
+
+    private final Logger log =  LoggerFactory.getLogger(AirportServiceImpl.class);
+
     @Autowired
     AirportRepository airportRepository;
     
@@ -88,20 +93,28 @@ public class AirportServiceImpl implements AirportService {
     @Override
     public Airport addAirport(Long cityId, Airport airport) {
         City city = cityService.findById(cityId);
-        if (city != null) {
-            airport = airportRepository.save(airport);
-            if (city.getAirports() != null) {
-                List<Airport> airportEntities = city.getAirports();
-                airportEntities.add(airport);
-                city.setAirports(airportEntities);
-            }
-            else{
-                city.setAirports(Collections.singletonList(airport));
-            }
-            cityService.add(city);
-            return airport;
+        if (city == null) {
+            log.info("kosong");
         }
-        return null;
+        airport.setCity(city);
+        Airport save = airportRepository.save(airport);
+        log.info("Success");
+        return save;
+
+
+//        if (city != null) {
+//            airport = airportRepository.save(airport);
+//            if (city.getAirports() != null) {
+//                List<Airport> airportEntities = city.getAirports();
+//                airportEntities.add(airport);
+//                city.setAirports(airportEntities);
+//            }
+//            else{
+//                city.setAirports(Collections.singletonList(airport));
+//            }
+//            cityService.add(city);
+//            return airport;
+//        }
     }
 
 
