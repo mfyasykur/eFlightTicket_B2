@@ -28,7 +28,8 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse> addUser(@Valid @RequestBody UsersDTO user){
-        Users savedUser = userService.addUser(user);
+        Users users = userService.mapToEntity(user);
+        Users savedUser = userService.addUser(users);
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE, "Successfully added user data with id : " +savedUser.getId());
         log.info("successfully added user data");
@@ -47,7 +48,7 @@ public class UserController {
 
     @GetMapping("/get/{username}")
     public ResponseEntity<ApiResponse> getUserByUsername(@PathVariable ("username") @NotBlank String username){
-        UsersDTO userByUsername = userService.getUserByUsername(username);
+        UsersDTO userByUsername = userService.mapToDTO(userService.getUserByUsername(username));
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE
                 , "Successfully retrieve user data with username : " +userByUsername.getUsername()
