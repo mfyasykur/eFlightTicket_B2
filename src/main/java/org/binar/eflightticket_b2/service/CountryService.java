@@ -9,9 +9,11 @@ public interface CountryService {
 
     Country add(Country country);
     Country update(Long id, Country country);
-    Boolean delete(Long id);
+    Country delete(Long id);
     List<Country> findAll();
     Country findById(Long id);
+
+//    Country findByCountryCode(String countryCode);
 
     CountryDTO mapToDto(Country country);
     Country mapToEntity(CountryDTO countryDTO);

@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "Airport")
 public class Airport extends BaseEntity {
 
     @Column(name = "airport_name")

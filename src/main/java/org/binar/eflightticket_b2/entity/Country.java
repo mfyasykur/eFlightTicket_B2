@@ -9,12 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "Countries")
-public class Country {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Country extends BaseEntity{
 
     @Column(name = "country_name")
     private String countryName;
@@ -27,7 +22,7 @@ public class Country {
 
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "city_id")
-    private List<City> cityEntities;
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "city_id")
+//    private List<City> cityEntities;
 }

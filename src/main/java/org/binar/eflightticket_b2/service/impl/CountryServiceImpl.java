@@ -1,21 +1,22 @@
 package org.binar.eflightticket_b2.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.binar.eflightticket_b2.dto.CountryDTO;
 import org.binar.eflightticket_b2.entity.Country;
+import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.CountryRepository;
 import org.binar.eflightticket_b2.service.CountryService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class CountryServiceImpl implements CountryService {
 
+    private static final String ENTITY = "country";
     @Autowired
     CountryRepository countryRepository;
     @Override
@@ -25,26 +26,31 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Country update(Long id, Country country) {
-        Country result = findById(id);
-        if (result != null) {
-            result.setCountryName(country.getCountryName());
-            result.setCountryCode(country.getCountryCode());
-            result.setImageUrl(country.getImageUrl());
-            result.setDescription(country.getDescription());
-            return countryRepository.save(result);
-        }
-        return null;
+        Country result = countryRepository.findById(id)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
+                    exception.setApiResponse();
+                    throw exception;
+                });
+
+        result.setCountryName(country.getCountryName());
+        result.setCountryCode(country.getCountryCode());
+        result.setImageUrl(country.getImageUrl());
+        result.setDescription(country.getDescription());
+        countryRepository.save(result);
+        return result;
     }
 
     @Override
-    public Boolean delete(Long id) {
-        Country result = findById(id);
-        if (result != null) {
-            countryRepository.deleteById(id);
-            return true;
-        }
-
-        return false;
+    public Country delete(Long id) {
+        Country result = countryRepository.findById(id)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
+                    exception.setApiResponse();
+                    throw exception;
+                });
+        countryRepository.delete(result);
+        return result;
     }
 
     @Override
@@ -54,19 +60,35 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Country findById(Long id) {
-        Optional<Country> result = countryRepository.findById(id);
-        return result.orElse(null);
+        return countryRepository.findById(id)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
+                    exception.setApiResponse();
+                    throw exception;
+                });
     }
 
-    ObjectMapper mapper = new ObjectMapper();
+//    @Override
+//    public Country findByCountryCode(String countryCode) {
+//        try{
+//
+//            return countryRepository.findByCountryCode(countryCode);
+//        }catch (ResourceNotFoundException exception){
+//            exception.setApiResponse();
+//            throw exception;
+//
+//        }
+//
+//    }
+    ModelMapper mapper = new ModelMapper();
 
     @Override
     public CountryDTO mapToDto(Country country) {
-        return mapper.convertValue(country, CountryDTO.class);
+        return mapper.map(country, CountryDTO.class);
     }
 
     @Override
     public Country mapToEntity(CountryDTO countryDTO) {
-        return mapper.convertValue(countryDTO, Country.class);
+        return mapper.map(countryDTO, Country.class);
     }
 }

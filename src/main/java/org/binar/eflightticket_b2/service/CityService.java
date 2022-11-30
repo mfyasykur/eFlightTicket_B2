@@ -9,11 +9,13 @@ public interface CityService {
 
     City add(City city);
     City update(Long id, City city);
-    Boolean delete(Long id);
+    City delete(Long id);
     List<City> findAll();
     City findById(Long id);
 
-    City addCity(Long countryId, City city);
+//    City findByCityCode(String countryCode);
+
+//    City addCity(Long countryId, City city);
 
 
     CityDTO mapToDto(City city);

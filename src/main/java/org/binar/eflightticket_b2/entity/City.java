@@ -8,12 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "City")
-public class City {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class City extends BaseEntity{
 
     @Column(name = "city_name")
     private String cityName;
