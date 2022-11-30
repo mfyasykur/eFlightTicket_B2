@@ -1,6 +1,8 @@
 package org.binar.eflightticket_b2.service.impl;
 
+import org.binar.eflightticket_b2.dto.AircraftDTO;
 import org.binar.eflightticket_b2.dto.UsersDTO;
+import org.binar.eflightticket_b2.entity.Aircraft;
 import org.binar.eflightticket_b2.entity.Users;
 import org.binar.eflightticket_b2.exception.BadRequestException;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
@@ -28,26 +30,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Users addUser(UsersDTO usersDTO) {
-        if (userRepository.findUsersByUsername(usersDTO.getUsername()).isPresent()){
+    public Users addUser(Users users) {
+        if (userRepository.findUsersByUsername(users.getUsername()).isPresent()){
             log.info("username has taken");
             HashMap<String, String> errorMessage = new HashMap<>();
             errorMessage.put(ERROR, "username has taken");
             throw new BadRequestException(errorMessage);
         }
-        if (userRepository.findUsersByEmail(usersDTO.getEmail()).isPresent()){
+        if (userRepository.findUsersByEmail(users.getEmail()).isPresent()){
             log.info("email has taken");
             HashMap<String, String> errorMessage = new HashMap<>();
             errorMessage.put(ERROR, "email has taken");
             throw new BadRequestException(errorMessage);
         }
-        Users users = Users.builder()
-                .username(usersDTO.getUsername())
-                .email(usersDTO.getEmail())
-                .password(usersDTO.getPassword())
-                .firstName(usersDTO.getFirstName())
-                .lastName(usersDTO.getLastName())
-                .build();
         log.info("successfully persist data user to database");
         return userRepository.save(users);
     }
@@ -67,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UsersDTO getUserByUsername(String username) {
+    public Users getUserByUsername(String username) {
         Users user = userRepository.findUsersByUsername(username)
                 .orElseThrow(() -> {
                     ResourceNotFoundException ex = new ResourceNotFoundException("username", username, String.class);
@@ -76,13 +71,18 @@ public class UserServiceImpl implements UserService {
                     throw ex;
                 });
         log.info("succcessfully retrieve data user in database");
-        return UsersDTO.builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .phoneNumber(user.getPhoneNumber())
-                .build();
+        return user;
     }
+
+    @Override
+    public UsersDTO mapToDTO(Users users) {
+        return mapper.map(users, UsersDTO.class);
+    }
+
+    @Override
+    public Users mapToEntity(UsersDTO usersDTO) {
+        return mapper.map(usersDTO, Users.class);
+    }
+
+
 }
