@@ -1,5 +1,6 @@
 package org.binar.eflightticket_b2.controller;
 
+import org.binar.eflightticket_b2.dto.UserDetailRequest;
 import org.binar.eflightticket_b2.dto.UsersDTO;
 import org.binar.eflightticket_b2.entity.Users;
 import org.binar.eflightticket_b2.payload.ApiResponse;
@@ -36,7 +37,6 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, CREATED);
     }
 
-
     @DeleteMapping("/delete/{username}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable ("username") @NotBlank String username){
         Users deletedUser = userService.deleteUser(username);
@@ -55,6 +55,18 @@ public class UserController {
                 , "Successfully retrieve user data with username : " +userByUsername.getUsername()
                 , userByUsername);
         log.info("successfully retrieve user data with username {} ", userByUsername.getUsername());
+        return new ResponseEntity<>(apiResponse, OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ApiResponse> updateByUsername(@Valid @RequestBody UserDetailRequest newUsers,
+                                                        @RequestParam @NotBlank String username){
+        Users users = userService.mapToEntity(newUsers);
+        Users user = userService.updateUser(users, username);
+        ApiResponse apiResponse = new ApiResponse(
+                Boolean.TRUE
+                , "Successfully updated data user with username : " +user.getUsername());
+        log.info("Successfully updated data user with username {} ", user.getUsername());
         return new ResponseEntity<>(apiResponse, OK);
     }
 
