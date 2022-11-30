@@ -1,8 +1,8 @@
 package org.binar.eflightticket_b2.service.impl;
 
-import org.binar.eflightticket_b2.dto.AircraftDTO;
+
+import org.binar.eflightticket_b2.dto.UserDetailRequest;
 import org.binar.eflightticket_b2.dto.UsersDTO;
-import org.binar.eflightticket_b2.entity.Aircraft;
 import org.binar.eflightticket_b2.entity.Users;
 import org.binar.eflightticket_b2.exception.BadRequestException;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
@@ -75,6 +75,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Users updateUser(Users users, String username) {
+        Users retrievedUser = userRepository.findUsersByUsername(username).orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("username", username, String.class);
+            ex.setApiResponse();
+            log.info(ex.getMessageMap().get("error"));
+            throw ex;
+        });
+        boolean isUsernamePresent = userRepository.findUsersByUsername(users.getUsername()).isPresent();
+        boolean isEmailPresent = userRepository.findUsersByEmail(users.getEmail()).isPresent();
+        if (isUsernamePresent){
+            HashMap<String, String> errorMessage = new HashMap<>();
+            errorMessage.put(ERROR, "username has taken");
+            throw new BadRequestException(errorMessage);
+        }else {
+            retrievedUser.setUsername(users.getUsername());
+            retrievedUser.setPassword(users.getPassword());
+            userRepository.save(retrievedUser);
+        }
+        if (isEmailPresent){
+            log.info("email has taken");
+            HashMap<String, String> errorMessage = new HashMap<>();
+            errorMessage.put(ERROR, "email has taken");
+            throw new BadRequestException(errorMessage);
+        }else {
+            retrievedUser.setEmail(users.getEmail());
+            retrievedUser.setPassword(users.getPassword());
+            userRepository.save(retrievedUser);
+        }
+        return retrievedUser;
+    }
+
+    @Override
     public UsersDTO mapToDTO(Users users) {
         return mapper.map(users, UsersDTO.class);
     }
@@ -82,6 +114,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public Users mapToEntity(UsersDTO usersDTO) {
         return mapper.map(usersDTO, Users.class);
+    }
+
+    @Override
+    public UserDetailRequest mapToUserDetailReq(Users users) {
+        return mapper.map(users, UserDetailRequest.class);
+    }
+
+    @Override
+    public Users mapToEntity(UserDetailRequest usersDetailReq) {
+        return mapper.map(usersDetailReq, Users.class);
     }
 
 
