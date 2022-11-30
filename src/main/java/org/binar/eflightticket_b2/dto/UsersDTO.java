@@ -2,9 +2,7 @@ package org.binar.eflightticket_b2.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.*;
 
@@ -12,6 +10,8 @@ import javax.validation.constraints.*;
 @Setter
 @Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsersDTO {
 
     @NotEmpty(message = "username shouldn't be empty")
