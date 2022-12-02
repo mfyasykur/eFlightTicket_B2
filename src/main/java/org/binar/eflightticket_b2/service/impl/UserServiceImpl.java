@@ -15,12 +15,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 
 @Service
@@ -31,10 +30,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final Logger log =  LoggerFactory.getLogger(UserServiceImpl.class);
     private static final String ERROR  = "ERROR";
     private ModelMapper mapper;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper mapper) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper mapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.mapper = mapper;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -65,6 +66,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             errorMessage.put(ERROR, "email has taken");
             throw new BadRequestException(errorMessage);
         }
+        String encryptedPassword = bCryptPasswordEncoder.encode(users.getPassword());
+        users.setPassword(encryptedPassword);
         log.info("successfully persist data user to database");
         return userRepository.save(users);
     }
