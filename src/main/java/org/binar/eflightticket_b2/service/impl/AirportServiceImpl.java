@@ -1,27 +1,30 @@
 package org.binar.eflightticket_b2.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.binar.eflightticket_b2.dto.AirportDTO;
 import org.binar.eflightticket_b2.entity.Airport;
-import org.binar.eflightticket_b2.entity.City;
+import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.AirportRepository;
 import org.binar.eflightticket_b2.service.AirportService;
 import org.binar.eflightticket_b2.service.CityService;
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class AirportServiceImpl implements AirportService {
 
+    private static final String ENTITY = "airport";
+
+    private final Logger log =  LoggerFactory.getLogger(AirportServiceImpl.class);
+
     @Autowired
     AirportRepository airportRepository;
-
 
     @Autowired
     CityService cityService;
@@ -33,24 +36,28 @@ public class AirportServiceImpl implements AirportService {
 
     @Override
     public Airport update(Long id, Airport airport) {
-        Airport result = findById(id);
-        if (result != null) {
-            result.setAirportName(airport.getAirportName());
-            result.setAirportCode(airport.getAirportCode());
-            return airportRepository.save(result);
-        }
-        return null;
+        Airport result = airportRepository.findById(id)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
+                    exception.setApiResponse();
+                    throw exception;
+                });
+
+        result.setAirportName(airport.getAirportName());
+        result.setAirportCode(airport.getAirportCode());
+        return result;
     }
 
     @Override
-    public Boolean delete(Long id) {
-        Airport result = findById(id);
-        if (result != null) {
-            airportRepository.deleteById(id);
-            return true;
-        }
-
-        return false;
+    public Airport delete(Long id) {
+        Airport result = airportRepository.findById(id)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
+                    exception.setApiResponse();
+                    throw exception;
+                });
+        airportRepository.delete(result);
+        return result;
     }
 
     @Override
@@ -60,40 +67,34 @@ public class AirportServiceImpl implements AirportService {
 
     @Override
     public Airport findById(Long id) {
-        Optional<Airport> result = airportRepository.findById(id);
-        return result.orElse(null);
+        return airportRepository.findById(id)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
+                    exception.setApiResponse();
+                    throw exception;
+                });
     }
 
     @Override
-    public Airport addAirport(Long cityId, Airport airport) {
-        City city = cityService.findById(cityId);
-        if (city != null) {
-            airport = airportRepository.save(airport);
-            if (city.getAirports() != null) {
-                List<Airport> airportEntities = city.getAirports();
-                airportEntities.add(airport);
-                city.setAirports(airportEntities);
-            }
-            else{
-                city.setAirports(Collections.singletonList(airport));
-            }
-            cityService.add(city);
-            return airport;
+    public Airport findByAirportCode(String airportCode) {
+        Airport byAirportCode = airportRepository.findByAirportCode(airportCode);
+        if (byAirportCode != null) {
+            return byAirportCode;
         }
-        return null;
+        ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "airportCode", airportCode);
+        exception.setApiResponse();
+        throw exception;
     }
 
-
-    ObjectMapper mapper = new ObjectMapper();
+    ModelMapper mapper = new ModelMapper();
 
     @Override
     public AirportDTO mapToDto(Airport airport) {
-        return mapper.convertValue(airport, AirportDTO.class);
+        return mapper.map(airport, AirportDTO.class);
     }
 
     @Override
     public Airport mapToEntity(AirportDTO airportDTO) {
-        return mapper.convertValue(airportDTO, Airport.class);
+        return mapper.map(airportDTO, Airport.class);
     }
-
 }
