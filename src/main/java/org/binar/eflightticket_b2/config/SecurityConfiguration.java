@@ -2,6 +2,7 @@ package org.binar.eflightticket_b2.config;
 
 import org.binar.eflightticket_b2.filter.AuthorizationFilter;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-                .antMatchers("/users/delete")
+                .antMatchers(HttpMethod.DELETE, "/users/delete/**")
                 .hasAnyAuthority("ROLE_ADMIN");
         http.addFilterBefore(new AuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

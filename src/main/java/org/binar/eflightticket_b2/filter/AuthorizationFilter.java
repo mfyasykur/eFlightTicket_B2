@@ -33,7 +33,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
         }else {
             String authHeader = request.getHeader(AUTHORIZATION);
-            if (authHeader != null && authHeader.startsWith("Bearer")){
+            if (authHeader != null && authHeader.startsWith("Bearer ")){
                 try {
                     String token = authHeader.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
@@ -48,6 +48,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    filterChain.doFilter(request,response);
                 }catch (Exception exception) {
                     response.setContentType(APPLICATION_JSON_VALUE);
                     logger.info(exception.getLocalizedMessage());
