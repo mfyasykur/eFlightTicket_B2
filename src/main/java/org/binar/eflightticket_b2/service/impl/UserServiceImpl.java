@@ -11,11 +11,16 @@ import org.binar.eflightticket_b2.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 @Service
@@ -30,6 +35,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserServiceImpl(UserRepository userRepository, ModelMapper mapper) {
         this.userRepository = userRepository;
         this.mapper = mapper;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws ResourceNotFoundException {
+        Users users = userRepository.findUsersByUsername(username)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException ex = new ResourceNotFoundException("username", username, String.class);
+                    ex.setApiResponse();
+                    log.info(ex.getMessageMap().get("error"));
+                    throw ex;
+                });
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        users.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+        return new User(users.getUsername(), users.getPassword(), authorities);
     }
 
     @Override
