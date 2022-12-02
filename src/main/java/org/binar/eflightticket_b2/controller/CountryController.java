@@ -58,7 +58,7 @@ public class CountryController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/getById/{id}")
     public ResponseEntity<ApiResponse> findById(@PathVariable("id") Long id){
 
         Country country = countryService.findById(id);
@@ -71,13 +71,13 @@ public class CountryController {
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
-    @GetMapping("/get/{countryCode}")
+    @GetMapping("/getByCode/{countryCode}")
     public ResponseEntity<ApiResponse> findByCountryCode(@PathVariable("countryCode") String countryCode) {
         Country country = countryService.findByCountryCode(countryCode);
         CountryDTO result = countryService.mapToDto(country);
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE,
-                "successfully retrieved country with id : " + country.getId(),
+                "successfully retrieved country with code : " + country.getCountryCode(),
                 result
         );
 

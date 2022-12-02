@@ -24,6 +24,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City add(City city) {
+        log.info("Has successfully created city data!");
         return cityRepository.save(city);
     }
 
@@ -32,6 +33,7 @@ public class CityServiceImpl implements CityService {
         City result = cityRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
+                    log.info("Error");
                     exception.setApiResponse();
                     throw exception;
                 });
@@ -41,6 +43,7 @@ public class CityServiceImpl implements CityService {
         result.setImageUrl(city.getImageUrl());
         result.setDescription(city.getDescription());
         cityRepository.save(result);
+        log.info("Has successfully updated city data!");
         return result;
     }
 
@@ -49,35 +52,43 @@ public class CityServiceImpl implements CityService {
         City result = cityRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
+                    log.info("Error");
                     exception.setApiResponse();
                     throw exception;
                 });
         cityRepository.delete(result);
+        log.info("Has successfully deleted city data!");
         return result;
     }
 
     @Override
     public List<City> findAll() {
+        log.info("Has successfully found all city data!");
         return cityRepository.findAll();
     }
 
     @Override
     public City findById(Long id) {
-        return cityRepository.findById(id)
+        City city = cityRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
+                    log.info("Error");
                     exception.setApiResponse();
                     throw exception;
                 });
+        log.info("Has successfully found city data from id " + id);
+        return city;
     }
 
     @Override
     public City findByCityCode(String cityCode) {
         City byCityCode = cityRepository.findByCityCode(cityCode);
         if (byCityCode != null) {
+            log.info("Has successfully found country data from code " + cityCode);
             return byCityCode;
         }
         ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "cityCode", cityCode);
+        log.info("Error");
         exception.setApiResponse();
         throw exception;
     }
