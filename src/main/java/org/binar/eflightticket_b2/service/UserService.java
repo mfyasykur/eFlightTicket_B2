@@ -5,9 +5,11 @@ import org.binar.eflightticket_b2.dto.UserDetailRequest;
 import org.binar.eflightticket_b2.dto.UsersDTO;
 import org.binar.eflightticket_b2.entity.Users;
 
+import java.util.List;
+
 public interface UserService {
 
-    Users addUser(Users users);
+    Users addUser(Users users, List<String> role);
     Users deleteUser(String username);
     Users getUserByUsername (String username);
     Users updateUser(Users users, String username);
