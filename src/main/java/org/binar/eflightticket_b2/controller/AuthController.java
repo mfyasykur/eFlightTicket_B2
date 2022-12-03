@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.binar.eflightticket_b2.dto.LoginRequest;
+import org.binar.eflightticket_b2.dto.UsersDTO;
 import org.binar.eflightticket_b2.entity.Role;
 import org.binar.eflightticket_b2.entity.Users;
 import org.binar.eflightticket_b2.exception.BadRequestException;
@@ -26,8 +27,10 @@ import org.binar.eflightticket_b2.service.UserService;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
@@ -81,6 +84,16 @@ public class AuthController {
 
     }
 
+    @PostMapping("/signup")
+    public ResponseEntity<ApiResponse> addUser(@Valid @RequestBody UsersDTO user){
+        Users users = userService.mapToEntity(user);
+        List<String> role = user.getRole();
+        Users savedUser = userService.addUser(users, role);
+        ApiResponse apiResponse = new ApiResponse(
+                Boolean.TRUE, "Successfully added user data with id : " +savedUser.getId());
+        log.info("successfully added user data");
+        return new ResponseEntity<>(apiResponse, CREATED);
+    }
 
     @GetMapping(value = "/refresh")
     public ResponseEntity<ApiResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
