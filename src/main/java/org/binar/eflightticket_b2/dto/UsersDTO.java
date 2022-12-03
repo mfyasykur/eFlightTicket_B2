@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.validation.constraints.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,6 +34,8 @@ public class UsersDTO {
     @NotEmpty(message = "lastName is required")
     @Size(min = 2, max = 20, message = "lastName length must be minimum 2 and maximum 20 character")
     private String lastName;
+
+    private List<String> role;
 
     private String phoneNumber;
 
