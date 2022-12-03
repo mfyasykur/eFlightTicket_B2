@@ -27,7 +27,4 @@ public class Country {
 
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "city_id")
-    private List<City> cityEntities;
 }
