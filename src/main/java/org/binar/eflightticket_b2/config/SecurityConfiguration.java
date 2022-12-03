@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
+        http.authorizeRequests().antMatchers("/auth/**").permitAll();
         http.authorizeRequests()
                 .antMatchers(HttpMethod.DELETE, "/users/delete/**")
                 .hasAnyAuthority("ROLE_ADMIN");
