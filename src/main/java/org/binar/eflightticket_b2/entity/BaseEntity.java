@@ -1,8 +1,7 @@
 package org.binar.eflightticket_b2.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,8 +16,10 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
 public class BaseEntity {
 
     @Id

@@ -1,24 +1,31 @@
 package org.binar.eflightticket_b2.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import org.binar.eflightticket_b2.entity.Aircraft;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
+//@JsonIgnoreProperties(value = {"id"}, allowGetters = true)
 public class AircraftDTO {
 
-    String manufacture;
+    private Long id;
 
-    String manufactureCode;
+    private String manufacture;
 
-    String registerCode;
+    private String manufactureCode;
 
-    Integer seatCapacity;
+    private String registerCode;
 
-    Integer baggageCapacity;
+    private Integer seatCapacity;
 
-    Aircraft.SizeType sizeType;
+    private Integer baggageCapacity;
+
+    private Aircraft.SizeType sizeType;
 }
