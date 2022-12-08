@@ -79,7 +79,7 @@ public class AircraftServiceImpl implements AircraftService {
                 });
     }
 
-    //DTO Converter
+    //DTO Mapper
     ModelMapper mapper = new ModelMapper();
 
     @Override
