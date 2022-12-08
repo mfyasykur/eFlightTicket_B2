@@ -1,5 +1,8 @@
 package org.binar.eflightticket_b2.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -8,12 +11,9 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "City")
-public class City {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@NoArgsConstructor
+@JsonIgnoreProperties(value = {"createdAt", "updatedAt", "airportDetail"}, allowGetters = true)
+public class City extends BaseEntity{
 
     @Column(name = "city_name")
     private String cityName;
@@ -26,7 +26,7 @@ public class City {
 
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "airport_id")
-    private List<Airport> airports;
+    @OneToOne(mappedBy = "cityDetails", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private AirportDetail airportDetail;
 }

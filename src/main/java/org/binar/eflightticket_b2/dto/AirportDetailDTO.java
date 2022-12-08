@@ -5,17 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
+import org.binar.eflightticket_b2.entity.Country;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class CityDTO{
-    String cityName;
-    String cityCode;
-    String imageUrl;
-    String description;
+public class AirportDetailDTO {
+    Long id;
+    CountryDTO countryDetails;
+    CityDTO cityDetails;
+    AirportDTO airportDetails;
 }
