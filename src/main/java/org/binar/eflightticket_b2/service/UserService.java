@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserService {
 
     Users addUser(Users users, List<String> role);
-    Users deleteUser(String username);
+    Users deleteUser(Long id);
     Users getUserByUsername (String username);
     Users getUserById(Long id);
     Users updateUser(Users users, String username);
