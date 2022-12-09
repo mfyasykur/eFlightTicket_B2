@@ -102,10 +102,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Users deleteUser(String username) {
-        Users user = userRepository.findUsersByUsername(username)
+    public Users deleteUser(Long id) {
+        Users user = userRepository.findUsersById(id)
                 .orElseThrow(() -> {
-                    ResourceNotFoundException ex = new ResourceNotFoundException("username", username, String.class);
+                    ResourceNotFoundException ex = new ResourceNotFoundException("id", id.toString(), String.class);
                     ex.setApiResponse();
                     log.info(ex.getMessageMap().get("error"));
                     throw ex;
