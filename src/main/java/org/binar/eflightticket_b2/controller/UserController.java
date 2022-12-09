@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
-import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
@@ -27,12 +26,12 @@ public class UserController {
     private final UserService userService;
     private final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    @DeleteMapping("/delete/{username}")
-    public ResponseEntity<ApiResponse> deleteUser(@PathVariable ("username") @NotBlank String username){
-        Users deletedUser = userService.deleteUser(username);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse> deleteUser(@PathVariable ("id") @NotBlank Long id){
+        Users deletedUser = userService.deleteUser(id);
         ApiResponse apiResponse = new ApiResponse(
-                Boolean.TRUE, "Successfully delete user data with username : " +deletedUser.getUsername());
-        log.info("successfully deleted user data  with username {} ", username);
+                Boolean.TRUE, "Successfully delete user data with id : " +deletedUser.getId());
+        log.info("successfully deleted user data  with id {} ", id);
         return new ResponseEntity<>(apiResponse, OK);
     }
 
