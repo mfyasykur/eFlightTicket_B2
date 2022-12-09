@@ -1,6 +1,7 @@
 package org.binar.eflightticket_b2.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
@@ -14,10 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsersDTO {
-
-    @NotEmpty(message = "username shouldn't be empty")
-    @Size(min = 6,  max = 15, message = "username length must be minimum 6 and maximum 15 character")
-    private String username;
 
     @NotEmpty(message = "email address is required ")
     @Email(message = "should be valid email form")
@@ -35,6 +32,7 @@ public class UsersDTO {
     @Size(min = 2, max = 20, message = "lastName length must be minimum 2 and maximum 20 character")
     private String lastName;
 
+    @JsonIgnore
     private List<String> role;
 
     private String phoneNumber;
