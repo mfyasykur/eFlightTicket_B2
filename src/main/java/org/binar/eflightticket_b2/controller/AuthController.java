@@ -88,13 +88,18 @@ public class AuthController {
     }
 
     @PostMapping("auth/signup")
-    public ResponseEntity<ApiResponse> addUser(@Valid @RequestBody UsersDTO user){
+    public ResponseEntity<ApiResponse> addUser(@Valid @RequestBody UsersDTO user, HttpServletRequest request){
         Users users = userService.mapToEntity(user);
         List<String> role = user.getRole();
         Users savedUser = userService.addUser(users, role);
         user.setId(users.getId());
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail(savedUser.getEmail());
+        loginRequest.setPassword(user.getPassword());
+        ResponseEntity<ApiResponse> login = login(loginRequest, request);
+        Object data = login.getBody().getData();
         ApiResponse apiResponse = new ApiResponse(
-                Boolean.TRUE, "Successfully added user data with id : " +savedUser.getId(), user);
+                Boolean.TRUE, "Successfully added user data with id : " +savedUser.getId(), data);
         log.info("successfully added user data");
         return new ResponseEntity<>(apiResponse, CREATED);
     }
@@ -113,7 +118,7 @@ public class AuthController {
 
                 String accessToken = JWT.create()
                         .withSubject(userByEmail.getEmail())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 1 * 60 * 1000))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + 7 * 60 * 1000))
                         .withIssuer(request.getRequestURI())
                         .withClaim("roles", userByEmail.getRoles().stream().map(Role::getName).toList())
                         .sign(algorithm);
