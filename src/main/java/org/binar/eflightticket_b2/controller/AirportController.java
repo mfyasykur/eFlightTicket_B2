@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/airport")
+@RequestMapping("/airport")
 public class AirportController {
 
     @Autowired
     AirportService airportService;
 
-    @RequestMapping(value = "/add", produces = "application/json", method = RequestMethod.POST)
+    @PostMapping("/add")
     public ResponseEntity<ApiResponse> add(@RequestBody AirportDTO airportDTO){
         Airport request = airportService.mapToEntity(airportDTO);
         Airport airport = airportService.add(request);
