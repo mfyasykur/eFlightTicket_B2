@@ -63,7 +63,7 @@ public class AuthController {
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
             String accessToken = JWT.create()
                     .withSubject(user.getUsername())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 7 * 60 * 1000))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                     .withIssuer(request.getRequestURI())
                     .withClaim("roles", user.getAuthorities()
                             .stream()
@@ -72,7 +72,7 @@ public class AuthController {
             log.info("Info :  successfully generated access token user");
             String refreshToken = JWT.create()
                     .withSubject(user.getUsername())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 70 * 60 * 1000))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 3 * 86400 * 1000))
                     .withIssuer(request.getRequestURL().toString())
                     .sign(algorithm);
             log.info("Info :  successfully generated refresh token user");
@@ -118,7 +118,7 @@ public class AuthController {
 
                 String accessToken = JWT.create()
                         .withSubject(userByEmail.getEmail())
-                        .withExpiresAt(new Date(System.currentTimeMillis() + 7 * 60 * 1000))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                         .withIssuer(request.getRequestURI())
                         .withClaim("roles", userByEmail.getRoles().stream().map(Role::getName).toList())
                         .sign(algorithm);
