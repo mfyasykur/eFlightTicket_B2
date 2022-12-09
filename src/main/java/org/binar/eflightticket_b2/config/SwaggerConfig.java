@@ -21,4 +21,5 @@ public class SwaggerConfig {
                         .title("B2 E-Flight Ticket Reservation REST API")
                         .description("Under production :: not release yet")
                 ).servers(List.of(stagingUrl));
+    }
 }
