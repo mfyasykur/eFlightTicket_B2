@@ -47,9 +47,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().configurationSource(request -> {
             CorsConfiguration cors = new CorsConfiguration();
-            cors.setAllowedMethods(
-                    Arrays.asList(HttpMethod.DELETE.name(), HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name())
-            );
+            cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
+            cors.setAllowedHeaders(Arrays.asList("*"));
+            cors.setAllowedOrigins(Arrays.asList("*"));
             cors.applyPermitDefaultValues();
 
             return cors;
