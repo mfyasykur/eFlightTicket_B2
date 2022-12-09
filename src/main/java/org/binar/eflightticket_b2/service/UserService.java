@@ -11,7 +11,7 @@ public interface UserService {
 
     Users addUser(Users users, List<String> role);
     Users deleteUser(Long id);
-    Users getUserByUsername (String username);
+    Users getUserByEmail(String email);
     Users getUserById(Long id);
     Users updateUser(Users users, Long id);
 
