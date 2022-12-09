@@ -35,7 +35,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping(value = "/auth", method = { RequestMethod.GET, RequestMethod.POST })
+@RequestMapping("/auth")
 public class AuthController {
 
     private final Logger log = LoggerFactory.getLogger(AuthController.class);
