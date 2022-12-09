@@ -49,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             CorsConfiguration cors = new CorsConfiguration();
             cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
 //            cors.addAllowedHeader("*");
-            cors.setAllowedOrigins(Arrays.asList("https://eflightticketb2-staging.up.railway.app", "https://heartfelt-griffin-3ecb9d.netlify.app", "https://cors-test.codehappy.dev/"));
+            cors.addAllowedOrigin("*");
             cors.setMaxAge(3600L);
             cors.applyPermitDefaultValues();
 
