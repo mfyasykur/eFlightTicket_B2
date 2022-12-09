@@ -35,15 +35,15 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, OK);
     }
 
-    @GetMapping("/get/{username}")
-    public ResponseEntity<ApiResponse> getUserByUsername(@PathVariable ("username") @NotBlank String username){
-        Users user = userService.getUserByUsername(username);
+    @GetMapping("/get/{id}")
+    public ResponseEntity<ApiResponse> getUserById(@PathVariable ("id") @NotBlank Long id){
+        Users user = userService.getUserById(id);
         UsersDTO userByUsername = userService.mapToDTO(user);
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE
-                , "Successfully retrieve user data with username : " +userByUsername.getUsername()
+                , "Successfully retrieve user data with id : " +id
                 , userByUsername);
-        log.info("successfully retrieve user data with username {} ", userByUsername.getUsername());
+        log.info("successfully retrieve user data with id {} ", id);
         return new ResponseEntity<>(apiResponse, OK);
     }
 
