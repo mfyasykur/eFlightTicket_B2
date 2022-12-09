@@ -115,11 +115,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user;
     }
 
+
     @Override
-    public Users getUserByUsername(String username) {
-        Users user = userRepository.findUsersByUsername(username)
+    public Users getUserByEmail(String email) {
+        Users user = userRepository.findUsersByEmail(email)
                 .orElseThrow(() -> {
-                    ResourceNotFoundException ex = new ResourceNotFoundException("username", username, String.class);
+                    ResourceNotFoundException ex = new ResourceNotFoundException("email", email, String.class);
                     ex.setApiResponse();
                     log.info(ex.getMessageMap().get("error"));
                     throw ex;
