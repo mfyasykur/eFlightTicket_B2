@@ -17,6 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,27 +46,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws ResourceNotFoundException {
-        Users users = userRepository.findUsersByUsername(username)
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Users users = userRepository.findUsersByEmail(email)
                 .orElseThrow(() -> {
-                    ResourceNotFoundException ex = new ResourceNotFoundException("username", username, String.class);
-                    ex.setApiResponse();
-                    log.info(ex.getMessageMap().get("error"));
-                    throw ex;
+                    throw new UsernameNotFoundException("Email Not Found");
                 });
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         users.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
-        return new User(users.getUsername(), users.getPassword(), authorities);
+        return new User(users.getEmail(), users.getPassword(), authorities);
     }
 
     @Override
     public Users addUser(Users users, List<String> user) {
-        if (userRepository.findUsersByUsername(users.getUsername()).isPresent()){
-            log.info("username has taken");
-            HashMap<String, String> errorMessage = new HashMap<>();
-            errorMessage.put(ERROR, "username has taken");
-            throw new BadRequestException(errorMessage);
-        }
         if (userRepository.findUsersByEmail(users.getEmail()).isPresent()){
             log.info("email has taken");
             HashMap<String, String> errorMessage = new HashMap<>();
@@ -78,7 +70,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         if (reqRole == null){
             Role userRole = roleRepository.findRoleByName(ROLE_USERS).orElseThrow();
-            log.info(INFO + users.getUsername() + " has assigned to ROLE_USER");
+            log.info(INFO + users.getId() + " has assigned to ROLE_USER");
             roles.add(userRole);
         }else{
             reqRole.forEach(role -> {
@@ -89,7 +81,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                                 throw new ResourceNotFoundException("Role", "role", ROLE_ADMIN);
                             });
                     roles.add(adminRole);
-                    log.info("Info : " + users.getUsername() + " has assigned to ROLE_ADMIN");
+                    log.info("Info : " + users.getId() + " has assigned to ROLE_ADMIN");
                 } else {
                     Role userRole = roleRepository.findRoleByName(ROLE_USERS).orElseThrow(
                             () -> {
@@ -97,7 +89,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                                 throw new ResourceNotFoundException("Role", "role", ROLE_USERS);
                             });
                     roles.add(userRole);
-                    log.info("Info : " + users.getUsername() + " has assigned to ROLE_USERS");
+                    log.info("Info : " + users.getId() + " has assigned to ROLE_USERS");
                 }
             });
         }
