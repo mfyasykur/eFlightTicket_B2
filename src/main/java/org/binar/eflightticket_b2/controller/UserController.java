@@ -49,13 +49,13 @@ public class UserController {
 
     @PutMapping("/update")
     public ResponseEntity<ApiResponse> updateByUsername(@Valid @RequestBody UserDetailRequest newUsers,
-                                                        @RequestParam @NotBlank String username){
+                                                        @RequestParam @NotBlank Long id){
         Users users = userService.mapToEntity(newUsers);
-        Users user = userService.updateUser(users, username);
+        Users user = userService.updateUser(users, id);
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE
-                , "Successfully updated data user with username : " +user.getUsername());
-        log.info("Successfully updated data user with username {} ", user.getUsername());
+                , "Successfully updated data user with id : " +user.getId());
+        log.info("Successfully updated data user with username {} ", user.getId());
         return new ResponseEntity<>(apiResponse, OK);
     }
 
