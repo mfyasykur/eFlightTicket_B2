@@ -137,6 +137,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public Users getUserById(Long id) {
+        return userRepository.findUsersById(id).orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("id", id.toString(), String.class);
+            ex.setApiResponse();
+            log.info(ex.getMessageMap().get("error"));
+            throw ex;
+        });
+    }
+
+    @Override
     public Users updateUser(Users users, String username) {
         Users retrievedUser = userRepository.findUsersByUsername(username).orElseThrow(() -> {
             ResourceNotFoundException ex = new ResourceNotFoundException("username", username, String.class);
