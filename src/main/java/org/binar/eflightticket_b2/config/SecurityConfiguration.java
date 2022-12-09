@@ -49,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().configurationSource(request -> {
             CorsConfiguration cors = new CorsConfiguration();
             cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
-            cors.setAllowedHeaders(Collections.singletonList("*"));
+//            cors.setAllowedHeaders(Collections.singletonList("*"));
             cors.setAllowedOrigins(Collections.singletonList("*"));
             cors.setMaxAge(3600L);
             cors.setAllowCredentials(true);
