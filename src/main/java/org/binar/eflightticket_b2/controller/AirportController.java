@@ -20,15 +20,24 @@ public class AirportController {
     AirportService airportService;
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse> add(@RequestBody AirportDTO airportDTO){
+//    public ResponseEntity<ApiResponse> add(@RequestBody AirportDTO airportDTO){
+//        Airport request = airportService.mapToEntity(airportDTO);
+//        Airport airport = airportService.add(request);
+//        ApiResponse apiResponse = new ApiResponse(
+//                Boolean.TRUE,
+//                "Successfully add Airport with id: " + airport.getId()
+//        );
+//
+//        return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+//    }
+    public ResponseEntity<AirportDTO> add(@RequestBody AirportDTO airportDTO) {
+
         Airport request = airportService.mapToEntity(airportDTO);
         Airport airport = airportService.add(request);
-        ApiResponse apiResponse = new ApiResponse(
-                Boolean.TRUE,
-                "Successfully add Airport with id: " + airport.getId()
-        );
 
-        return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+        AirportDTO response = airportService.mapToDto(airport);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
