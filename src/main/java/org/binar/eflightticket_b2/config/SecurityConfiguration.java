@@ -49,6 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/users/delete/**")
                 .hasAnyAuthority("ROLE_ADMIN");
         http.addFilterBefore(new AuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.cors().and();
     }
 
     @Bean
