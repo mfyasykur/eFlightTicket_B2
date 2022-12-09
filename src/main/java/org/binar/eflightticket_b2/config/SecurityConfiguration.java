@@ -51,7 +51,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
             cors.setAllowedHeaders(Collections.singletonList("*"));
             cors.setAllowedOrigins(Collections.singletonList("*"));
-            cors.addExposedHeader("*");
             cors.setMaxAge(3600L);
             cors.setAllowCredentials(true);
             cors.applyPermitDefaultValues();
