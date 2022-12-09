@@ -18,7 +18,7 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("B2 E-Flight Ticket Reservation REST API")
                         .description("Under production :: not release yet")
-                )
-                .servers(List.of(new Server().url("https://eflightticketb2-staging.up.railway.app/")));
+                );
+//                .servers(List.of(new Server().url("https://eflightticketb2-staging.up.railway.app/")));
     }
 }
