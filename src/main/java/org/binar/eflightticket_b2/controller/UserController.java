@@ -16,7 +16,6 @@ import javax.validation.constraints.NotBlank;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("users")
 public class UserController {
 
     public UserController(UserService userService) {
@@ -26,7 +25,7 @@ public class UserController {
     private final UserService userService;
     private final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("users/delete/{id}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable ("id") @NotBlank Long id){
         Users deletedUser = userService.deleteUser(id);
         ApiResponse apiResponse = new ApiResponse(
@@ -35,7 +34,7 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, OK);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("users/get/{id}")
     public ResponseEntity<ApiResponse> getUserById(@PathVariable ("id") @NotBlank Long id){
         Users user = userService.getUserById(id);
         UsersDTO userByUsername = userService.mapToDTO(user);
@@ -47,7 +46,7 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, OK);
     }
 
-    @PutMapping("/update")
+    @PutMapping("users/update")
     public ResponseEntity<ApiResponse> updateByUsername(@Valid @RequestBody UserDetailRequest newUsers,
                                                         @RequestParam @NotBlank Long id){
         Users users = userService.mapToEntity(newUsers);
