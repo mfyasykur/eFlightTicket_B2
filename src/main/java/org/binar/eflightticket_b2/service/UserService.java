@@ -12,6 +12,7 @@ public interface UserService {
     Users addUser(Users users, List<String> role);
     Users deleteUser(String username);
     Users getUserByUsername (String username);
+    Users getUserById(Long id);
     Users updateUser(Users users, String username);
 
     UsersDTO mapToDTO(Users users);
