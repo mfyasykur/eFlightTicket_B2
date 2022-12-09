@@ -139,24 +139,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Users updateUser(Users users, String username) {
-        Users retrievedUser = userRepository.findUsersByUsername(username).orElseThrow(() -> {
-            ResourceNotFoundException ex = new ResourceNotFoundException("username", username, String.class);
+    public Users updateUser(Users users, Long id) {
+        Users retrievedUser = userRepository.findUsersById(id).orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("id", id.toString(), String.class);
             ex.setApiResponse();
             log.info(ex.getMessageMap().get("error"));
             throw ex;
         });
-        boolean isUsernamePresent = userRepository.findUsersByUsername(users.getUsername()).isPresent();
         boolean isEmailPresent = userRepository.findUsersByEmail(users.getEmail()).isPresent();
-        if (isUsernamePresent){
-            HashMap<String, String> errorMessage = new HashMap<>();
-            errorMessage.put(ERROR, "username has taken");
-            throw new BadRequestException(errorMessage);
-        }else {
-            retrievedUser.setUsername(users.getUsername());
-            retrievedUser.setPassword(users.getPassword());
-            userRepository.save(retrievedUser);
-        }
         if (isEmailPresent){
             log.info("email has taken");
             HashMap<String, String> errorMessage = new HashMap<>();
