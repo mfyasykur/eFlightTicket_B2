@@ -16,6 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 public class UsersDTO {
 
+    private Long id;
+
     @NotEmpty(message = "email address is required ")
     @Email(message = "should be valid email form")
     private String email;
