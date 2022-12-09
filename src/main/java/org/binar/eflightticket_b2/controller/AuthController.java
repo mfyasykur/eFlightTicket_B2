@@ -90,7 +90,7 @@ public class AuthController {
         List<String> role = user.getRole();
         Users savedUser = userService.addUser(users, role);
         ApiResponse apiResponse = new ApiResponse(
-                Boolean.TRUE, "Successfully added user data with id : " +savedUser.getId());
+                Boolean.TRUE, "Successfully added user data with id : " +savedUser.getId(), user);
         log.info("successfully added user data");
         return new ResponseEntity<>(apiResponse, CREATED);
     }
