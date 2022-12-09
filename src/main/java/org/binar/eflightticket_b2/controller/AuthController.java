@@ -57,7 +57,10 @@ public class AuthController {
 
             User user =(User) authenticate.getPrincipal();
 
-            Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        Users userByEmail = userService.getUserByEmail(loginRequest.getEmail());
+        UsersDTO usersDTO = userService.mapToDTO(userByEmail);
+
+        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
             String accessToken = JWT.create()
                     .withSubject(user.getUsername())
                     .withExpiresAt(new Date(System.currentTimeMillis() + 7 * 60 * 1000))
@@ -73,9 +76,10 @@ public class AuthController {
                     .withIssuer(request.getRequestURL().toString())
                     .sign(algorithm);
             log.info("Info :  successfully generated refresh token user");
-            HashMap<String, String> tokens = new HashMap<>();
+            HashMap<String, Object> tokens = new HashMap<>();
             tokens.put("access_token", accessToken);
             tokens.put("refresh_token", refreshToken);
+            tokens.put("data", usersDTO);
             ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "Successfully Login", tokens);
             return ResponseEntity.ok()
                     .header("access_token", accessToken)
@@ -88,6 +92,7 @@ public class AuthController {
         Users users = userService.mapToEntity(user);
         List<String> role = user.getRole();
         Users savedUser = userService.addUser(users, role);
+        user.setId(users.getId());
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE, "Successfully added user data with id : " +savedUser.getId(), user);
         log.info("successfully added user data");
