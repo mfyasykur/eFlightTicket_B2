@@ -95,6 +95,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         String encryptedPassword = bCryptPasswordEncoder.encode(users.getPassword());
         log.info("Info : Password has been encrypted" );
+        users.setPhotoProfile(
+                "https://res.cloudinary.com/eflightticketing-b2/image/upload/v1670679456/defaultphoto_zjcun3.jpg");
         users.setPassword(encryptedPassword);
         users.setRoles(roles);
         log.info("successfully persist data user to database");
