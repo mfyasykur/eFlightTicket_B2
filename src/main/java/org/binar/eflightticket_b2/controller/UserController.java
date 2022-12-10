@@ -61,9 +61,9 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, OK);
     }
 
-    @PutMapping("users/upload/{id}")
+    @PutMapping("users/upload")
     public ResponseEntity<ApiResponse> uploadImage(@Valid @RequestParam("id") Long id,
-                                                   @RequestParam MultipartFile multipartFile) throws IOException {
+                                                   @RequestParam("file") MultipartFile multipartFile) throws IOException {
         Users saveUser = userService.uploadImage(multipartFile, id);
         UsersDTO usersDTO = userService.mapToDTO(saveUser);
         ApiResponse apiResponse = new ApiResponse(
