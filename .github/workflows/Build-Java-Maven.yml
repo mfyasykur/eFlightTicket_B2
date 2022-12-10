@@ -10,9 +10,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "CORS_Fixing" ]
+    branches: [ "staging" ]
   pull_request:
-    branches: [ "CORS_Fixing" ]
+    branches: [ "staging" ]
 
 jobs:
   build:
