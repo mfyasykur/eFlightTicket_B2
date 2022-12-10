@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -15,13 +16,16 @@ import java.time.LocalDateTime;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ScheduleDTO {
 
-    private LocalDateTime departureDate;
+    private LocalDate departureDate;
 
-    private LocalDateTime arrivalDate;
+    private LocalDate arrivalDate;
 
-    private Integer netPrice;
+    private LocalTime departureTime;
+
+    private LocalTime arrivalTime;
 
     private RouteDTO routeDTO;
 
-    private FlightDetailDTO flightDetailDTO;
+    private Integer netPrice;
+
 }

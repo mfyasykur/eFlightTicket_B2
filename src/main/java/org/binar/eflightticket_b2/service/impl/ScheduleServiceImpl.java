@@ -1,11 +1,15 @@
 package org.binar.eflightticket_b2.service.impl;
 
 import org.binar.eflightticket_b2.dto.ScheduleDTO;
+import org.binar.eflightticket_b2.dto.ScheduleRequest;
+import org.binar.eflightticket_b2.entity.Route;
 import org.binar.eflightticket_b2.entity.Schedule;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.ScheduleRepository;
 import org.binar.eflightticket_b2.service.ScheduleService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,35 +20,28 @@ import java.util.List;
 @Transactional
 public class ScheduleServiceImpl implements ScheduleService {
 
+    private final Logger log = LoggerFactory.getLogger(ScheduleServiceImpl.class);
+
     private static final String ENTITY = "schedule";
 
     @Autowired
     private ScheduleRepository scheduleRepository;
 
     @Override
-    public Schedule addSchedule(Schedule schedule) {
+    public Schedule addSchedule(ScheduleRequest scheduleRequest) {
 
-        return scheduleRepository.save(schedule);
-    }
+        Schedule result = Schedule.builder()
+                .departureDate(scheduleRequest.getDepartureDate())
+                .arrivalDate(scheduleRequest.getArrivalDate())
+                .departureTime(scheduleRequest.getDepartureTime())
+                .departureTime(scheduleRequest.getDepartureTime())
+                .route(Route.builder().id(scheduleRequest.getRouteId()).build())
+                .netPrice(scheduleRequest.getNetPrice())
+                .build();
 
-    @Override
-    public Schedule updateSchedule(Long id, Schedule schedule) {
+        log.info("Has successfully created schedule data with ID : {}", result.getId());
 
-        Schedule result = scheduleRepository.findById(id)
-                .orElseThrow(() -> {
-                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    exception.setApiResponse();
-                    throw exception;
-                });
-
-        result.setDepartureDate(schedule.getDepartureDate());
-        result.setArrivalDate(schedule.getArrivalDate());
-        result.setNetPrice(schedule.getNetPrice());
-        result.setRoute(schedule.getRoute());
-        result.setFlightDetail(schedule.getFlightDetail());
-        scheduleRepository.save(result);
-
-        return result;
+        return scheduleRepository.save(result);
     }
 
     @Override
@@ -56,6 +53,9 @@ public class ScheduleServiceImpl implements ScheduleService {
                     exception.setApiResponse();
                     throw exception;
                 });
+
+        log.info("Has successfully deleted schedule data with ID : {}", schedule.getId());
+
         scheduleRepository.delete(schedule);
 
         return schedule;
@@ -64,18 +64,24 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public List<Schedule> getAllSchedules() {
 
+        log.info("Has successfully retrieved all schedules data");
+
         return scheduleRepository.findAll();
     }
 
     @Override
     public Schedule getScheduleById(Long id) {
 
-        return scheduleRepository.findById(id)
+        Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
                     exception.setApiResponse();
                     throw exception;
                 });
+
+        log.info("Has successfully retrieved schedule data with ID : {}", schedule.getId());
+
+        return schedule;
     }
 
     ModelMapper mapper = new ModelMapper();

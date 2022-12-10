@@ -1,12 +1,11 @@
 package org.binar.eflightticket_b2.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -15,13 +14,29 @@ import java.time.LocalDateTime;
 @Table(name = "Schedule")
 public class Schedule extends BaseEntity {
 
-    private LocalDateTime departureDate;
+    @Builder
+    public Schedule(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDate departureDate, LocalDate arrivalDate, LocalTime departureTime, LocalTime arrivalTime, Route route, Integer netPrice) {
+        super(id, createdAt, updatedAt);
+        this.departureDate = departureDate;
+        this.arrivalDate = arrivalDate;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.route = route;
+        this.netPrice = netPrice;
+    }
 
-    private LocalDateTime arrivalDate;
+    private LocalDate departureDate;
 
-    private Integer netPrice;
+    private LocalDate arrivalDate;
 
+    private LocalTime departureTime;
+
+    private LocalTime arrivalTime;
+
+    //route (Route)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST })
+    @JoinColumn(name = "route_id", referencedColumnName = "id")
     private Route route;
 
-    private FlightDetail flightDetail;
+    private Integer netPrice;
 }

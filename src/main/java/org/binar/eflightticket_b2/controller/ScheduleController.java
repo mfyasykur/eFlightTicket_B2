@@ -1,6 +1,7 @@
 package org.binar.eflightticket_b2.controller;
 
 import org.binar.eflightticket_b2.dto.ScheduleDTO;
+import org.binar.eflightticket_b2.dto.ScheduleRequest;
 import org.binar.eflightticket_b2.entity.Schedule;
 import org.binar.eflightticket_b2.payload.ApiResponse;
 import org.binar.eflightticket_b2.service.ScheduleService;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,29 +22,15 @@ public class ScheduleController {
     private ScheduleService scheduleService;
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse> addSchedule(@RequestBody ScheduleDTO scheduleDTO) {
+    public ResponseEntity<ApiResponse> addSchedule(@Valid @RequestBody ScheduleRequest scheduleRequest) {
 
-        Schedule request = scheduleService.mapToEntity(scheduleDTO);
-        Schedule schedule = scheduleService.addSchedule(request);
+        Schedule schedule = scheduleService.addSchedule(scheduleRequest);
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE,
                 "successfully add schedule with id : " + schedule.getId()
         );
 
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse> updateSchedule(@PathVariable Long id, @RequestBody ScheduleDTO scheduleDTO) {
-
-        Schedule request = scheduleService.mapToEntity(scheduleDTO);
-        Schedule schedule = scheduleService.updateSchedule(id, request);
-        ApiResponse apiResponse = new ApiResponse(
-                Boolean.TRUE,
-                "successfully updated schedule with id : " + schedule.getId()
-        );
-
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/get/all")
