@@ -3,22 +3,27 @@ package org.binar.eflightticket_b2.service.impl;
 import org.binar.eflightticket_b2.dto.AircraftDTO;
 import org.binar.eflightticket_b2.dto.FlightDetailDTO;
 import org.binar.eflightticket_b2.entity.Aircraft;
+import org.binar.eflightticket_b2.entity.AirportDetail;
 import org.binar.eflightticket_b2.entity.FlightDetail;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.AircraftRepository;
+import org.binar.eflightticket_b2.repository.AirportDetailRepository;
 import org.binar.eflightticket_b2.repository.FlightDetailRepository;
 import org.binar.eflightticket_b2.service.FlightDetailService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 public class FlightDetailServiceImpl implements FlightDetailService {
+
+    private final Logger log = LoggerFactory.getLogger(FlightDetailServiceImpl.class);
 
     private static final String ENTITY = "flightDetail";
 
@@ -26,10 +31,27 @@ public class FlightDetailServiceImpl implements FlightDetailService {
     private FlightDetailRepository flightDetailRepository;
 
     @Autowired
+    private AirportDetailRepository airportDetailRepository;
+
+    @Autowired
     private AircraftRepository aircraftRepository;
 
     @Override
-    public FlightDetail addFlightDetail(Long aircraftId) {
+    public FlightDetail addFlightDetail(Long departureId, Long arrivalId, Long aircraftId) {
+
+        AirportDetail departure = airportDetailRepository.findById(departureId)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException("departure", "id", departureId.toString());
+                    exception.setApiResponse();
+                    throw exception;
+                });
+
+        AirportDetail arrival = airportDetailRepository.findById(arrivalId)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException("arrival", "id", arrivalId.toString());
+                    exception.setApiResponse();
+                    throw exception;
+                });
 
         Aircraft aircraft = aircraftRepository.findById(aircraftId)
                 .orElseThrow(() -> {
@@ -39,56 +61,15 @@ public class FlightDetailServiceImpl implements FlightDetailService {
                 });
 
         FlightDetail flightDetail = FlightDetail.builder()
+                .departure(departure)
+                .arrival(arrival)
                 .aircraftDetail(aircraft)
                 .build();
 
+        log.info("Has successfully created flightDetail data with ID : {}", flightDetail.getId());
+
         return flightDetailRepository.save(flightDetail);
     }
-
-//    @Override
-//    public FlightDetailDTO add(Long aircraftId) {
-//
-//        Aircraft aircraft = aircraftRepository.findById(aircraftId)
-//                .orElseThrow(() -> {
-//                    ResourceNotFoundException exception = new ResourceNotFoundException("aircraft", "id", aircraftId.toString());
-//                    exception.setApiResponse();
-//                    throw exception;
-//                });
-//
-//        FlightDetail flightDetail = FlightDetail.builder()
-//                .aircraftDetail(aircraft)
-//                .build();
-//
-//        flightDetailRepository.save(flightDetail);
-//
-//        return FlightDetailDTO.builder()
-//                .id(flightDetail.getId())
-//                .aircraftDetail(AircraftDTO.builder()
-//                        .manufacture(aircraft.getManufacture())
-//                        .manufactureCode(aircraft.getManufactureCode())
-//                        .registerCode(aircraft.getRegisterCode())
-//                        .seatCapacity(aircraft.getSeatCapacity())
-//                        .baggageCapacity(aircraft.getBaggageCapacity())
-//                        .sizeType(aircraft.getSizeType())
-//                        .build())
-//                .build();
-//    }
-
-//    @Override
-//    public FlightDetail updateFlightDetail(Long id, FlightDetail flightDetail) {
-//
-//        FlightDetail result = flightDetailRepository.findById(id)
-//                .orElseThrow(() -> {
-//                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-//                    exception.setApiResponse();
-//                    throw exception;
-//                });
-//
-//        result.setAircraftDetail(flightDetail.getAircraftDetail());
-//        flightDetailRepository.save(result);
-//
-//        return result;
-//    }
 
     @Override
     public FlightDetail deleteFlightDetail(Long id) {
@@ -99,6 +80,9 @@ public class FlightDetailServiceImpl implements FlightDetailService {
                     exception.setApiResponse();
                     throw exception;
                 });
+
+        log.info("Has successfully deleted flightDetail data with ID : {}", flightDetail.getId());
+
         flightDetailRepository.delete(flightDetail);
 
         return flightDetail;
@@ -107,44 +91,24 @@ public class FlightDetailServiceImpl implements FlightDetailService {
     @Override
     public List<FlightDetail> getAllFlightDetails() {
 
+        log.info("Has successfully retrieved all flightDetails data");
+
         return flightDetailRepository.findAll();
     }
-
-//    @Override
-//    public List<FlightDetailDTO> getAll() {
-//
-//        List<FlightDetail> flightDetails = flightDetailRepository.findAll();
-//
-//        List<FlightDetailDTO> flightDetailDTOS = new ArrayList<>();
-//
-//        flightDetails.forEach(flightDetail -> {
-//            FlightDetailDTO flightDetailDTO = FlightDetailDTO.builder()
-//                    .id(flightDetail.getId())
-//                    .aircraftDetail(AircraftDTO.builder()
-//                            .id(flightDetail.getAircraftDetail().getId())
-//                            .manufacture(flightDetail.getAircraftDetail().getManufacture())
-//                            .manufactureCode(flightDetail.getAircraftDetail().getManufactureCode())
-//                            .registerCode(flightDetail.getAircraftDetail().getRegisterCode())
-//                            .seatCapacity(flightDetail.getAircraftDetail().getSeatCapacity())
-//                            .baggageCapacity(flightDetail.getAircraftDetail().getBaggageCapacity())
-//                            .sizeType(flightDetail.getAircraftDetail().getSizeType())
-//                            .build())
-//                    .build();
-//            flightDetailDTOS.add(flightDetailDTO);
-//        });
-//
-//        return flightDetailDTOS;
-//    }
 
     @Override
     public FlightDetail getFlightDetailById(Long id) {
 
-        return flightDetailRepository.findById(id)
+        FlightDetail flightDetail = flightDetailRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
                     exception.setApiResponse();
                     throw exception;
                 });
+
+        log.info("Has successfully retrieved flightDetail data with ID : {}", flightDetail.getId());
+
+        return flightDetail;
     }
 
     //DTO Mapper

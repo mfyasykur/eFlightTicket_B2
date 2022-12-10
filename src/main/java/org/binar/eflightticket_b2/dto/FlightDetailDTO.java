@@ -15,9 +15,9 @@ public class FlightDetailDTO {
 
     private Long id;
 
-    //departure (airportDetail)
+    private AirportDetailDTO departure;
 
-    //arrival (airportDetail)
+    private AirportDetailDTO arrival;
 
     private AircraftDTO aircraftDetail;
 }

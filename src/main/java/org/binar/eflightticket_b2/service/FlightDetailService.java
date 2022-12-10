@@ -7,14 +7,10 @@ import java.util.List;
 
 public interface FlightDetailService {
 
-    FlightDetail addFlightDetail(Long id);
-//    FlightDetail updateFlightDetail(Long id, FlightDetail flightDetail);
+    FlightDetail addFlightDetail(Long departureId, Long arrivalId, Long aircraftId);
     FlightDetail deleteFlightDetail(Long id);
     List<FlightDetail> getAllFlightDetails();
     FlightDetail getFlightDetailById(Long id);
-
-//    List<FlightDetailDTO> getAll();
-//    FlightDetailDTO add(Long id);
 
     FlightDetailDTO mapToDto(FlightDetail flightDetail);
     FlightDetail mapToEntity(FlightDetailDTO flightDetailDTO);
