@@ -13,9 +13,7 @@ import lombok.Setter;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class RouteDTO {
 
-    //departure (airportDetailDto)
-
-    //arrival (airportDetailDto)
+    private FlightDetailDTO flightDetailDTO;
 
     private Integer duration;
 

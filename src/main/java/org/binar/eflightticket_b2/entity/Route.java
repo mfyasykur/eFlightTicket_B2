@@ -1,11 +1,9 @@
 package org.binar.eflightticket_b2.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,11 +12,20 @@ import javax.persistence.Table;
 @Table(name = "Route")
 public class Route extends BaseEntity {
 
-    //departure (airportDetail)
+    @Builder
+    public Route(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, FlightDetail flightDetail, Integer duration, Integer basePrice) {
+        super(id, createdAt, updatedAt);
+        this.flightDetail = flightDetail;
+        this.duration = duration;
+        this.basePrice = basePrice;
+    }
 
-    //arrival (airportDetail)
+    //flightDetail (FlightDetail)
+    @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST })
+    @JoinColumn(name = "flight_detail_id", referencedColumnName = "id")
+    private FlightDetail flightDetail;
 
     private Integer duration;
 
-    private Integer price;
+    private Integer basePrice;
 }

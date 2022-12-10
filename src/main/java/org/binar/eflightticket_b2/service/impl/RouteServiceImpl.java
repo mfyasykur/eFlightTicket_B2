@@ -1,11 +1,15 @@
 package org.binar.eflightticket_b2.service.impl;
 
 import org.binar.eflightticket_b2.dto.RouteDTO;
+import org.binar.eflightticket_b2.dto.RouteRequest;
+import org.binar.eflightticket_b2.entity.FlightDetail;
 import org.binar.eflightticket_b2.entity.Route;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.RouteRepository;
 import org.binar.eflightticket_b2.service.RouteService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,58 +20,48 @@ import java.util.List;
 @Transactional
 public class RouteServiceImpl implements RouteService {
 
+    private final Logger log = LoggerFactory.getLogger(RouteServiceImpl.class);
+
     private static final String ENTITY = "route";
 
     @Autowired
     private RouteRepository routeRepository;
 
-    //airportDetailRepository
-
     @Override
-    public Route addRoute(Route route) {
+    public Route addRoute(RouteRequest routeRequest) {
 
-        return routeRepository.save(route);
-    }
+        Route result = Route.builder()
+                        .flightDetail(FlightDetail.builder().id(routeRequest.getFlightDetailId()).build())
+                        .duration(routeRequest.getDuration())
+                        .basePrice(routeRequest.getBasePrice())
+                        .build();
 
-    @Override
-    public Route addDepartureArrival(Long departureId, Long arrivalId) {
+        log.info("Has successfully created route data with ID : {}", result.getId());
 
-        return null;    //not complete yet
-    }
-
-    @Override
-    public Route updateRoute(Long id, Route route) {
-
-        Route result = routeRepository.findById(id)
-                .orElseThrow(() -> {
-                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    exception.setApiResponse();
-                    throw exception;
-                });
-
-        result.setDuration(route.getDuration());
-        result.setPrice(route.getPrice());
-        routeRepository.save(result);
-
-        return result;
+        return routeRepository.save(result);
     }
 
     @Override
     public Route deleteRoute(Long id) {
 
-        Route result = routeRepository.findById(id)
+        Route route = routeRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
                     exception.setApiResponse();
                     throw exception;
                 });
-        routeRepository.delete(result);
 
-        return result;
+        log.info("Has successfully deleted route data with ID : {}", route.getId());
+
+        routeRepository.delete(route);
+
+        return route;
     }
 
     @Override
     public List<Route> getAllRoutes() {
+
+        log.info("Has successfully retrieved all routes data");
 
         return routeRepository.findAll();
     }
@@ -75,12 +69,16 @@ public class RouteServiceImpl implements RouteService {
     @Override
     public Route getRouteById(Long id) {
 
-        return routeRepository.findById(id)
+        Route route = routeRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
                     exception.setApiResponse();
                     throw exception;
                 });
+
+        log.info("Has successfully retrieved route data with ID : {}", route.getId());
+
+        return route;
     }
 
     ModelMapper mapper = new ModelMapper();
