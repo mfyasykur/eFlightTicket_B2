@@ -1,6 +1,5 @@
 package org.binar.eflightticket_b2.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +9,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "Aircraft")
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt", "flightDetail"}, allowGetters = true)
 public class Aircraft extends BaseEntity {
 
     private String manufacture;
@@ -32,7 +30,4 @@ public class Aircraft extends BaseEntity {
     @Enumerated
     private SizeType sizeType;
 
-//    @OneToOne(mappedBy = "aircraftDetail", cascade = CascadeType.ALL)
-//    @JsonIgnore
-//    private FlightDetail flightDetail;
 }
