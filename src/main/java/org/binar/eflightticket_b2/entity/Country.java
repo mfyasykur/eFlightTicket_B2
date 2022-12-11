@@ -1,7 +1,5 @@
 package org.binar.eflightticket_b2.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +9,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt", "airportDetail"}, allowGetters = true)
 @Entity
 @Table(name = "Country")
 public class Country extends BaseEntity{
@@ -26,9 +23,5 @@ public class Country extends BaseEntity{
     private String imageUrl;
 
     private String description;
-
-    @OneToOne(mappedBy = "countryDetails", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private AirportDetail airportDetail;
 
 }
