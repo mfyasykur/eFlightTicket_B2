@@ -1,6 +1,5 @@
 package org.binar.eflightticket_b2.service.impl;
 
-import org.binar.eflightticket_b2.dto.AircraftDTO;
 import org.binar.eflightticket_b2.dto.FlightDetailDTO;
 import org.binar.eflightticket_b2.entity.Aircraft;
 import org.binar.eflightticket_b2.entity.AirportDetail;
@@ -45,6 +44,7 @@ public class FlightDetailServiceImpl implements FlightDetailService {
                     exception.setApiResponse();
                     throw exception;
                 });
+        log.info("Departure found with ID : {}", departure.getId());
 
         AirportDetail arrival = airportDetailRepository.findById(arrivalId)
                 .orElseThrow(() -> {
@@ -52,6 +52,7 @@ public class FlightDetailServiceImpl implements FlightDetailService {
                     exception.setApiResponse();
                     throw exception;
                 });
+        log.info("Arrival found with ID : {}", arrival.getId());
 
         Aircraft aircraft = aircraftRepository.findById(aircraftId)
                 .orElseThrow(() -> {
@@ -59,6 +60,7 @@ public class FlightDetailServiceImpl implements FlightDetailService {
                     exception.setApiResponse();
                     throw exception;
                 });
+        log.info("Aircraft found with ID : {}", aircraft.getId());
 
         FlightDetail flightDetail = FlightDetail.builder()
                 .departure(departure)

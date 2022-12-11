@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/flight-detail")
+@RequestMapping("/flightDetail")
 public class FlightDetailController {
 
     @Autowired
