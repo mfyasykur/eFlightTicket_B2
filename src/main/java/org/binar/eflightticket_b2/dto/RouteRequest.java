@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,7 +13,6 @@ import javax.validation.constraints.NotEmpty;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class RouteRequest {
 
-    @NotEmpty
     private Long flightDetailId;
 
     private Integer duration;

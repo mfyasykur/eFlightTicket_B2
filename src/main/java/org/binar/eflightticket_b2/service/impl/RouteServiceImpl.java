@@ -5,6 +5,7 @@ import org.binar.eflightticket_b2.dto.RouteRequest;
 import org.binar.eflightticket_b2.entity.FlightDetail;
 import org.binar.eflightticket_b2.entity.Route;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
+import org.binar.eflightticket_b2.repository.FlightDetailRepository;
 import org.binar.eflightticket_b2.repository.RouteRepository;
 import org.binar.eflightticket_b2.service.RouteService;
 import org.modelmapper.ModelMapper;
@@ -27,18 +28,32 @@ public class RouteServiceImpl implements RouteService {
     @Autowired
     private RouteRepository routeRepository;
 
+    @Autowired
+    private FlightDetailRepository flightDetailRepository;
+
     @Override
     public Route addRoute(RouteRequest routeRequest) {
 
+        FlightDetail flightDetail = flightDetailRepository.findById(routeRequest.getFlightDetailId())
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException("flightDetail", "id", routeRequest.getFlightDetailId());
+                    exception.setApiResponse();
+                    throw exception;
+                });
+
+        log.info("FlightDetail found with ID : {}", flightDetail.getId());
+
         Route result = Route.builder()
-                        .flightDetail(FlightDetail.builder().id(routeRequest.getFlightDetailId()).build())
-                        .duration(routeRequest.getDuration())
-                        .basePrice(routeRequest.getBasePrice())
-                        .build();
+                .flightDetail(flightDetail)
+                .duration(routeRequest.getDuration())
+                .basePrice(routeRequest.getBasePrice())
+                .build();
+
+        routeRepository.save(result);
 
         log.info("Has successfully created route data with ID : {}", result.getId());
 
-        return routeRepository.save(result);
+        return result;
     }
 
     @Override

@@ -38,6 +38,7 @@ public class RouteController {
 
         List<RouteDTO> result = routeService.getAllRoutes().stream().map(route -> routeService.mapToDto(route))
                 .collect(Collectors.toList());
+
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE,
                 "successfully retrieved all routes",

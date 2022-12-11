@@ -1,21 +1,22 @@
 package org.binar.eflightticket_b2.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(value = {"id"}, allowGetters = true)
 public class RouteDTO {
 
-    private FlightDetailDTO flightDetailDTO;
+    private Long id;
+
+    private FlightDetailDTO flightDetail;
 
     private Integer duration;
 
-    private Integer price;
+    private Integer basePrice;
 }
