@@ -1,10 +1,10 @@
 package org.binar.eflightticket_b2.service.impl;
 
-import org.binar.eflightticket_b2.dto.ScheduleDTO;
-import org.binar.eflightticket_b2.dto.ScheduleRequest;
+import org.binar.eflightticket_b2.dto.*;
 import org.binar.eflightticket_b2.entity.Route;
 import org.binar.eflightticket_b2.entity.Schedule;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
+import org.binar.eflightticket_b2.repository.RouteRepository;
 import org.binar.eflightticket_b2.repository.ScheduleRepository;
 import org.binar.eflightticket_b2.service.ScheduleService;
 import org.modelmapper.ModelMapper;
@@ -27,21 +27,35 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
+    @Autowired
+    private RouteRepository routeRepository;
+
     @Override
     public Schedule addSchedule(ScheduleRequest scheduleRequest) {
+
+        Route route = routeRepository.findById(scheduleRequest.getRouteId())
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException("route", "id", scheduleRequest.getRouteId());
+                    exception.setApiResponse();
+                    throw exception;
+                });
+
+        log.info("Route found with ID : {}", route.getId());
 
         Schedule result = Schedule.builder()
                 .departureDate(scheduleRequest.getDepartureDate())
                 .arrivalDate(scheduleRequest.getArrivalDate())
                 .departureTime(scheduleRequest.getDepartureTime())
-                .departureTime(scheduleRequest.getDepartureTime())
-                .route(Route.builder().id(scheduleRequest.getRouteId()).build())
+                .arrivalTime(scheduleRequest.getArrivalTime())
+                .route(route)
                 .netPrice(scheduleRequest.getNetPrice())
                 .build();
 
+        scheduleRepository.save(result);
+
         log.info("Has successfully created schedule data with ID : {}", result.getId());
 
-        return scheduleRepository.save(result);
+        return result;
     }
 
     @Override

@@ -1,10 +1,8 @@
 package org.binar.eflightticket_b2.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,7 +12,10 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(value = {"id"}, allowGetters = true)
 public class ScheduleDTO {
+
+    private Long id;
 
     private LocalDate departureDate;
 
@@ -24,7 +25,7 @@ public class ScheduleDTO {
 
     private LocalTime arrivalTime;
 
-    private RouteDTO routeDTO;
+    private RouteDTO route;
 
     private Integer netPrice;
 

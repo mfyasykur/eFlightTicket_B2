@@ -4,26 +4,16 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "Schedule")
 public class Schedule extends BaseEntity {
-
-    @Builder
-    public Schedule(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDate departureDate, LocalDate arrivalDate, LocalTime departureTime, LocalTime arrivalTime, Route route, Integer netPrice) {
-        super(id, createdAt, updatedAt);
-        this.departureDate = departureDate;
-        this.arrivalDate = arrivalDate;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
-        this.route = route;
-        this.netPrice = netPrice;
-    }
 
     private LocalDate departureDate;
 

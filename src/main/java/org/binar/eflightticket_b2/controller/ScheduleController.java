@@ -38,6 +38,7 @@ public class ScheduleController {
 
         List<ScheduleDTO> result = scheduleService.getAllSchedules().stream().map(schedule -> scheduleService.mapToDto(schedule))
                 .collect(Collectors.toList());
+
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE,
                 "successfully retrieved all schedules",
