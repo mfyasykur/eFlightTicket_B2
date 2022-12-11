@@ -2,17 +2,15 @@ package org.binar.eflightticket_b2.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.binar.eflightticket_b2.entity.Aircraft;
 
 @Getter
 @Setter
 @AllArgsConstructor
-@Builder
 @NoArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-//@JsonIgnoreProperties(value = {"id"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"id"}, allowGetters = true)
 public class AircraftDTO {
 
     private Long id;
