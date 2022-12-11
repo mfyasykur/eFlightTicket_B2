@@ -9,15 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
-import static org.springframework.http.HttpStatus.CREATED;
+import java.io.IOException;
+
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("users")
 public class UserController {
 
     public UserController(UserService userService) {
@@ -27,46 +28,48 @@ public class UserController {
     private final UserService userService;
     private final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    @PostMapping("/signup")
-    public ResponseEntity<ApiResponse> addUser(@Valid @RequestBody UsersDTO user){
-        Users users = userService.mapToEntity(user);
-        Users savedUser = userService.addUser(users);
+    @DeleteMapping("users/delete/{id}")
+    public ResponseEntity<ApiResponse> deleteUser(@PathVariable ("id") @NotBlank Long id){
+        Users deletedUser = userService.deleteUser(id);
         ApiResponse apiResponse = new ApiResponse(
-                Boolean.TRUE, "Successfully added user data with id : " +savedUser.getId());
-        log.info("successfully added user data");
-        return new ResponseEntity<>(apiResponse, CREATED);
-    }
-
-    @DeleteMapping("/delete/{username}")
-    public ResponseEntity<ApiResponse> deleteUser(@PathVariable ("username") @NotBlank String username){
-        Users deletedUser = userService.deleteUser(username);
-        ApiResponse apiResponse = new ApiResponse(
-                Boolean.TRUE, "Successfully delete user data with username : " +deletedUser.getUsername());
-        log.info("successfully deleted user data  with username {} ", username);
+                Boolean.TRUE, "Successfully delete user data with id : " +deletedUser.getId());
+        log.info("successfully deleted user data  with id {} ", id);
         return new ResponseEntity<>(apiResponse, OK);
     }
 
-    @GetMapping("/get/{username}")
-    public ResponseEntity<ApiResponse> getUserByUsername(@PathVariable ("username") @NotBlank String username){
-        Users user = userService.getUserByUsername(username);
+    @GetMapping("users/get/{id}")
+    public ResponseEntity<ApiResponse> getUserById(@PathVariable ("id") @NotBlank Long id){
+        Users user = userService.getUserById(id);
         UsersDTO userByUsername = userService.mapToDTO(user);
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE
-                , "Successfully retrieve user data with username : " +userByUsername.getUsername()
+                , "Successfully retrieve user data with id : " +id
                 , userByUsername);
-        log.info("successfully retrieve user data with username {} ", userByUsername.getUsername());
+        log.info("successfully retrieve user data with id {} ", id);
         return new ResponseEntity<>(apiResponse, OK);
     }
 
-    @PutMapping("/update")
+    @PutMapping("users/update")
     public ResponseEntity<ApiResponse> updateByUsername(@Valid @RequestBody UserDetailRequest newUsers,
-                                                        @RequestParam @NotBlank String username){
+                                                        @RequestParam @NotBlank Long id){
         Users users = userService.mapToEntity(newUsers);
-        Users user = userService.updateUser(users, username);
+        Users user = userService.updateUser(users, id);
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE
-                , "Successfully updated data user with username : " +user.getUsername());
-        log.info("Successfully updated data user with username {} ", user.getUsername());
+                , "Successfully updated data user with id : " +user.getId());
+        log.info("Successfully updated data user with id {} ", user.getId());
+        return new ResponseEntity<>(apiResponse, OK);
+    }
+
+    @PutMapping("users/upload")
+    public ResponseEntity<ApiResponse> uploadImage(@Valid @RequestParam("id") Long id,
+                                                   @RequestParam("file") MultipartFile multipartFile) throws IOException {
+        Users saveUser = userService.uploadImage(multipartFile, id);
+        UsersDTO usersDTO = userService.mapToDTO(saveUser);
+        ApiResponse apiResponse = new ApiResponse(
+                Boolean.TRUE
+                , "Successfully uploaded profile picture user with id : " +saveUser.getId(), usersDTO);
+        log.info("Successfully uploaded profile picture user with id {} ", saveUser.getId());
         return new ResponseEntity<>(apiResponse, OK);
     }
 

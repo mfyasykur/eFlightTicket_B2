@@ -1,9 +1,11 @@
 package org.binar.eflightticket_b2.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,7 +15,6 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 public class Users extends BaseEntity{
 
-    private String username;
     private String email;
     private String password;
 
@@ -25,6 +26,16 @@ public class Users extends BaseEntity{
     private String phoneNumber;
     @Column(name = "photo_profile")
     private String photoProfile;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id")
+    )
+    @JsonIgnore
+    private List<Role> roles = new LinkedList<>();
+
 
 
 }
