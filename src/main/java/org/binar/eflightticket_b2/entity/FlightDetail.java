@@ -36,4 +36,8 @@ public class FlightDetail extends BaseEntity {
     @JoinColumn(name = "aircraft_id", referencedColumnName = "id")
     private Aircraft aircraftDetail;
 
+    //mapped by
+    @OneToOne(mappedBy = "flightDetail", cascade = CascadeType.ALL)
+    private Route route;
+
 }
