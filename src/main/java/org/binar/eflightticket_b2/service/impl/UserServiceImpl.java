@@ -1,6 +1,8 @@
 package org.binar.eflightticket_b2.service.impl;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.binar.eflightticket_b2.dto.UserDetailRequest;
 import org.binar.eflightticket_b2.dto.UsersDTO;
 import org.binar.eflightticket_b2.entity.Role;
@@ -20,7 +22,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -33,16 +38,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private ModelMapper mapper;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleRepository roleRepository;
+    private final Cloudinary cloudinary;
 
     private static final String ROLE_USERS = "ROLE_USERS";
     private static final String ROLE_ADMIN = "ROLE_ADMIN";
     private static final String INFO = "INFO  : ";
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper mapper, BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper mapper,
+                           BCryptPasswordEncoder bCryptPasswordEncoder,
+                           RoleRepository roleRepository, Cloudinary cloudinary) {
         this.userRepository = userRepository;
         this.mapper = mapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.roleRepository = roleRepository;
+        this.cloudinary = cloudinary;
     }
 
     @Override
@@ -95,6 +104,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         String encryptedPassword = bCryptPasswordEncoder.encode(users.getPassword());
         log.info("Info : Password has been encrypted" );
+        users.setPhotoProfile(
+                "https://res.cloudinary.com/eflightticketing-b2/image/upload/v1670679456/defaultphoto_zjcun3.jpg");
         users.setPassword(encryptedPassword);
         users.setRoles(roles);
         log.info("successfully persist data user to database");
@@ -159,6 +170,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userRepository.save(retrievedUser);
         }
         return retrievedUser;
+    }
+
+    @Override
+    public Users uploadImage(MultipartFile multipartFile, Long id) throws IOException {
+        Users users = userRepository.findUsersById(id).orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("id", id.toString(), String.class);
+            ex.setApiResponse();
+            log.info(ex.getMessageMap().get("error"));
+            throw ex;
+        });
+        String fileExtension = Objects.requireNonNull(multipartFile.getContentType()).split("/")[0];
+        if(!fileExtension.equalsIgnoreCase("image")) {
+            log.info("image extension not supported");
+            HashMap<String, String> errorMessage = new HashMap<>();
+            errorMessage.put(ERROR, "check file extension, should jpg, png or jpeg");
+            throw new BadRequestException(errorMessage);
+        }
+        File file = multipartToFile(multipartFile, multipartFile.getName());
+        Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+        users.setPhotoProfile(uploadResult.get("url").toString());
+        return users;
+    }
+
+    public static File multipartToFile(MultipartFile multipart, String fileName) throws IllegalStateException, IOException {
+        File convertFile = new File(System.getProperty("java.io.tmpdir")+"/"+fileName);
+        multipart.transferTo(convertFile);
+        return convertFile;
     }
 
     @Override

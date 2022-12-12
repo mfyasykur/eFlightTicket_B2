@@ -9,9 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+
+import java.io.IOException;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -54,7 +57,19 @@ public class UserController {
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE
                 , "Successfully updated data user with id : " +user.getId());
-        log.info("Successfully updated data user with username {} ", user.getId());
+        log.info("Successfully updated data user with id {} ", user.getId());
+        return new ResponseEntity<>(apiResponse, OK);
+    }
+
+    @PutMapping("users/upload")
+    public ResponseEntity<ApiResponse> uploadImage(@Valid @RequestParam("id") Long id,
+                                                   @RequestParam("file") MultipartFile multipartFile) throws IOException {
+        Users saveUser = userService.uploadImage(multipartFile, id);
+        UsersDTO usersDTO = userService.mapToDTO(saveUser);
+        ApiResponse apiResponse = new ApiResponse(
+                Boolean.TRUE
+                , "Successfully uploaded profile picture user with id : " +saveUser.getId(), usersDTO);
+        log.info("Successfully uploaded profile picture user with id {} ", saveUser.getId());
         return new ResponseEntity<>(apiResponse, OK);
     }
 
