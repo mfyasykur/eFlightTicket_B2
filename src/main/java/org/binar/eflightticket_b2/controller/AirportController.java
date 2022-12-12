@@ -54,7 +54,7 @@ public class AirportController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse> findById(@PathVariable("id") Long id){
 
         Airport airport = airportService.findById(id);
@@ -67,7 +67,7 @@ public class AirportController {
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
-    @GetMapping("/getByCode/{airportCode}")
+    @GetMapping("/get/code/{airportCode}")
     public ResponseEntity<ApiResponse> findByAirportCode(@PathVariable("airportCode") String airportCode) {
         Airport airport = airportService.findByAirportCode(airportCode);
         AirportDTO result = airportService.mapToDto(airport);

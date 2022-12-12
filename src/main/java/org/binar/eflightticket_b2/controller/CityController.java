@@ -58,7 +58,7 @@ public class CityController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse> findById(@PathVariable("id") Long id){
 
         City city = cityService.findById(id);
@@ -71,7 +71,7 @@ public class CityController {
 
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
-    @GetMapping("/getByCode/{cityCode}")
+    @GetMapping("/get/code/{cityCode}")
     public ResponseEntity<ApiResponse> findByCityCode(@PathVariable("cityCode") String cityCode) {
         City city = cityService.findByCityCode(cityCode);
         CityDTO result = cityService.mapToDto(city);

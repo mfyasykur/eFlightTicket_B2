@@ -14,12 +14,16 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         Server stagingUrl = new Server();
-        stagingUrl.setUrl("https://eflightticketb2-staging.up.railway.app/");
+        stagingUrl.setUrl("https://eflightticketb2-staging.up.railway.app/api");
         stagingUrl.setDescription("staging server");
+
+        Server localHost = new Server();
+        localHost.setUrl("http://localhost:8080/api");
+        localHost.setDescription("local server");
         return new OpenAPI()
                 .info(new Info()
                         .title("B2 E-Flight Ticket Reservation REST API")
                         .description("Under production :: not release yet")
-                ).servers(List.of(stagingUrl));
+                ).servers(List.of(stagingUrl, localHost));
     }
 }

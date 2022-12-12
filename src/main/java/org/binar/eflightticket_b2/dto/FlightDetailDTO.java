@@ -6,14 +6,17 @@ import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(value = {"id"}, allowGetters = true)
-public class CityDTO{
-    Long id;
-    String cityName;
-    String cityCode;
-    String imageUrl;
-    String description;
+public class FlightDetailDTO {
+
+    private Long id;
+
+    private AirportDetailDTO departure;
+
+    private AirportDetailDTO arrival;
+
+    private AircraftDTO aircraftDetail;
 }

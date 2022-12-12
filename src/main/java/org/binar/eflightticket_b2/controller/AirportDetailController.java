@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/airportDetailDetail")
+@RequestMapping("/airportDetail")
 public class AirportDetailController {
     @Autowired
     AirportDetailService airportDetailService;
@@ -30,18 +30,6 @@ public class AirportDetailController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-//    @PutMapping("/update/{id}")
-//    public ResponseEntity<ApiResponse> update(@PathVariable Long id, @RequestBody AirportDetailDTO airportDetailDTO){
-//        AirportDetail request = airportDetailService.mapToEntity(airportDetailDTO);
-//        AirportDetail airportDetail = airportDetailService.update(id, request);
-//        ApiResponse apiResponse = new ApiResponse(
-//                Boolean.TRUE,
-//                "Successfully updated airportDetail with id : " + airportDetail.getId()
-//        );
-//
-//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-//    }
-
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponse> findAll(){
         List<AirportDetailDTO> result = airportDetailService.findAll().stream().map(airportDetail -> airportDetailService.mapToDto(airportDetail))
@@ -53,7 +41,7 @@ public class AirportDetailController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse> findById(@PathVariable("id") Long id){
 
         AirportDetail airportDetail = airportDetailService.findById(id);

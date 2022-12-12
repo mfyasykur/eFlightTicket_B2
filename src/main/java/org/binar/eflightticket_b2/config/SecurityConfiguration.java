@@ -58,12 +58,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         });
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/auth/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/auth/**").permitAll();
         http.authorizeRequests()
-                .antMatchers(HttpMethod.DELETE, "/users/delete/**")
+                .antMatchers(HttpMethod.DELETE, "/api/users/delete/**")
                 .hasAnyAuthority("ROLE_ADMIN");
         http.addFilterBefore(new AuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.cors().and();
     }
     
 }
