@@ -23,7 +23,4 @@ public class City extends BaseEntity{
 
     private String description;
 
-    @OneToOne(mappedBy = "cityDetails", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private AirportDetail airportDetail;
 }
