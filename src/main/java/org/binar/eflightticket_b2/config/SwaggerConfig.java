@@ -14,7 +14,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         Server stagingUrl = new Server();
-        stagingUrl.setUrl("https://eflightticketb2-staging.up.railway.app/");
+        stagingUrl.setUrl("https://eflightticketb2-staging.up.railway.app/api");
         stagingUrl.setDescription("staging server");
         return new OpenAPI()
                 .info(new Info()
