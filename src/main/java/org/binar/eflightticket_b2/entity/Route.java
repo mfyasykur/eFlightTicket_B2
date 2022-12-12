@@ -3,6 +3,7 @@ package org.binar.eflightticket_b2.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,4 +22,5 @@ public class Route extends BaseEntity {
     private Integer duration;
 
     private Integer basePrice;
+
 }
