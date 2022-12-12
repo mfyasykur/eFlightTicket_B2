@@ -30,8 +30,4 @@ public class Aircraft extends BaseEntity {
     @Enumerated
     private SizeType sizeType;
 
-    //mapped by
-//    @OneToOne(mappedBy = "aircraftDetail", cascade = CascadeType.ALL)
-//    private FlightDetail flightDetail;
-
 }
