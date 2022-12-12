@@ -48,6 +48,7 @@ public class AirportDetailServiceImpl implements AirportDetailService {
                     exception.setApiResponse();
                     throw exception;
                 });
+        log.info("Airport found with ID : {}", airport.getId());
 
         City city = cityRepository.findById(cityId)
                 .orElseThrow(() -> {
@@ -55,6 +56,7 @@ public class AirportDetailServiceImpl implements AirportDetailService {
                     exception.setApiResponse();
                     throw exception;
                 });
+        log.info("City found with ID : {}", city.getId());
 
         Country country = countryRepository.findById(countryId)
                 .orElseThrow(() -> {
@@ -62,6 +64,7 @@ public class AirportDetailServiceImpl implements AirportDetailService {
                     exception.setApiResponse();
                     throw exception;
                 });
+        log.info("Country found with ID : {}", country.getId());
 
         AirportDetail airportDetail = AirportDetail.builder()
                 .airportDetails(airport)
@@ -69,23 +72,12 @@ public class AirportDetailServiceImpl implements AirportDetailService {
                 .countryDetails(country)
                 .build();
 
-        return airportDetailRepository.save(airportDetail);
-    }
+        airportDetailRepository.save(airportDetail);
 
-//    @Override
-//    public AirportDetail update(Long id, AirportDetail airportDetail) {
-//        AirportDetail result = airportDetailRepository.findById(id)
-//                .orElseThrow(() -> {
-//                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-//                    log.info("Error");
-//                    exception.setApiResponse();
-//                    throw exception;
-//                });
-//
-//        airportDetailRepository.save(result);
-//        log.info("Has successfully updated airport data!");
-//        return result;
-//    }
+        log.info("Has successfully created airportDetail data with ID : {}", airportDetail.getId());
+
+        return airportDetail;
+    }
 
     @Override
     public AirportDetail delete(Long id) {
@@ -96,14 +88,17 @@ public class AirportDetailServiceImpl implements AirportDetailService {
                     exception.setApiResponse();
                     throw exception;
                 });
+        log.info("AirportDetail found with ID : {}", result.getId());
+
         airportDetailRepository.delete(result);
-        log.info("Has successfully deleted airport data!");
+        log.info("Has successfully deleted airportDetail data!");
+
         return result;
     }
 
     @Override
     public List<AirportDetail> findAll() {
-        log.info("Has successfully found all airport data!");
+        log.info("Has successfully found all airportDetail data!");
         return airportDetailRepository.findAll();
     }
 
@@ -116,22 +111,9 @@ public class AirportDetailServiceImpl implements AirportDetailService {
                     exception.setApiResponse();
                     throw exception;
                 });
-        log.info("Has successfully found airport data from id " + id);
+        log.info("Has successfully found airportDetail data from id " + id);
         return airportDetail;
     }
-
-//    @Override
-//    public AirportDetail findByAirportCode(String airportCode) {
-//        Airport byAirportCode = airportRepository.findByAirportCode(airportCode);
-//        if (byAirportCode != null) {
-//            log.info("Has successfully found country data from code " + airportCode);
-//            return byAirportCode;
-//        }
-//        ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "airportCode", airportCode);
-//        log.info("Error");
-//        exception.setApiResponse();
-//        throw exception;
-//    }
 
     ModelMapper mapper = new ModelMapper();
 

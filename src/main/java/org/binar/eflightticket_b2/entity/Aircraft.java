@@ -1,12 +1,12 @@
 package org.binar.eflightticket_b2.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "Aircraft")
 public class Aircraft extends BaseEntity {
@@ -29,4 +29,5 @@ public class Aircraft extends BaseEntity {
 
     @Enumerated
     private SizeType sizeType;
+
 }

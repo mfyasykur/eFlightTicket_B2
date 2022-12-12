@@ -14,15 +14,15 @@ import javax.persistence.*;
 public class AirportDetail extends BaseEntity{
 
     @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST })
-    @JoinColumn(name = "country_id")
+    @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country countryDetails;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST })
-    @JoinColumn(name = "city_id")
+    @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City cityDetails;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST })
-    @JoinColumn(name = "airport_id")
+    @JoinColumn(name = "airport_id", referencedColumnName = "id")
     private Airport airportDetails;
 
 }
