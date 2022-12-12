@@ -1,6 +1,5 @@
 package org.binar.eflightticket_b2.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +19,4 @@ public class Airport extends BaseEntity {
     @Column(name = "airport_code")
     private String airportCode;
 
-    @OneToOne(mappedBy = "airportDetails", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private AirportDetail airportDetail;
 }
