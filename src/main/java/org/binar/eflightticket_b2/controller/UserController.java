@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @PutMapping("users/update")
-    public ResponseEntity<ApiResponse> updateByUsername(@Valid @RequestBody UserDetailRequest newUsers,
+    public ResponseEntity<ApiResponse> updateByEmail(@Valid @RequestBody UserDetailRequest newUsers,
                                                         @RequestParam @NotBlank Long id){
         Users users = userService.mapToEntity(newUsers);
         Users user = userService.updateUser(users, id);
