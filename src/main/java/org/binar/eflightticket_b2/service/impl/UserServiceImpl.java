@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
