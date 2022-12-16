@@ -15,10 +15,6 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class UserDetailRequest {
 
-    @NotEmpty(message = "username shouldn't be empty")
-    @Size(min = 6,  max = 15, message = "username length must be minimum 6 and maximum 15 character")
-    private String username;
-
     @NotEmpty(message = "email address is required ")
     @Email(message = "should be valid email form")
     private String email;

@@ -5,12 +5,14 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.binar.eflightticket_b2.dto.UserDetailRequest;
 import org.binar.eflightticket_b2.dto.UsersDTO;
+import org.binar.eflightticket_b2.entity.Notification;
 import org.binar.eflightticket_b2.entity.Role;
 import org.binar.eflightticket_b2.entity.Users;
 import org.binar.eflightticket_b2.exception.BadRequestException;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.RoleRepository;
 import org.binar.eflightticket_b2.repository.UserRepository;
+import org.binar.eflightticket_b2.service.NotificationService;
 import org.binar.eflightticket_b2.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -29,7 +31,6 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
@@ -39,6 +40,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleRepository roleRepository;
     private final Cloudinary cloudinary;
+    private final NotificationService notificationService;
 
     private static final String ROLE_USERS = "ROLE_USERS";
     private static final String ROLE_ADMIN = "ROLE_ADMIN";
@@ -46,12 +48,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     public UserServiceImpl(UserRepository userRepository, ModelMapper mapper,
                            BCryptPasswordEncoder bCryptPasswordEncoder,
-                           RoleRepository roleRepository, Cloudinary cloudinary) {
+                           RoleRepository roleRepository, Cloudinary cloudinary, NotificationService notificationService) {
         this.userRepository = userRepository;
         this.mapper = mapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.roleRepository = roleRepository;
         this.cloudinary = cloudinary;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -108,6 +111,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 "https://res.cloudinary.com/eflightticketing-b2/image/upload/v1670679456/defaultphoto_zjcun3.jpg");
         users.setPassword(encryptedPassword);
         users.setRoles(roles);
+        String msg = String.format("%s %s jangan lupa update photo profile mu di halaman profile yaa ", users
+                .getFirstName(), users.getLastName());
+        Notification notification = Notification.builder().message(msg).isRead(Boolean.FALSE).users(users).build();
+        notificationService.addNotification(notification);
         log.info("successfully persist data user to database");
         return userRepository.save(users);
     }
