@@ -2,6 +2,7 @@ package org.binar.eflightticket_b2.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 public class Booking extends BaseEntity {
 
     @ManyToOne
