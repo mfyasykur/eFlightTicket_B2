@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,6 +36,11 @@ public class Users extends BaseEntity{
     )
     @JsonIgnore
     private List<Role> roles = new LinkedList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private List<Notification> notificationList = new ArrayList<>();
+
 
 
 
