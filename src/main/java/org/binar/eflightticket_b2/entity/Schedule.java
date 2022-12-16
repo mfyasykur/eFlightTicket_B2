@@ -1,10 +1,13 @@
 package org.binar.eflightticket_b2.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,4 +32,9 @@ public class Schedule extends BaseEntity {
     private Route route;
 
     private Integer netPrice;
+
+    @JsonIgnore
+    @OneToMany
+    private List<Booking> bookingList = new ArrayList<>();
+
 }
