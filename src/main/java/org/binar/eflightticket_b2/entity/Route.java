@@ -3,7 +3,6 @@ package org.binar.eflightticket_b2.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
@@ -14,10 +13,15 @@ import java.util.List;
 @Table(name = "Route")
 public class Route extends BaseEntity {
 
-    //flightDetail (FlightDetail)
+    //departure (AirportDetail)
     @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST })
-    @JoinColumn(name = "flight_detail_id", referencedColumnName = "id")
-    private FlightDetail flightDetail;
+    @JoinColumn(name = "departure_id", referencedColumnName = "id")
+    private AirportDetail departure;
+
+    //arrival (AirportDetail)
+    @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST })
+    @JoinColumn(name = "arrival_id", referencedColumnName = "id")
+    private AirportDetail arrival;
 
     private Integer duration;
 
