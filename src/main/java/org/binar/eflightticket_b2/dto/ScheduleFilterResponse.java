@@ -1,10 +1,8 @@
 package org.binar.eflightticket_b2.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import org.binar.eflightticket_b2.entity.Schedule;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -13,11 +11,9 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(value = {"id", "hibernateLazyInitializer", "handler"}, allowGetters = true)
-public class ScheduleDTO {
-
-    private Long id;
+public class ScheduleFilterResponse {
 
     private LocalDate departureDate;
 
@@ -29,12 +25,17 @@ public class ScheduleDTO {
     @JsonFormat(pattern="HH:mm:ss")
     private LocalTime arrivalTime;
 
-    private RouteDTO route;
+    private String departureCityName;
+
+    private String arrivalCityName;
+
+    private String departureAirportName;
+
+    private String arrivalAirportName;
+
+    private String departureAirportCode;
+
+    private String arrivalAirportCode;
 
     private Integer netPrice;
-
-    private Schedule.FlightClass flightClass;
-
-    private FlightDetailDTO flightDetail;
-
 }

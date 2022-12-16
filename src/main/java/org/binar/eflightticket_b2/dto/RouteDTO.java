@@ -14,7 +14,9 @@ public class RouteDTO {
 
     private Long id;
 
-    private FlightDetailDTO flightDetail;
+    private AirportDetailDTO departure;
+
+    private AirportDetailDTO arrival;
 
     private Integer duration;
 
