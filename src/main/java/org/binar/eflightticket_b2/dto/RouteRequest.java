@@ -13,7 +13,9 @@ import lombok.Setter;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class RouteRequest {
 
-    private Long flightDetailId;
+    private Long departureId;
+
+    private Long arrivalId;
 
     private Integer duration;
 
