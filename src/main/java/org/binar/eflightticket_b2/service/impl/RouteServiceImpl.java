@@ -2,10 +2,10 @@ package org.binar.eflightticket_b2.service.impl;
 
 import org.binar.eflightticket_b2.dto.RouteDTO;
 import org.binar.eflightticket_b2.dto.RouteRequest;
-import org.binar.eflightticket_b2.entity.FlightDetail;
+import org.binar.eflightticket_b2.entity.AirportDetail;
 import org.binar.eflightticket_b2.entity.Route;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
-import org.binar.eflightticket_b2.repository.FlightDetailRepository;
+import org.binar.eflightticket_b2.repository.AirportDetailRepository;
 import org.binar.eflightticket_b2.repository.RouteRepository;
 import org.binar.eflightticket_b2.service.RouteService;
 import org.modelmapper.ModelMapper;
@@ -29,22 +29,32 @@ public class RouteServiceImpl implements RouteService {
     private RouteRepository routeRepository;
 
     @Autowired
-    private FlightDetailRepository flightDetailRepository;
+    private AirportDetailRepository airportDetailRepository;
 
     @Override
     public Route addRoute(RouteRequest routeRequest) {
 
-        FlightDetail flightDetail = flightDetailRepository.findById(routeRequest.getFlightDetailId())
+        AirportDetail departure = airportDetailRepository.findById(routeRequest.getDepartureId())
                 .orElseThrow(() -> {
-                    ResourceNotFoundException exception = new ResourceNotFoundException("flightDetail", "id", routeRequest.getFlightDetailId());
+                    ResourceNotFoundException exception = new ResourceNotFoundException("departure", "id", routeRequest.getDepartureId());
                     exception.setApiResponse();
                     throw exception;
                 });
 
-        log.info("FlightDetail found with ID : {}", flightDetail.getId());
+        log.info("Departure found with ID : {}", departure.getId());
+
+        AirportDetail arrival = airportDetailRepository.findById(routeRequest.getArrivalId())
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException("arrival", "id", routeRequest.getArrivalId());
+                    exception.setApiResponse();
+                    throw exception;
+                });
+
+        log.info("Arrival found with ID : {}", arrival.getId());
 
         Route result = Route.builder()
-                .flightDetail(flightDetail)
+                .departure(departure)
+                .arrival(arrival)
                 .duration(routeRequest.getDuration())
                 .basePrice(routeRequest.getBasePrice())
                 .build();
