@@ -1,9 +1,6 @@
 package org.binar.eflightticket_b2.controller;
 
-import org.binar.eflightticket_b2.dto.BookingRequest;
-import org.binar.eflightticket_b2.dto.BookingResponse;
-import org.binar.eflightticket_b2.dto.PassengerRequest;
-import org.binar.eflightticket_b2.dto.ScheduleDTO;
+import org.binar.eflightticket_b2.dto.*;
 import org.binar.eflightticket_b2.entity.Booking;
 import org.binar.eflightticket_b2.payload.ApiResponse;
 import org.binar.eflightticket_b2.service.BookingService;
@@ -13,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -46,6 +44,20 @@ public class BoookingController {
                 .schedule(scheduleDTO)
                 .dueValid(booking.getDueValid())
                 .passengers(collectedPassengerRequests)
+                .build();
+        ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponse);
+        return new ResponseEntity<>(success, HttpStatus.OK);
+    }
+
+    @PostMapping("/booking/payment")
+    public ResponseEntity<ApiResponse> payBooking(@Valid @RequestBody PaymentDTO paymentDTO){
+        Booking paymentBooking = bookingService.payment(paymentDTO);
+        BookingResponse bookingResponse = BookingResponse.builder()
+                .id(paymentBooking.getId())
+                .bookingCode(paymentBooking.getBookingCode())
+                .userId(paymentBooking.getUsers().getId())
+                .isSuccess(paymentBooking.getIsSuccess())
+                .isValid(paymentBooking.getIsValid())
                 .build();
         ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponse);
         return new ResponseEntity<>(success, HttpStatus.OK);
