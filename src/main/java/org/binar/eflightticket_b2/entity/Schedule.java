@@ -53,7 +53,7 @@ public class Schedule extends BaseEntity {
 //    }
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany (mappedBy = "schedule",cascade = CascadeType.ALL)
     private List<Booking> bookingList = new ArrayList<>();
 
 
