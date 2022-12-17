@@ -3,9 +3,7 @@ package org.binar.eflightticket_b2.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -21,7 +19,8 @@ public class Passenger extends BaseEntity {
     @Column(name = "age_category")
     private AGE ageCategory;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "booking_id", insertable = false, updatable = false)
     private Booking booking;
 
 }
