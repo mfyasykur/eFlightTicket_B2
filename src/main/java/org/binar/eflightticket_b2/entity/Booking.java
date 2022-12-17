@@ -1,16 +1,8 @@
 package org.binar.eflightticket_b2.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import java.time.LocalDate;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,18 +11,20 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Booking extends BaseEntity {
 
-    @ManyToOne
-    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
     private Users users;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Schedule schedule;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "booking_id")
     @Column(name = "passenger")
-    @JsonIgnore
     private List<Passenger> passengersList = new ArrayList<>();
 
     @Column(name = "is_success")
@@ -42,7 +36,7 @@ public class Booking extends BaseEntity {
     @Column(name = "is_valid")
     private Boolean isValid;
 
-    @Column(name = "payement_method")
+    @Column(name = "payment_method")
     private String paymentMethod;
 
     @Column(name = "booking_code")
