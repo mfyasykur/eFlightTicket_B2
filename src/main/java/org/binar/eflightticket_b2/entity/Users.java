@@ -42,7 +42,7 @@ public class Users extends BaseEntity{
     private List<Notification> notificationList = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Booking> bookingList = new ArrayList<>();
 
 
