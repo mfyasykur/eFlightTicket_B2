@@ -8,10 +8,7 @@ import org.binar.eflightticket_b2.service.PassengerService;
 import org.binar.eflightticket_b2.service.ScheduleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -64,7 +61,7 @@ public class BoookingController {
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
 
-    @PostMapping("/booking/successhistory")
+    @GetMapping("/booking/successhistory")
     public ResponseEntity<ApiResponse> getSuccessBookingHistory(@Valid @RequestParam Long userId){
         List<Booking> bookings = bookingService.successBookingHistory(userId, true);
         List<BookingResponse> bookingResponses = bookings.stream().map(booking -> {
@@ -84,7 +81,7 @@ public class BoookingController {
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
 
-    @PostMapping("/booking/allhistory")
+    @GetMapping("/booking/allhistory")
     public ResponseEntity<ApiResponse> getAllBookingHistory(@Valid @RequestParam Long userId){
         List<Booking> bookings = bookingService.getAllBookingHistory(userId);
         List<BookingResponse> bookingResponses = bookings.stream().map(booking -> {
