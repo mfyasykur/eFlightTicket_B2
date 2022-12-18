@@ -1,5 +1,6 @@
 package org.binar.eflightticket_b2.service.impl;
 
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.binar.eflightticket_b2.dto.BookingRequest;
 import org.binar.eflightticket_b2.dto.PaymentDTO;
@@ -50,6 +51,10 @@ public class BookingServiceImpl implements BookingService {
         String bookingCode = RandomStringUtils.randomAlphanumeric(7);
         List<Passenger> mappedPassengers = bookingRequest.getPassengerRequests().stream().map(passengerService::mapToEntity).toList();
         List<Passenger> passengers = passengerRepository.saveAllAndFlush(mappedPassengers);
+        Integer schedulePrice = scheduleById.getNetPrice();
+        Integer passengerPrice = schedulePrice * passengers.size();
+        Integer baggagePrice = passengers.stream().mapToInt(value -> value.getBaggage().price).sum();
+        Integer finalPrice = passengerPrice + baggagePrice;
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime dueDate = now.plusHours(2);
         Booking booking = Booking.builder()
@@ -59,6 +64,7 @@ public class BookingServiceImpl implements BookingService {
                 .isSuccess(Boolean.FALSE)
                 .dueValid(dueDate)
                 .passengersList(passengers)
+                .finalPrice(finalPrice)
                 .build();
         return bookingRepository.save(booking);
     }
