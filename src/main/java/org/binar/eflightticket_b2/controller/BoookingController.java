@@ -63,9 +63,29 @@ public class BoookingController {
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
 
-    @PostMapping("/booking/history")
+    @PostMapping("/booking/successhistory")
     public ResponseEntity<ApiResponse> getSuccessBookingHistory(@Valid @RequestParam Long userId){
         List<Booking> bookings = bookingService.successBookingHistory(userId, true);
+        List<BookingResponse> bookingResponses = bookings.stream().map(booking -> {
+            ScheduleDTO scheduleDTO = scheduleService.mapToDto(booking.getSchedule());
+            List<PassengerRequest> collectedPassengerRequests = booking.getPassengersList().stream().map(passengerService::mapToDTO).toList();
+            return BookingResponse.builder()
+                    .id(booking.getId())
+                    .bookingCode(booking.getBookingCode())
+                    .userId(booking.getUsers().getId())
+                    .isSuccess(booking.getIsSuccess())
+                    .schedule(scheduleDTO)
+                    .dueValid(booking.getDueValid())
+                    .passengers(collectedPassengerRequests)
+                    .build();
+        }).toList();
+        ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponses);
+        return new ResponseEntity<>(success, HttpStatus.OK);
+    }
+
+    @PostMapping("/booking/allhistory")
+    public ResponseEntity<ApiResponse> getAllBookingHistory(@Valid @RequestParam Long userId){
+        List<Booking> bookings = bookingService.getAllBookingHistory(userId);
         List<BookingResponse> bookingResponses = bookings.stream().map(booking -> {
             ScheduleDTO scheduleDTO = scheduleService.mapToDto(booking.getSchedule());
             List<PassengerRequest> collectedPassengerRequests = booking.getPassengersList().stream().map(passengerService::mapToDTO).toList();
