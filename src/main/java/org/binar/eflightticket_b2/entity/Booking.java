@@ -42,6 +42,8 @@ public class Booking extends BaseEntity {
     @Column(name = "booking_code")
     private String bookingCode;
 
+    private Integer finalPrice;
+
 
 
 }
