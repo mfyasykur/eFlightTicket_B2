@@ -69,16 +69,25 @@ public class BookingServiceImpl implements BookingService {
             log.error("booking not found with booking id " + paymentDTO.getBookingId());
             throw new ResourceNotFoundException("Booking", "id", paymentDTO.getBookingId());
         });
-        if (LocalDateTime.now().isAfter(booking.getDueValid())) {
-            booking.setIsValid(false);
-            log.info("booking code is invalid");
+
+        if (Boolean.TRUE.equals(booking.getIsSuccess())){
+            log.info("booking with {} code has successfully paid", booking.getBookingCode());
             HashMap<String, String> errorMessage = new HashMap<>();
-            errorMessage.put("ERROR", "booking code is invalid");
+            errorMessage.put("ERROR", "booking with "+booking.getBookingCode() + " code has successfully paid");
             throw new BadRequestException(errorMessage);
         }else {
-            booking.setIsSuccess(true);
-            booking.setIsValid(true);
-            booking.setPaymentMethod(paymentDTO.getPaymentMethod());
+            if (LocalDateTime.now().isAfter(booking.getDueValid())) {
+                booking.setIsValid(false);
+                log.info("booking code is invalid");
+                HashMap<String, String> errorMessage = new HashMap<>();
+                errorMessage.put("ERROR", "booking code is invalid");
+                throw new BadRequestException(errorMessage);
+            }else {
+                booking.setIsSuccess(true);
+                booking.setIsValid(true);
+                booking.setPaymentMethod(paymentDTO.getPaymentMethod());
+                log.info("payment successfully");
+            }
         }
         return bookingRepository.save(booking);
     }
