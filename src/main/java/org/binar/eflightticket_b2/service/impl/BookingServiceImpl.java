@@ -94,7 +94,25 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<Booking> successBookingHistory(Long userId, Boolean isSuccess) {
-        return bookingRepository.findAllByUsersIdAndIsSuccess(userId, true).orElseThrow();
+        return bookingRepository.findAllByUsersIdAndIsSuccess(userId, true).orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("bookings", "userId", userId);
+            ex.setApiResponse();
+            log.info(ex.getMessageMap().get("error"));
+            throw ex;
+        });
+    }
+
+    @Override
+    public List<Booking> getAllBookingHistory(Long userId) {
+        return bookingRepository.findAllByUsersId(userId).orElseThrow(
+                () -> {
+                    ResourceNotFoundException ex = new ResourceNotFoundException("bookings", "userId", userId);
+                    ex.setApiResponse();
+                    log.info(ex.getMessageMap().get("error"));
+                    throw ex;
+                }
+        );
+
     }
 
 }
