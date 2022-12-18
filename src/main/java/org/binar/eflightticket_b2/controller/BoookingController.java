@@ -44,6 +44,7 @@ public class BoookingController {
                 .schedule(scheduleDTO)
                 .dueValid(booking.getDueValid())
                 .passengers(collectedPassengerRequests)
+                .finalPrice(booking.getFinalPrice())
                 .build();
         ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponse);
         return new ResponseEntity<>(success, HttpStatus.OK);
