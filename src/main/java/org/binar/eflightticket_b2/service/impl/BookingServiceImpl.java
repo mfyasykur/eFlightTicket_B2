@@ -1,21 +1,14 @@
 package org.binar.eflightticket_b2.service.impl;
 
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.binar.eflightticket_b2.dto.BookingRequest;
 import org.binar.eflightticket_b2.dto.PaymentDTO;
-import org.binar.eflightticket_b2.entity.Booking;
-import org.binar.eflightticket_b2.entity.Passenger;
-import org.binar.eflightticket_b2.entity.Schedule;
-import org.binar.eflightticket_b2.entity.Users;
+import org.binar.eflightticket_b2.entity.*;
 import org.binar.eflightticket_b2.exception.BadRequestException;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.BookingRepository;
 import org.binar.eflightticket_b2.repository.PassengerRepository;
-import org.binar.eflightticket_b2.service.BookingService;
-import org.binar.eflightticket_b2.service.PassengerService;
-import org.binar.eflightticket_b2.service.ScheduleService;
-import org.binar.eflightticket_b2.service.UserService;
+import org.binar.eflightticket_b2.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,14 +27,16 @@ public class BookingServiceImpl implements BookingService {
     private final ScheduleService scheduleService;
     private final PassengerService passengerService;
     private final PassengerRepository passengerRepository;
+    private final NotificationService notificationService;
 
 
-    public BookingServiceImpl(BookingRepository bookingRepository, UserService userService, ScheduleService scheduleService, PassengerService passengerService, PassengerRepository passengerRepository) {
+    public BookingServiceImpl(BookingRepository bookingRepository, UserService userService, ScheduleService scheduleService, PassengerService passengerService, PassengerRepository passengerRepository, NotificationService notificationService) {
         this.bookingRepository = bookingRepository;
         this.userService = userService;
         this.scheduleService = scheduleService;
         this.passengerService = passengerService;
         this.passengerRepository = passengerRepository;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -66,6 +61,11 @@ public class BookingServiceImpl implements BookingService {
                 .passengersList(passengers)
                 .finalPrice(finalPrice)
                 .build();
+        String msg = String.format("%s pesananmu dengan kode booking %s berhasil dibuat. Segera lakukan pembayaran sebelum" +
+                "batas waktunya. Happy Trip", users
+                .getFirstName(), bookingCode);
+        Notification notification = Notification.builder().message(msg).isRead(Boolean.FALSE).users(users).build();
+        notificationService.addNotification(notification);
         return bookingRepository.save(booking);
     }
 
@@ -92,9 +92,15 @@ public class BookingServiceImpl implements BookingService {
                 booking.setIsSuccess(true);
                 booking.setIsValid(true);
                 booking.setPaymentMethod(paymentDTO.getPaymentMethod());
+                Users users = booking.getUsers();
+                String msg = String.format("yeaay pembayaranmu untuk kode booking %s berhasil. Lihat untuk mencetak e-tiket",
+                        booking.getBookingCode());
+                Notification notification = Notification.builder().message(msg).isRead(Boolean.FALSE).users(users).build();
+                notificationService.addNotification(notification);
                 log.info("payment successfully");
             }
         }
+
         return bookingRepository.save(booking);
     }
 
