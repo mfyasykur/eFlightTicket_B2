@@ -21,5 +21,6 @@ public class PassengerRequest {
     private String lastName;
     private Long age;
     private AGE ageCategory;
+    private BAGGAGE baggage;
 
 }
