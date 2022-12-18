@@ -32,4 +32,6 @@ public class BookingResponse {
 
     private String bookingCode;
 
+    private Integer finalPrice;
+
 }
