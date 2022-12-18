@@ -70,6 +70,7 @@ public class BookingServiceImpl implements BookingService {
             throw new ResourceNotFoundException("Booking", "id", paymentDTO.getBookingId());
         });
         if (LocalDateTime.now().isAfter(booking.getDueValid())) {
+            booking.setIsValid(false);
             log.info("booking code is invalid");
             HashMap<String, String> errorMessage = new HashMap<>();
             errorMessage.put("ERROR", "booking code is invalid");
@@ -80,6 +81,11 @@ public class BookingServiceImpl implements BookingService {
             booking.setPaymentMethod(paymentDTO.getPaymentMethod());
         }
         return bookingRepository.save(booking);
+    }
+
+    @Override
+    public List<Booking> successBookingHistory(Long userId, Boolean isSuccess) {
+        return bookingRepository.findAllByUsersIdAndIsSuccess(userId, true).orElseThrow();
     }
 
 }
