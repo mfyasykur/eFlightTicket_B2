@@ -1,10 +1,13 @@
 package org.binar.eflightticket_b2.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -48,5 +51,10 @@ public class Schedule extends BaseEntity {
 //
 //        return String.format("Schedule [departureDate=%s, arrivalDate=%s, departureTime=%s, arrivalTime=%s, route=%s, netPrice=%s, flightClass=%s, flightDetail=%s]", departureDate, arrivalDate, departureTime, arrivalTime, route, netPrice, flightClass, flightDetail);
 //    }
+
+    @JsonIgnore
+    @OneToMany (mappedBy = "schedule",cascade = CascadeType.ALL)
+    private List<Booking> bookingList = new ArrayList<>();
+
 
 }
