@@ -110,7 +110,7 @@ public class ScheduleController {
         return new ResponseEntity<>(new ApiResponse(Boolean.TRUE, "Flight not found. Please choose another schedule.", result), HttpStatus.OK);
     }
 
-    @GetMapping("/get/all/filter/departureTime")
+    @GetMapping("/get/all/filter/time")
     public ResponseEntity<ApiResponse> getAvailableSchedulesFilteredByDepartureTime(
             @RequestParam(value = "departure") String departureCityName,
             @RequestParam(value = "arrival") String arrivalCityName,
