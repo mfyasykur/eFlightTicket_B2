@@ -15,7 +15,7 @@ import java.util.List;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"id"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"id", "hibernateLazyInitializer", "handler"}, allowGetters = true)
 public class UsersDTO {
 
     private Long id;

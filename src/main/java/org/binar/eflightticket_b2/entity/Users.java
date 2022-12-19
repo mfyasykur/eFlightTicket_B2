@@ -41,6 +41,9 @@ public class Users extends BaseEntity{
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<Notification> notificationList = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Booking> bookingList = new ArrayList<>();
 
 
 
