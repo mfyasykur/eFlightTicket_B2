@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,52 +43,99 @@ public class ScheduleController {
         List<ScheduleDTO> result = scheduleService.getAllSchedules().stream().map(schedule -> scheduleService.mapToDto(schedule))
                 .collect(Collectors.toList());
 
-        ApiResponse apiResponse = new ApiResponse(
-                Boolean.TRUE,
-                "successfully retrieved all schedules",
-                result
-        );
-
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-    }
-
-    @GetMapping("/get/all/filter/default")
-    public ResponseEntity<ApiResponse> getAllSchedulesByDefaultFilter(
-            @RequestParam String departureCityName,
-            @RequestParam String arrivalCityName,
-            @RequestParam("departureDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
-            @RequestParam Schedule.FlightClass flightClass,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "2") int size) {
-
-            List<Schedule> schedules = scheduleService.getAllSchedulesByDefaultFilter(departureCityName, arrivalCityName, departureDate, flightClass, page, size);
-            List<ScheduleDTO> result = schedules.stream().map(schedule -> scheduleService.mapToDto(schedule)).toList();
+        if (!result.isEmpty()) {
 
             ApiResponse apiResponse = new ApiResponse(
                     Boolean.TRUE,
-                    "successfully retrieved all schedules filtered by departure: " + departureCityName + ", arrival: " + arrivalCityName + ", date: " + departureDate + ", flight class: " + flightClass + ", with page = " + page + ", size = " + size,
+                    "successfully retrieved all schedules",
                     result
             );
 
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(new ApiResponse(Boolean.TRUE, "Schedule data is empty. Please add schedule first", result), HttpStatus.OK);
     }
 
-    @GetMapping("/get/all/filter/departure")
-    public ResponseEntity<ApiResponse> getAllSchedulesByDeparture(
-            @RequestParam String departureCityName,
+    @GetMapping("/get/all/search/default")
+    public ResponseEntity<ApiResponse> getAllSchedulesByDefaultFilter(
+            @RequestParam("departure") String departureCityName,
+            @RequestParam("arrival") String arrivalCityName,
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
+            @RequestParam("class") Schedule.FlightClass flightClass,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "2") int size) {
+            @RequestParam(defaultValue = "2") int size,
+            @RequestParam(defaultValue = "netPrice,asc") String[] sort) {
 
-        List<Schedule> schedules = scheduleService.getAllSchedulesByDeparture(departureCityName, page, size);
+            List<Schedule> schedules = scheduleService.getAllSchedulesByDefaultFilter(departureCityName, arrivalCityName, departureDate, flightClass, page, size, sort);
+            List<ScheduleDTO> result = schedules.stream().map(schedule -> scheduleService.mapToDto(schedule)).toList();
+
+            if (!result.isEmpty()) {
+
+                ApiResponse apiResponse = new ApiResponse(
+                        Boolean.TRUE,
+                        "successfully retrieved all schedules searched by departure: " + departureCityName + ", arrival: " + arrivalCityName + ", date: " + departureDate + ", flight class: " + flightClass + ", with page = " + page + ", size = " + size + ", sort by " + Arrays.toString(sort),
+                        result
+                );
+
+                return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>(new ApiResponse(Boolean.TRUE, "Flight not found. Please choose another schedule.", result), HttpStatus.OK);
+    }
+
+    @GetMapping("/get/all/search/")
+    public ResponseEntity<ApiResponse> getAllSchedulesByDefaultFilterWithoutFlightClass(
+            @RequestParam("departure") String departureCityName,
+            @RequestParam("arrival") String arrivalCityName,
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "2") int size,
+            @RequestParam(defaultValue = "netPrice,asc") String[] sort) {
+
+        List<Schedule> schedules = scheduleService.getAllSchedulesByDefaultFilterWithoutFlightClass(departureCityName, arrivalCityName, departureDate, page, size, sort);
         List<ScheduleDTO> result = schedules.stream().map(schedule -> scheduleService.mapToDto(schedule)).toList();
 
-        ApiResponse apiResponse = new ApiResponse(
-                Boolean.TRUE,
-                "successfully retrieved all schedules filtered by departure: " + departureCityName + ", with page = " + page + ", size = " + size,
-                result
-        );
+        if (!result.isEmpty()) {
 
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+            ApiResponse apiResponse = new ApiResponse(
+                    Boolean.TRUE,
+                    "successfully retrieved all schedules searched by departure: " + departureCityName + ", arrival: " + arrivalCityName + ", date: " + departureDate + ", with page = " + page + ", size = " + size + ", sort by " + Arrays.toString(sort),
+                    result
+            );
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(new ApiResponse(Boolean.TRUE, "Flight not found. Please choose another schedule.", result), HttpStatus.OK);
+    }
+
+    @GetMapping("/get/all/filter/departureTime")
+    public ResponseEntity<ApiResponse> getAvailableSchedulesFilteredByDepartureTime(
+            @RequestParam(value = "departure") String departureCityName,
+            @RequestParam(value = "arrival") String arrivalCityName,
+            @RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
+            @RequestParam(value = "class") Schedule.FlightClass flightClass,
+            @RequestParam(value = "timeType") String timeRange,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "2") int size,
+            @RequestParam(defaultValue = "departureTime,asc") String[] sort) {
+
+        List<Schedule> schedules = scheduleService.getAvailableSchedulesFilteredByDepartureTime(departureCityName, arrivalCityName, departureDate, flightClass, timeRange, page, size, sort);
+        List<ScheduleDTO> result = schedules.stream().map(schedule -> scheduleService.mapToDto(schedule)).toList();
+
+        if (!result.isEmpty()) {
+
+            ApiResponse apiResponse = new ApiResponse(
+                    Boolean.TRUE,
+                    "successfully retrieved all schedules searched by departure: " + departureCityName + ", arrival: " + arrivalCityName + ", date: " + departureDate + ", flight class: " + flightClass + ", filtered by time range type: " + timeRange + ", with page = " + page + ", size = " + size + ", sort by " + Arrays.toString(sort),
+                    result
+            );
+
+            return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(new ApiResponse(Boolean.TRUE, "Flight not found. Please choose another schedule.", result), HttpStatus.OK);
     }
 
     @GetMapping("/get/{id}")
