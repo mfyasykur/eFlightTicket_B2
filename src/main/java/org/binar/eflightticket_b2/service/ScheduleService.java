@@ -18,17 +18,13 @@ public interface ScheduleService {
 
     List<Schedule> getAllSchedules();
 
-    List<Schedule> getAllSchedulesByDefaultFilter(String departureCityName, String arrivalCityName, LocalDate departureDate, Schedule.FlightClass flightClass, int page, int size);
+    List<Schedule> getAllSchedulesByDefaultFilter(String departureCityName, String arrivalCityName, LocalDate departureDate, Schedule.FlightClass flightClass, int page, int size, String[] sort);
 
-    List<Schedule> getAllSchedulesByDeparture(String departureCityName, int page, int size);
+    List<Schedule> getAvailableSchedulesFilteredByDepartureTime(String departureCityName, String arrivalCityName, LocalDate departureDate, Schedule.FlightClass flightClass, String timeRange, int page, int size, String[] sort);
+
+    List<Schedule> getAllSchedulesByDefaultFilterWithoutFlightClass(String departureCityName, String arrivalCityName, LocalDate departureDate, int page, int size, String[] sort);
 
     Schedule getScheduleById(Long id);
-
-//    List<ScheduleFilterResponse> getSchedulesByDate(LocalDate departureDate);
-//
-//    List<Schedule> getSchedulesByTime(LocalTime departureTime);
-//
-//    List<Schedule> getSchedulesByPrice(Integer price);
 
     ScheduleDTO mapToDto(Schedule schedule);
     Schedule mapToEntity(ScheduleDTO scheduleDTO);
