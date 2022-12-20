@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ETicket" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a5b2ec9-880a-4480-a1b4-63e4165ef45b">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <property name="com.jaspersoft.studio.unit." value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+    <property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+    <parameter name="bookingId" class="java.lang.Long"/>
+    <parameter name="departureDate" class="java.time.LocalDate"/>
+    <parameter name="departureTime" class="java.time.LocalTime"/>
+    <parameter name="arrivalDate" class="java.time.LocalDate"/>
+    <parameter name="arrivalTime" class="java.time.LocalTime"/>
+    <parameter name="departureCityName" class="java.lang.String"/>
+    <parameter name="departureCountryName" class="java.lang.String"/>
+    <parameter name="departureAirportName" class="java.lang.String"/>
+    <parameter name="departureAirportCode" class="java.lang.String"/>
+    <parameter name="passengerId" class="java.lang.Long"/>
+    <parameter name="gender" class="java.lang.Enum"/>
+    <parameter name="firstName" class="java.lang.String"/>
+    <parameter name="lastName" class="java.lang.String"/>
+    <parameter name="age" class="java.lang.Long"/>
+    <parameter name="ageCategory" class="java.lang.Enum"/>
+    <parameter name="arrivalCityName" class="java.lang.String"/>
+    <parameter name="arrivalCountryName" class="java.lang.String"/>
+    <parameter name="arrivalAirportName" class="java.lang.String"/>
+    <parameter name="arrivalAirportCode" class="java.lang.String"/>
+    <queryString>
+        <![CDATA[]]>
+    </queryString>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="300" splitType="Stretch">
+            <rectangle>
+                <reportElement x="240" y="0" width="315" height="67" backcolor="#0A99FF" uuid="a5a61f52-2979-4fe2-a988-3c25ef9ffbfe"/>
+            </rectangle>
+            <staticText>
+                <reportElement x="240" y="0" width="315" height="67" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="09cbba07-115b-41bd-ba92-c9a91e32f4db"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Segoe Script" size="19" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Anam Air Binar Academy]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="50" y="0" width="230" height="67" uuid="85387c1a-b9b9-4159-a16f-f71120ca7ffd"/>
+                <textElement textAlignment="Left" verticalAlignment="Bottom">
+                    <font fontName="Arial Black" size="14"/>
+                </textElement>
+                <text><![CDATA[E-Ticket
+Penerbangan Pergi]]></text>
+            </staticText>
+            <rectangle>
+                <reportElement x="0" y="80" width="555" height="220" uuid="8d2b5d65-f556-4f0c-80d5-eb2697bf8594"/>
+                <graphicElement>
+                    <pen lineWidth="2.0" lineStyle="Solid"/>
+                </graphicElement>
+            </rectangle>
+            <rectangle>
+                <reportElement x="182" y="90" width="371" height="198" uuid="b8ee5bbc-608c-4be4-a596-30432f1b99dc"/>
+            </rectangle>
+            <staticText>
+                <reportElement x="24" y="123" width="131" height="33" uuid="592302b5-5893-496d-b1f8-fecb59d7e3d6"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" size="14" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Kode Booking]]></text>
+            </staticText>
+            <rectangle>
+                <reportElement x="187" y="188" width="361" height="5" backcolor="#05C1FF" uuid="0051bc83-c374-4bb4-8ce7-117b61335c68"/>
+            </rectangle>
+            <textField>
+                <reportElement x="24" y="156" width="131" height="50" uuid="7bd36968-9a16-48a4-a11a-f8ee6ca4ca60"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{bookingId}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="201" y="94" width="152" height="30" uuid="bd4813b6-9cb6-4448-bc1a-403e529686d9"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{departureDate}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="385" y="94" width="152" height="30" uuid="a56d95b1-0fff-4cc6-8be6-3fcc3c8f5876"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{departureTime}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="201" y="124" width="152" height="30" uuid="fd781d42-ca3a-4e65-9a8b-f48a5e6dd7d9"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{departureCityName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="385" y="124" width="152" height="30" uuid="d3fbd291-d654-47c9-90b7-867b59aefc87"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{departureCountryName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="201" y="154" width="152" height="30" uuid="39e16684-e4f1-452a-94f9-fea8f9e0d076"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{departureAirportName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="385" y="154" width="152" height="30" uuid="06ca194c-feea-45d6-a2bc-e17e77a0befa"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{departureAirportCode}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="201" y="196" width="152" height="30" uuid="4783d52c-b38f-4a58-b85f-260b19187467"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{arrivalDate}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="385" y="196" width="152" height="30" uuid="c6c14442-e859-4495-bbab-87022098d7af"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{arrivalTime}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="201" y="226" width="152" height="30" uuid="2c457f8c-6455-4cff-9a84-195b43ff03b9"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{arrivalCityName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="385" y="226" width="152" height="30" uuid="9e7d6221-ca83-41ab-8666-fabcaae0c0dd"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{arrivalCountryName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="201" y="256" width="152" height="30" uuid="5d2ea2d2-db8a-49a5-a582-f0a732c1a87c"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{arrivalAirportName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="385" y="256" width="152" height="30" uuid="0524f822-4c7e-45cd-af98-59ac59274142"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{arrivalAirportCode}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="381" splitType="Stretch">
+            <staticText>
+                <reportElement x="20" y="29" width="280" height="50" uuid="0b915be4-0f6b-4ada-bb39-f5f46f86a2cd"/>
+                <textElement>
+                    <font size="12"/>
+                </textElement>
+                <text><![CDATA[Note:
+............................................
+............................................]]></text>
+            </staticText>
+            <rectangle>
+                <reportElement x="-1" y="109" width="551" height="211" uuid="c1b5aba1-24e0-4a80-bee4-fdde23b34b5b"/>
+            </rectangle>
+            <staticText>
+                <reportElement x="15" y="129" width="169" height="30" uuid="fdd3153b-fe79-4801-b610-6f6716e62d76"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial Black" size="16"/>
+                </textElement>
+                <text><![CDATA[Detail Penumpang]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="30" y="169" width="71" height="30" uuid="39263134-c2b2-4562-ba60-486e5f2f731e"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[No.]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="101" y="169" width="79" height="30" uuid="c9e360de-6437-486d-8c54-c5f253684f8c"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Gender]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="180" y="169" width="158" height="30" uuid="9f4f045d-fbb9-447d-9829-b63637aba72b"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Name]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="338" y="169" width="79" height="30" uuid="a6c2f304-8c93-4610-bf4f-c9d486838ae2"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Age]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="417" y="169" width="108" height="30" uuid="0a7633ff-6442-4ddd-b329-4df40a81e2dc"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Age Category]]></text>
+            </staticText>
+            <rectangle>
+                <reportElement x="-3" y="338" width="561" height="41" backcolor="#05C1FF" uuid="f8f49071-5a25-459e-947d-16631324022d"/>
+            </rectangle>
+            <staticText>
+                <reportElement x="97" y="339" width="183" height="41" forecolor="#FFFFFF" uuid="ed211044-1f93-40de-a07b-522b042e904d"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle">
+                    <font fontName="Arial Black" isBold="false"/>
+                </textElement>
+                <text><![CDATA[© Anam Air]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="280" y="338" width="177" height="41" forecolor="#FFFFFF" uuid="597535fc-e9d5-47c2-a7d0-e7e793ffed34"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="Arial Black" isBold="false"/>
+                </textElement>
+                <text><![CDATA[Binar Academy]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="30" y="199" width="71" height="30" uuid="f8cf883d-68d3-4aa9-a67b-cbba6a9b3baa"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{passengerId}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="101" y="199" width="79" height="30" uuid="60d844f0-3ee1-40df-b751-0e86626fc5bf"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{gender}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="180" y="199" width="79" height="30" uuid="ea76e559-2f28-4a7f-b467-bd44e40b4b23"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{firstName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="259" y="199" width="79" height="30" uuid="8392a7dd-d410-4235-b0f9-9be85d6828c1"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{lastName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="338" y="199" width="79" height="30" uuid="55c37c22-bf8a-4d28-a567-dbd16072b39e"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{age}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="417" y="199" width="108" height="30" uuid="65d84f06-c68d-4609-bf7d-d5e83c43fff3"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{ageCategory}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="30" y="229" width="71" height="30" uuid="f6f2ff9d-d918-4b6e-9552-01ff5c214a8b"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{passengerId}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="101" y="229" width="79" height="30" uuid="4580e698-078a-4c98-b6fd-0e95e7ed2e59"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{gender}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="180" y="229" width="79" height="30" uuid="093755bb-2577-445b-a762-cddfcbf3e063"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{firstName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="259" y="229" width="79" height="30" uuid="b7bff578-4bd4-4cff-92ab-b48823737a21"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{lastName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="338" y="229" width="79" height="30" uuid="a7cb45d7-26a0-4520-bb55-287b654b3360"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{age}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="417" y="229" width="108" height="30" uuid="21654c74-56a8-4515-96db-6cd6707e664a"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{ageCategory}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="30" y="259" width="71" height="30" uuid="90ac09e5-8b62-420f-abbd-241e9192091d"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{passengerId}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="101" y="259" width="79" height="30" uuid="0a167a2e-d02b-4897-bf3e-c8d92750aedb"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{gender}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="180" y="259" width="79" height="30" uuid="ec107ad5-1fb1-45d4-9665-72713997d8c4"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{firstName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="259" y="259" width="79" height="30" uuid="d5c41a52-e935-4d80-9d6d-ec8a4dc15b18"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{lastName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="338" y="259" width="79" height="30" uuid="0ba22278-abdd-4753-a255-15feda0588e9"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{age}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="417" y="259" width="108" height="30" uuid="4d2ebde6-cf81-43bd-bf27-d26d4a9773f1"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$P{ageCategory}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageHeader>
+</jasperReport>
