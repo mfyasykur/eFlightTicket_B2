@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AnamAIR" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3881d954-e731-4dbb-875e-e29ef88bb315">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="AnamAir DB"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="646"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="340"/>
+	<subDataset name="Dataset1" uuid="3d497fc9-1c8a-45eb-8db9-97021b36c60f">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="AnamAir DB"/>
+		<field name="gender" class="java.lang.Integer"></field>
+		<field name="first_name" class="java.lang.String"></field>
+		<field name="last_name" class="java.lang.String"></field>
+		<field name="age_category" class="java.lang.Integer"></field>
+	</subDataset>
+	<field name="booking_code" class="java.lang.String"></field>
+	<field name="gender" class="java.lang.Integer"></field>
+	<field name="first_name" class="java.lang.String"></field>
+	<field name="last_name" class="java.lang.String"></field>
+	<field name="age_category" class="java.lang.Integer"></field>
+	<field name="arrival_date" class="java.time.LocalDate"></field>
+	<field name="arrival_time" class="java.time.LocalTime"></field>
+	<field name="departure_date" class="java.time.LocalDate"></field>
+	<field name="departure_time" class="java.time.LocalTime"></field>
+	<field name="departure_airport" class="java.lang.String"></field>
+	<field name="arrival_airport" class="java.lang.String"></field>
+	<field name="departure_airport_code" class="java.lang.String"></field>
+	<field name="arrival_airport_code" class="java.lang.String"></field>
+	<field name="departure_city" class="java.lang.String"></field>
+	<field name="arrival_city" class="java.lang.String"></field>
+	<field name="departure_country" class="java.lang.String"></field>
+	<field name="arrival_country" class="java.lang.String"></field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="99" splitType="Stretch">
+			<rectangle>
+				<reportElement x="240" y="0" width="315" height="67" backcolor="#0A99FF" uuid="2ee78966-91df-48cf-8040-b56281f1ea4a"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="240" y="0" width="315" height="80" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="9817cce9-026b-4d21-9ef9-bb73a5334470"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe Script" size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Anam Air ]]></text>
+			</staticText>
+			<image>
+				<reportElement x="10" y="10" width="100" height="49" uuid="78d65a32-54b9-4a42-bb79-b6c8dbab0012"/>
+				<imageExpression><![CDATA["https://res.cloudinary.com/eflightticketing-b2/image/upload/v1671554795/photo_6120784539962946259_y_xlkx32.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="69" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="0" width="140" height="27" uuid="c3e82bad-553c-49b5-8cdf-cb668a567bf2"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Flight E-Ticket]]></text>
+			</staticText>
+			<image>
+				<reportElement x="141" y="0" width="140" height="50" uuid="ebbd0e13-c41a-4a49-a3f1-fbb6ee48431d"/>
+				<imageExpression><![CDATA["https://res.cloudinary.com/eflightticketing-b2/image/upload/v1671597527/etiket_asset1_ok02hh.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="281" y="0" width="130" height="31" uuid="b8eba03d-826b-4dff-b2e7-8bfe1292d7b2"/>
+				<imageExpression><![CDATA["https://res.cloudinary.com/eflightticketing-b2/image/upload/v1671597527/etiet_asset3_zs8efp.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="411" y="0" width="129" height="40" uuid="b7ed0085-62bd-4e91-91df-2f712b1082b1"/>
+				<imageExpression><![CDATA["https://res.cloudinary.com/eflightticketing-b2/image/upload/v1671597527/etiket_asset2_zls3rz.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="570" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="189" uuid="fb8af854-a0a2-4225-b899-37a3d492b70e"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="190" y="9" width="355" height="171" uuid="e715cfc5-0039-44a8-aac7-907d2317e29c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="20" y="20" width="131" height="33" uuid="cab125ad-6d88-40ef-8371-574a6aaf3865"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Booking Code]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="190" y="92" width="355" height="5" backcolor="#05C1FF" uuid="71b42b36-f5bb-4414-98f3-e812c1f4f156"/>
+			</rectangle>
+			<textField>
+				<reportElement x="35" y="59" width="100" height="30" uuid="d82d9b55-6c63-46b9-90a1-60a4c4bc9130"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{booking_code}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="200" y="65" width="50" height="19" uuid="712aeaba-0ccf-4b40-9825-9a223fcc52f1"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[departure :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="250" y="65" width="90" height="19" uuid="3a0f052b-4e15-4535-9d0d-2e0c712977f3"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{departure_time}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="29" width="150" height="20" uuid="0959f4af-39c5-460f-99e3-6fa17b08c699"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{departure_airport}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="46" width="100" height="19" uuid="ee7440af-28a4-4ecf-b3d8-678e67021f57"/>
+				<textFieldExpression><![CDATA[$F{departure_airport_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="29" width="70" height="20" uuid="a1972b62-276a-408d-8a46-00b2d5abcfd9"/>
+				<textFieldExpression><![CDATA[$F{departure_city}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="450" y="29" width="90" height="20" uuid="55bb1763-a878-4b58-b725-9d16fb4f2043"/>
+				<textFieldExpression><![CDATA[$F{departure_country}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="450" y="63" width="90" height="22" uuid="9d071bfb-76db-43c7-af2a-6b62880908b7"/>
+				<textFieldExpression><![CDATA[$F{departure_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="108" width="150" height="22" uuid="389aa4d9-201d-4e5c-9802-338d4406d34e"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{arrival_airport}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="130" width="110" height="20" uuid="d3c561d2-93ff-44f2-9b46-fda81cff3f4f"/>
+				<textFieldExpression><![CDATA[$F{arrival_airport_code}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="200" y="150" width="50" height="19" uuid="ddb9784f-2e01-48b1-bbbc-4558b4264cb8"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[arrival : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="250" y="150" width="90" height="18" uuid="1adb1449-5ef8-4992-b151-425e29c3a1c6"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{arrival_time}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="108" width="70" height="22" uuid="200e3fcd-fec7-47a2-83f6-326cbc8c45c9"/>
+				<textFieldExpression><![CDATA[$F{arrival_city}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="456" y="150" width="84" height="18" uuid="d49e150c-5ccd-40d7-a698-b9ad7355ed77"/>
+				<textFieldExpression><![CDATA[$F{arrival_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="451" y="110" width="89" height="21" uuid="b5f0ae45-54b3-490f-a565-97d1c9bc8294"/>
+				<textFieldExpression><![CDATA[$F{arrival_country}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="240" width="555" height="130" uuid="5bfd1225-862e-48a6-abe4-5c26ccbe3bb5"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="-11" y="210" width="189" height="30" uuid="0ff37d5e-1bef-4d92-bfd8-bcae4fff1e46"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="16"/>
+				</textElement>
+				<text><![CDATA[Passenger Details : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="33" y="260" width="37" height="30" uuid="72f4dd86-2798-49ef-83f1-e84f28498f3b"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[tittle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="260" width="128" height="30" uuid="c70d4a60-9159-4be9-9de4-38cac6ecf60f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="290" width="128" height="30" uuid="7a99ac8e-5295-4734-b827-0bb994b53dd5"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{first_name} + " " +$F{last_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="33" y="290" width="37" height="30" uuid="b135cb58-9280-439d-8193-bf214ea1df18"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{gender} ==  0  ? "Mr" : $F{gender} == 1 ? "Mrs" : "Ms"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="198" y="290" width="80" height="30" uuid="54fd9a95-5d1f-4ace-83e3-6f834484f2cc"/>
+				<textFieldExpression><![CDATA[$F{age_category} == 0 ? "Adult" : $F{age_category}  == 1 ? "Child"  : "Infant"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="198" y="260" width="81" height="30" uuid="ba0ab937-8518-4c8c-97e5-22056b48632f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ticket Type]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="25" y="285" width="505" height="5" backcolor="#05C1FF" uuid="bcde9c56-468a-4288-b2a5-199d0789f503"/>
+			</rectangle>
+<!--			<componentElement>-->
+<!--				<reportElement x="1" y="520" width="100" height="30" uuid="57fd68ba-bf96-4c78-bbce-8681c127bbc7"/>-->
+<!--				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39" drawText="false" checksumRequired="false">-->
+<!--					<jr:codeExpression><![CDATA["1234"]]></jr:codeExpression>-->
+<!--				</jr:barbecue>-->
+<!--			</componentElement>-->
+			<staticText>
+				<reportElement x="20" y="400" width="523" height="120" uuid="1daa3fef-5f00-4a74-9825-d6f7a37e6182"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<text><![CDATA[Important Notes :
+
+- To view or see details of your order, please visit the official Anam Air Group website   (anamr.co.id).
+-Please arrive at the departure terminal 90 minutes before departure for domestic flights and 2 hours for international flights.
+-Check-in closes 45 minutes before departure time.
+-Please arrive at the departure gate 30 minutes before departure time.
+-Please refer to the Terms and Conditions of Anam Air for more information. Passengers/ticket holders are subject to this
+on the terms and conditions of flight set by Anam Air.]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="60" splitType="Stretch">
+			<rectangle>
+				<reportElement x="1" y="4" width="555" height="54" backcolor="#05C1FF" uuid="d6c2d258-25f2-4136-bed9-1fcdc39d9dbb"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="200" y="30" width="168" height="30" forecolor="#FFFFFF" uuid="1c0c2314-ac80-4df2-9560-fe4a300320d7"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[© anam air all right reserved]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement x="460" y="40" width="100" height="20" uuid="88e202e9-22b9-46a9-b5c2-ce4642320e94"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
