@@ -1,21 +1,18 @@
 package org.binar.eflightticket_b2.controller;
 
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import org.binar.eflightticket_b2.payload.ApiResponse;
 import org.binar.eflightticket_b2.service.InvoiceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -29,10 +26,10 @@ public class InvoiceController {
     private InvoiceService invoiceService;
 
 
-    @GetMapping("/generatePdf")
-    public ResponseEntity<ApiResponse> getInvoicePrint(HttpServletResponse response, @RequestParam(name = "bookingId") Long bookingId) throws IOException, JRException {
+    @GetMapping("/generatepdf")
+    public ResponseEntity<org.binar.eflightticket_b2.payload.ApiResponse> getInvoicePrint(HttpServletResponse response, @RequestParam(name = "bookingId") Long bookingId) throws IOException, JRException {
         JasperPrint jasperPrint = invoiceService.generateInvoice(bookingId);
-        response.setContentType("application/x-download");
+//        response.setContentType("application/x-download");
         response.addHeader("Content-disposition", "attachment; filename=invoice_report.pdf");
         OutputStream out = response.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint,out);
