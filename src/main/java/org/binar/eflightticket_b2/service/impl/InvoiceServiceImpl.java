@@ -2,6 +2,7 @@ package org.binar.eflightticket_b2.service.impl;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.binar.eflightticket_b2.dto.InvoiceDTO;
 import org.binar.eflightticket_b2.entity.Booking;
 import org.binar.eflightticket_b2.entity.Passenger;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
@@ -34,68 +35,39 @@ public class InvoiceServiceImpl implements InvoiceService {
                     return new ResourceNotFoundException("Booking", "id", bookingId);
                 });
         Map<String, Object> dataMap = dataParameter(booking);
-        List<Booking> bookingsCollect = new LinkedList<>();
-        bookingsCollect.add(booking);
-        dataMap.put("userData", new JRBeanCollectionDataSource(bookingsCollect));
-        JasperPrint jasperPrint = JasperFillManager.fillReport(
-                JasperCompileManager.compileReport(
-                        ResourceUtils.getFile("ETicket.jrxml")
-                                .getAbsolutePath())
-                , dataMap
-                , new JREmptyDataSource()
-        );
+        Passenger passenger = booking.getPassengersList().get(0);
+        InvoiceDTO invoice = InvoiceDTO.builder()
+                .booking_code(booking.getBookingCode())
+                .gender(passenger.getGender().ordinal())
+                .first_name(passenger.getFirstName())
+                .last_name(passenger.getLastName())
+                .age_category(passenger.getAgeCategory().ordinal())
+                .departure_date(booking.getSchedule().getDepartureDate())
+                .departure_time(booking.getSchedule().getDepartureTime())
+                .arrival_date(booking.getSchedule().getArrivalDate())
+                .arrival_time(booking.getSchedule().getArrivalTime())
+                .departure_airport(booking.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportName())
+                .departure_airport_code(booking.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportCode())
+                .departure_city(booking.getSchedule().getFlightDetail().getDeparture().getCityDetails().getCityName())
+                .departure_country(booking.getSchedule().getFlightDetail().getDeparture().getCountryDetails().getCountryName())
+                .arrival_airport(booking.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportName())
+                .arrival_airport_code(booking.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportCode())
+                .arrival_city(booking.getSchedule().getFlightDetail().getArrival().getCityDetails().getCityName())
+                .arrival_country(booking.getSchedule().getFlightDetail().getArrival().getCountryDetails().getCountryName())
+                .build();
+        List<InvoiceDTO> bookingsCollect = new LinkedList<>();
+        bookingsCollect.add(invoice);
+        String absolutePath = ResourceUtils.getFile("classpath:AnamAIR.jrxml").getAbsolutePath();
+        JasperPrint jasperPrint = JasperFillManager.fillReport(JasperCompileManager.compileReport(absolutePath),
+                dataMap,  new JRBeanCollectionDataSource(bookingsCollect));
+
         log.info("Info :  Has successfully created ETicket!");
         return jasperPrint;
     }
 
     public Map<String, Object> dataParameter(Booking bookings){
-        Long bookingId = bookings.getId();
-        LocalDate departureDate = bookings.getSchedule().getDepartureDate();
-        LocalDate arrivalDate = bookings.getSchedule().getArrivalDate();
-        LocalTime departureTime = bookings.getSchedule().getDepartureTime();
-        LocalTime arrivalTime = bookings.getSchedule().getArrivalTime();
-        String departureCityName = bookings.getSchedule().getFlightDetail().getDeparture().getCityDetails().getCityName();
-        String departureCountryName = bookings.getSchedule().getFlightDetail().getDeparture().getCountryDetails().getCountryName();
-        String departureAirportName = bookings.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportName();
-        String departureAirportCode = bookings.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportCode();
-        String arrivalCityName = bookings.getSchedule().getFlightDetail().getArrival().getCityDetails().getCityName();
-        String arrivalCountryName = bookings.getSchedule().getFlightDetail().getArrival().getCountryDetails().getCountryName();
-        String arrivalAirportName = bookings.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportName();
-        String arrivalAirportCode = bookings.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportCode();
-
-        for (int i = 0; i < dataParameter(bookings).size(); i++) {
-            List<Passenger> passengerId = bookings.getPassengersList();
-            List<Passenger> gender = bookings.getPassengersList();
-            List<Passenger> firstName = bookings.getPassengersList();
-            List<Passenger> lastName = bookings.getPassengersList();
-            List<Passenger> age = bookings.getPassengersList();
-            List<Passenger> ageCategory = bookings.getPassengersList();
-        }
-
-
-        Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("bookingId", bookingId);
-        dataMap.put("departureDate", departureDate);
-        dataMap.put("arrivalDate", arrivalDate);
-        dataMap.put("departureTime", departureTime);
-        dataMap.put("arrivalTime", arrivalTime);
-        dataMap.put("departureCityName", departureCityName);
-        dataMap.put("departureCountryName", departureCountryName);
-        dataMap.put("departureAirportName", departureAirportName);
-        dataMap.put("departureAirportCode", departureAirportCode);
-        dataMap.put("arrivalCityName", arrivalCityName);
-        dataMap.put("arrivalCountryName", arrivalCountryName);
-        dataMap.put("arrivalAirportName", arrivalAirportName);
-        dataMap.put("arrivalAirportCode", arrivalAirportCode);
-
-        dataMap.put("passengerId", passengerId);
-        dataMap.put("gender", gender);
-        dataMap.put("firstName", firstName);
-        dataMap.put("lastName", lastName);
-        dataMap.put("age", age);
-        dataMap.put("ageCategory", ageCategory);
-
-        log.info("Info :  mapping data from database success");
-        return dataMap;
+        Map<String, Object> pdfInvoiceParams = new HashMap<>();
+        pdfInvoiceParams.put("poweredby", "ANAM AIR");
+        return pdfInvoiceParams;
     }
 }
