@@ -116,7 +116,20 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <goal>install</goal>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+    <scm>
+        <developerConnection>git@github.com:mfyasykur/eFlightTicket_B2.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
 </project>
