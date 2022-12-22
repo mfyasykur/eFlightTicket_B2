@@ -127,6 +127,7 @@
         </plugins>
     </build>
     <scm>
+        <connection>git@github.com:mfyasykur/eFlightTicket_B2.git</connection>
         <developerConnection>git@github.com:mfyasykur/eFlightTicket_B2.git</developerConnection>
         <tag>1.0.0</tag>
     </scm>
