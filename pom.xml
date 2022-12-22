@@ -134,5 +134,5 @@
         <developerConnection>scm:git:git@github.com:mfyasykur/eFlightTicket_B2.git</developerConnection>
       <tag>anamair-v.1.0.0</tag>
   </scm>
-
+   <!--patch-->
 </project>
