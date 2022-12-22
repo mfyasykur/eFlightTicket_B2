@@ -9,7 +9,7 @@
     </parent>
     <groupId>org.binar</groupId>
     <artifactId>eFlightTicket_B2</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
     <name>eFlightTicket_B2</name>
     <description>eFlightTicket_B2</description>
     <properties>
@@ -126,6 +126,13 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>local-release-repository</id>
+            <name>Local Release Repository</name>
+            <url>file:///C:\Users\Harisatul Aulia\.m2\repository</url>
+        </repository>
+    </distributionManagement>
     <scm>
         <connection>scm:git:git@github.com:mfyasykur/eFlightTicket_B2.git</connection>
         <developerConnection>scm:git:git@github.com:mfyasykur/eFlightTicket_B2.git</developerConnection>
