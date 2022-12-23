@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-    Page<Schedule> findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDateAndFlightClass(String departureCityName, String arrivalCityName, LocalDate departureDate, Schedule.FlightClass flightClass, Pageable pageable);
+    Page<Schedule> findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDateAndFlightClassOrderByNetPrice(String departureCityName, String arrivalCityName, LocalDate departureDate, Schedule.FlightClass flightClass, Pageable pageable);
 
     Page<Schedule> findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDate(String departureCityName, String arrivalCityName, LocalDate departureDate, Pageable pageable);
 

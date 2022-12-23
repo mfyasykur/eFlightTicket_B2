@@ -18,9 +18,9 @@ public interface ScheduleService {
 
     List<Schedule> getAllSchedules();
 
-    List<Schedule> getAllSchedulesByDefaultFilter(String departureCityName, String arrivalCityName, LocalDate departureDate, Schedule.FlightClass flightClass, int page, int size, String[] sort);
+    List<Schedule> getAllSchedulesByDefaultFilter(String departureCityName, String arrivalCityName, LocalDate departureDate, String flightClass, int page, int size, String[] sort);
 
-    List<Schedule> getAvailableSchedulesFilteredByDepartureTime(String departureCityName, String arrivalCityName, LocalDate departureDate, Schedule.FlightClass flightClass, String timeRange, int page, int size, String[] sort);
+    List<Schedule> getAvailableSchedulesFilteredByDepartureTime(String departureCityName, String arrivalCityName, LocalDate departureDate, String flightClass, String timeRange, int page, int size, String[] sort);
 
     List<Schedule> getAllSchedulesByDefaultFilterWithoutFlightClass(String departureCityName, String arrivalCityName, LocalDate departureDate, int page, int size, String[] sort);
 
