@@ -36,8 +36,9 @@ public class SwaggerConfig {
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("ANAM AIR | E-Flight Ticket Reservation REST API")
-                        .description("RELEASE :: Anam-Air v1.0.0")
+                        .title("ANAM AIR")
+                        .description("E-Flight Ticket Reservation REST API")
+                        .version("v1.0.0")
                 ).servers(List.of(anamAirStaging, anamAir, railwayStaging, localHost));
     }
 }
