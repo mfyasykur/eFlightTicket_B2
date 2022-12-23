@@ -62,10 +62,10 @@ public class ScheduleController {
             @RequestParam("departure") String departureCityName,
             @RequestParam("arrival") String arrivalCityName,
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
-            @RequestParam("class") Schedule.FlightClass flightClass,
+            @RequestParam(value = "class", defaultValue = "ECONOMY") String flightClass,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "2") int size,
-            @RequestParam(defaultValue = "netPrice,asc") String[] sort) {
+            @RequestParam(defaultValue = "departureTime,asc") String[] sort) {
 
             List<Schedule> schedules = scheduleService.getAllSchedulesByDefaultFilter(departureCityName, arrivalCityName, departureDate, flightClass, page, size, sort);
             List<ScheduleDTO> result = schedules.stream().map(schedule -> scheduleService.mapToDto(schedule)).toList();
@@ -115,7 +115,7 @@ public class ScheduleController {
             @RequestParam(value = "departure") String departureCityName,
             @RequestParam(value = "arrival") String arrivalCityName,
             @RequestParam(value = "date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
-            @RequestParam(value = "class") Schedule.FlightClass flightClass,
+            @RequestParam(value = "class", defaultValue = "ECONOMY") String flightClass,
             @RequestParam(value = "timeType") String timeRange,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "2") int size,
