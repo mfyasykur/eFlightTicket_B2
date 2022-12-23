@@ -46,15 +46,8 @@ public class Schedule extends BaseEntity {
     @JoinColumn(name = "flight_detail_id", referencedColumnName = "id")
     private FlightDetail flightDetail;
 
-//    @Override
-//    public String toString() {
-//
-//        return String.format("Schedule [departureDate=%s, arrivalDate=%s, departureTime=%s, arrivalTime=%s, route=%s, netPrice=%s, flightClass=%s, flightDetail=%s]", departureDate, arrivalDate, departureTime, arrivalTime, route, netPrice, flightClass, flightDetail);
-//    }
-
     @JsonIgnore
     @OneToMany (mappedBy = "schedule",cascade = CascadeType.ALL)
     private List<Booking> bookingList = new ArrayList<>();
-
 
 }

@@ -27,7 +27,7 @@ public class Aircraft extends BaseEntity {
         LARGE
     }
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private SizeType sizeType;
 
 }

@@ -1,5 +1,4 @@
 package org.binar.eflightticket_b2.entity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,9 +17,10 @@ public class City extends BaseEntity{
     @Column(name = "city_code")
     private String cityCode;
 
-    @Column(name = "image")
+    @Column(name = "image", columnDefinition = "TEXT")
     private String imageUrl;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
 }

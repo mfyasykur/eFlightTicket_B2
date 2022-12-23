@@ -19,9 +19,10 @@ public class Country extends BaseEntity{
     @Column(name = "country_code")
     private String countryCode;
 
-    @Column(name = "image")
+    @Column(name = "image", columnDefinition = "TEXT")
     private String imageUrl;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
 }
