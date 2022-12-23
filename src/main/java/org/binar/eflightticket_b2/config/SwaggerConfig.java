@@ -13,21 +13,31 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI openAPI() {
-        Server heroku = new Server();
-        heroku.setUrl("https://anam-air.herokuapp.com/api");
-        heroku.setDescription("staging server");
 
-        Server stagingUrl = new Server();
-        stagingUrl.setUrl("https://eflightticketb2-staging.up.railway.app/api");
-        stagingUrl.setDescription("staging server");
+        //Production
+        Server anamAir = new Server();
+        anamAir.setUrl("https://anam-air.herokuapp.com/api");
+        anamAir.setDescription("Production Server");
 
+        //Staging (Heroku)
+        Server anamAirStaging = new Server();
+        anamAirStaging.setUrl("https://anam-air-staging.herokuapp.com/api");
+        anamAirStaging.setDescription("Staging Server");
+
+        //Staging (Railway)
+        Server railwayStaging = new Server();
+        railwayStaging.setUrl("https://eflightticketb2-staging.up.railway.app/api");
+        railwayStaging.setDescription("Staging Server - DEPRECATED");
+
+        //Develop (Local)
         Server localHost = new Server();
         localHost.setUrl("http://localhost:8080/api");
-        localHost.setDescription("local server");
+        localHost.setDescription("Local Server");
+
         return new OpenAPI()
                 .info(new Info()
                         .title("ANAM AIR | E-Flight Ticket Reservation REST API")
-                        .description("Under production :: not release yet")
-                ).servers(List.of(heroku, stagingUrl, localHost));
+                        .description("RELEASE :: Anam-Air v1.0.0")
+                ).servers(List.of(anamAirStaging, anamAir, railwayStaging, localHost));
     }
 }
