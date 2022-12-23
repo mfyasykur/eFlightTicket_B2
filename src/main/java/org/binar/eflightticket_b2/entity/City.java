@@ -17,9 +17,10 @@ public class City extends BaseEntity{
     @Column(name = "city_code")
     private String cityCode;
 
-    @Column(name = "image")
+    @Column(name = "image", columnDefinition = "TEXT")
     private String imageUrl;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
 }
