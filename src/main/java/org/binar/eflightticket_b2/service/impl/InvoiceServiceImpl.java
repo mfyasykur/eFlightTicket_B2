@@ -35,28 +35,29 @@ public class InvoiceServiceImpl implements InvoiceService {
                     return new ResourceNotFoundException("Booking", "id", bookingId);
                 });
         Map<String, Object> dataMap = dataParameter(booking);
-        Passenger passenger = booking.getPassengersList().get(0);
-        InvoiceDTO invoice = InvoiceDTO.builder()
-                .booking_code(booking.getBookingCode())
-                .gender(passenger.getGender().ordinal())
-                .first_name(passenger.getFirstName())
-                .last_name(passenger.getLastName())
-                .age_category(passenger.getAgeCategory().ordinal())
-                .departure_date(booking.getSchedule().getDepartureDate())
-                .departure_time(booking.getSchedule().getDepartureTime())
-                .arrival_date(booking.getSchedule().getArrivalDate())
-                .arrival_time(booking.getSchedule().getArrivalTime())
-                .departure_airport(booking.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportName())
-                .departure_airport_code(booking.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportCode())
-                .departure_city(booking.getSchedule().getFlightDetail().getDeparture().getCityDetails().getCityName())
-                .departure_country(booking.getSchedule().getFlightDetail().getDeparture().getCountryDetails().getCountryName())
-                .arrival_airport(booking.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportName())
-                .arrival_airport_code(booking.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportCode())
-                .arrival_city(booking.getSchedule().getFlightDetail().getArrival().getCityDetails().getCityName())
-                .arrival_country(booking.getSchedule().getFlightDetail().getArrival().getCountryDetails().getCountryName())
-                .build();
         List<InvoiceDTO> bookingsCollect = new LinkedList<>();
-        bookingsCollect.add(invoice);
+        booking.getPassengersList().forEach(passenger -> {
+            InvoiceDTO invoice = InvoiceDTO.builder()
+                    .booking_code(booking.getBookingCode())
+                    .gender(passenger.getGender().ordinal())
+                    .first_name(passenger.getFirstName())
+                    .last_name(passenger.getLastName())
+                    .age_category(passenger.getAgeCategory().ordinal())
+                    .departure_date(booking.getSchedule().getDepartureDate())
+                    .departure_time(booking.getSchedule().getDepartureTime())
+                    .arrival_date(booking.getSchedule().getArrivalDate())
+                    .arrival_time(booking.getSchedule().getArrivalTime())
+                    .departure_airport(booking.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportName())
+                    .departure_airport_code(booking.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportCode())
+                    .departure_city(booking.getSchedule().getFlightDetail().getDeparture().getCityDetails().getCityName())
+                    .departure_country(booking.getSchedule().getFlightDetail().getDeparture().getCountryDetails().getCountryName())
+                    .arrival_airport(booking.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportName())
+                    .arrival_airport_code(booking.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportCode())
+                    .arrival_city(booking.getSchedule().getFlightDetail().getArrival().getCityDetails().getCityName())
+                    .arrival_country(booking.getSchedule().getFlightDetail().getArrival().getCountryDetails().getCountryName())
+                    .build();
+            bookingsCollect.add(invoice);
+        });
         String absolutePath = ResourceUtils.getFile("classpath:AnamAIR.jrxml").getAbsolutePath();
         JasperPrint jasperPrint = JasperFillManager.fillReport(JasperCompileManager.compileReport(absolutePath),
                 dataMap,  new JRBeanCollectionDataSource(bookingsCollect));
