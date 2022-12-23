@@ -10,5 +10,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     Optional<List<Booking>> findAllByUsersIdAndIsSuccess(Long userId, Boolean isSuccess);
     Optional<List<Booking>> findAllByUsersId(Long userId);
-
+    Optional<Booking> findBookingById(Long bookingId);
 }
