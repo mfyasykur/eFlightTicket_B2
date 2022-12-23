@@ -24,7 +24,9 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -127,7 +129,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<Schedule>  getAllSchedulesByDefaultFilter(String departureCityName, String arrivalCityName, LocalDate departureDate, Schedule.FlightClass flightClass, int page, int size, String[] sort) {
+    public List<Schedule>  getAllSchedulesByDefaultFilter(String departureCityName, String arrivalCityName, LocalDate departureDate, String flightClass, int page, int size, String[] sort) {
 
             List<Order> orders = new ArrayList<>();
 
@@ -142,9 +144,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             Pageable paging = PageRequest.of(page, size, Sort.by(orders));
 
-            Page<Schedule> schedulePage = scheduleRepository.findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDateAndFlightClass(departureCityName, arrivalCityName, departureDate, flightClass, paging);
+            String departureCityNameConverted = convertToTitleCaseSplitting(departureCityName);
+            String arrivalCityNameConverted = convertToTitleCaseSplitting(arrivalCityName);
+            String flightClassConverted = flightClass.toUpperCase();
 
-            log.info("Has successfully retrieved all schedules filtered by departure: {}, arrival: {}, departure date: {}, flight class: {}, with page = {}, size = {}, sort by {}", departureCityName, arrivalCityName, departureDate, flightClass, page, size, sort);
+            Page<Schedule> schedulePage = scheduleRepository.findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDateAndFlightClassOrderByNetPrice(departureCityNameConverted, arrivalCityNameConverted, departureDate, Schedule.FlightClass.valueOf(flightClassConverted), paging);
+
+            log.info("Has successfully retrieved all schedules filtered by departure: {}, arrival: {}, departure date: {}, flight class: {}, with page = {}, size = {}, sort by {}", departureCityNameConverted, arrivalCityNameConverted, departureDate, flightClassConverted, page, size, sort);
 
             return schedulePage.stream().toList();
     }
@@ -165,15 +171,18 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             Pageable paging = PageRequest.of(page, size, Sort.by(orders));
 
-            Page<Schedule> schedulePage = scheduleRepository.findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDate(departureCityName, arrivalCityName, departureDate, paging);
+            String departureCityNameConverted = convertToTitleCaseSplitting(departureCityName);
+            String arrivalCityNameConverted = convertToTitleCaseSplitting(arrivalCityName);
 
-            log.info("Has successfully retrieved all schedules filtered by departure: {}, arrival: {}, departure date: {}, with page = {}, size = {}, sort by {}", departureCityName, arrivalCityName, departureDate, page, size, sort);
+            Page<Schedule> schedulePage = scheduleRepository.findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDate(departureCityNameConverted, arrivalCityNameConverted, departureDate, paging);
+
+            log.info("Has successfully retrieved all schedules filtered by departure: {}, arrival: {}, departure date: {}, with page = {}, size = {}, sort by {}", departureCityNameConverted, arrivalCityNameConverted, departureDate, page, size, sort);
 
             return schedulePage.stream().toList();
     }
 
     @Override
-    public List<Schedule> getAvailableSchedulesFilteredByDepartureTime(String departureCityName, String arrivalCityName, LocalDate departureDate, Schedule.FlightClass flightClass, String timeRange, int page, int size, String[] sort) {
+    public List<Schedule> getAvailableSchedulesFilteredByDepartureTime(String departureCityName, String arrivalCityName, LocalDate departureDate, String flightClass, String timeRange, int page, int size, String[] sort) {
 
         LocalTime startTime;
         LocalTime endTime;
@@ -221,9 +230,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         Pageable paging = PageRequest.of(page, size, Sort.by(orders));
 
-        Page<Schedule> schedulePage = scheduleRepository.findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDateAndFlightClassAndDepartureTimeBetween(departureCityName, arrivalCityName, departureDate, flightClass, startTime, endTime, paging);
+        String departureCityNameConverted = convertToTitleCaseSplitting(departureCityName);
+        String arrivalCityNameConverted = convertToTitleCaseSplitting(arrivalCityName);
+        String flightClassConverted = flightClass.toUpperCase();
 
-        log.info("Has successfully retrieved all schedules filtered by departure: {}, arrival: {}, departure date: {}, flight class: {}, departure time between: {} - {}, with page = {}, size = {}, sort by {}", departureCityName, arrivalCityName, departureDate, flightClass, startTime, endTime, page, size, sort);
+        Page<Schedule> schedulePage = scheduleRepository.findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDateAndFlightClassAndDepartureTimeBetween(departureCityNameConverted, arrivalCityNameConverted, departureDate, Schedule.FlightClass.valueOf(flightClassConverted), startTime, endTime, paging);
+
+        log.info("Has successfully retrieved all schedules filtered by departure: {}, arrival: {}, departure date: {}, flight class: {}, departure time between: {} - {}, with page = {}, size = {}, sort by {}", departureCityNameConverted, arrivalCityNameConverted, departureDate, flightClassConverted, startTime, endTime, page, size, sort);
 
         return schedulePage.stream().toList();
     }
@@ -253,6 +266,22 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public Schedule mapToEntity(ScheduleDTO scheduleDTO) {
         return mapper.map(scheduleDTO, Schedule.class);
+    }
+
+    private static final String WORD_SEPARATOR = " ";
+    public static String convertToTitleCaseSplitting(String text) {
+        if (text == null || text.isEmpty()) {
+            return text;
+        }
+
+        return Arrays
+                .stream(text.split(WORD_SEPARATOR))
+                .map(word -> word.isEmpty()
+                        ? word
+                        : Character.toTitleCase(word.charAt(0)) + word
+                        .substring(1)
+                        .toLowerCase())
+                .collect(Collectors.joining(WORD_SEPARATOR));
     }
 
 }
