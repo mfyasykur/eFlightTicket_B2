@@ -13,5 +13,6 @@ public interface BookingService {
     Booking payment(PaymentDTO paymentDTO);
     List<Booking> successBookingHistory(Long userId, Boolean isSuccess);
     List<Booking> getAllBookingHistory(Long userId);
+    Booking getBookingHistory(Long bookingId);
 
 }

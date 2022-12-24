@@ -127,4 +127,14 @@ public class BookingServiceImpl implements BookingService {
 
     }
 
+    @Override
+    public Booking getBookingHistory(Long bookingId) {
+        return bookingRepository.findBookingById(bookingId).orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("bookings", "booking", bookingId);
+            ex.setApiResponse();
+            log.info(ex.getMessageMap().get("error"));
+            throw ex;
+        });
+    }
+
 }

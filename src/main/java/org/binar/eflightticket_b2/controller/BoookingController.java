@@ -100,4 +100,22 @@ public class BoookingController {
         ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponses);
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
+
+    @GetMapping("/booking/history")
+    public ResponseEntity<ApiResponse> getBookingHistory(@Valid @RequestParam Long bookingId){
+        Booking booking = bookingService.getBookingHistory(bookingId);
+        List<PassengerRequest> collectedPassengerRequests = booking.getPassengersList().stream().map(passengerService::mapToDTO).toList();
+        ScheduleDTO scheduleDTO = scheduleService.mapToDto(booking.getSchedule());
+        BookingResponse bookingResponse = BookingResponse.builder()
+                .id(booking.getId())
+                .bookingCode(booking.getBookingCode())
+                .userId(booking.getUsers().getId())
+                .isSuccess(booking.getIsSuccess())
+                .schedule(scheduleDTO)
+                .dueValid(booking.getDueValid())
+                .passengers(collectedPassengerRequests)
+                .build();
+        ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponse);
+        return new ResponseEntity<>(success, HttpStatus.OK);
+    }
 }
