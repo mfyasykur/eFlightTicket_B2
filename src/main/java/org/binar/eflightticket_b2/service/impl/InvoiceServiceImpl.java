@@ -1,5 +1,11 @@
 package org.binar.eflightticket_b2.service.impl;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageConfig;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.binar.eflightticket_b2.dto.InvoiceDTO;
@@ -14,7 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -70,5 +80,47 @@ public class InvoiceServiceImpl implements InvoiceService {
         Map<String, Object> pdfInvoiceParams = new HashMap<>();
         pdfInvoiceParams.put("poweredby", "ANAM AIR");
         return pdfInvoiceParams;
+    }
+
+    @Override
+    public void generateQRCodeImage(Long bookingId, int width, int height, String filePath) throws WriterException, IOException {
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> {
+                    log.error("ERROR : Booking data not found");
+                    return new ResourceNotFoundException("Booking", "id", bookingId);
+                });
+
+        String bookingCode = booking.getBookingCode();
+        log.info("Booking code found with id: {}", booking.getId());
+
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(bookingCode, BarcodeFormat.QR_CODE, width, height);
+
+        Path path = FileSystems.getDefault().getPath(filePath);
+        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+    }
+
+    @Override
+    public byte[] getQRCodeImage(Long bookingId, int width, int height) throws WriterException, IOException {
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> {
+                    log.error("ERROR : Booking data not found");
+                    return new ResourceNotFoundException("Booking", "id", bookingId);
+                });
+
+        String bookingCode = booking.getBookingCode();
+        log.info("Booking code found with id: {}", booking.getId());
+
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(bookingCode, BarcodeFormat.QR_CODE, width, height);
+
+        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+        MatrixToImageConfig config = new MatrixToImageConfig();
+
+        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream, config);
+
+        return pngOutputStream.toByteArray();
     }
 }
