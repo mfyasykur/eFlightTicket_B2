@@ -14,22 +14,18 @@ import java.time.LocalTime;
 @Builder
 public class InvoiceDTO {
 
-    private String booking_code;
-    private Integer gender;
-    private String first_name;
-    private String last_name;
-    private Integer age_category;
-    private LocalDate departure_date;
-    private LocalTime departure_time;
-    private LocalDate arrival_date;
-    private LocalTime arrival_time;
-    private String departure_airport;
-    private String arrival_airport;
-    private String departure_airport_code;
-    private String arrival_airport_code;
-    private String departure_city;
-    private String arrival_city;
-    private String departure_country;
-    private String arrival_country;
+    private String bookingCode;
+    private LocalDate departureDate;
+    private LocalTime departureTime;
+    private LocalDate arrivalDate;
+    private LocalTime arrivalTime;
+    private String departureAirport;
+    private String arrivalAirport;
+    private String departureAirportCode;
+    private String arrivalAirportCode;
+    private String departureCity;
+    private String arrivalCity;
+    private String departureCountry;
+    private String arrivalCountry;
 
 }
