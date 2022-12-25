@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "Airport")
 public class Airport extends BaseEntity {
 
     @Column(name = "airport_name")
