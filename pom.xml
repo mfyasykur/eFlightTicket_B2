@@ -9,7 +9,7 @@
     </parent>
     <groupId>org.binar</groupId>
     <artifactId>eFlightTicket_B2</artifactId>
-  <version>1.3.0</version>
+  <version>1.3.0-SNAPSHOT</version>
     <name>eFlightTicket_B2</name>
     <description>eFlightTicket_B2</description>
     <properties>
