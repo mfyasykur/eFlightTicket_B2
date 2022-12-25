@@ -9,8 +9,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.binar.eflightticket_b2.dto.InvoiceDTO;
+import org.binar.eflightticket_b2.dto.PassengerInvoice;
 import org.binar.eflightticket_b2.entity.Booking;
-import org.binar.eflightticket_b2.entity.Passenger;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.BookingRepository;
 import org.binar.eflightticket_b2.service.InvoiceService;
@@ -23,10 +23,6 @@ import org.springframework.util.ResourceUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -44,42 +40,47 @@ public class InvoiceServiceImpl implements InvoiceService {
                     log.error("ERROR : Report data not found");
                     return new ResourceNotFoundException("Booking", "id", bookingId);
                 });
-        Map<String, Object> dataMap = dataParameter(booking);
-        List<InvoiceDTO> bookingsCollect = new LinkedList<>();
-        booking.getPassengersList().forEach(passenger -> {
-            InvoiceDTO invoice = InvoiceDTO.builder()
-                    .booking_code(booking.getBookingCode())
-                    .gender(passenger.getGender().ordinal())
-                    .first_name(passenger.getFirstName())
-                    .last_name(passenger.getLastName())
-                    .age_category(passenger.getAgeCategory().ordinal())
-                    .departure_date(booking.getSchedule().getDepartureDate())
-                    .departure_time(booking.getSchedule().getDepartureTime())
-                    .arrival_date(booking.getSchedule().getArrivalDate())
-                    .arrival_time(booking.getSchedule().getArrivalTime())
-                    .departure_airport(booking.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportName())
-                    .departure_airport_code(booking.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportCode())
-                    .departure_city(booking.getSchedule().getFlightDetail().getDeparture().getCityDetails().getCityName())
-                    .departure_country(booking.getSchedule().getFlightDetail().getDeparture().getCountryDetails().getCountryName())
-                    .arrival_airport(booking.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportName())
-                    .arrival_airport_code(booking.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportCode())
-                    .arrival_city(booking.getSchedule().getFlightDetail().getArrival().getCityDetails().getCityName())
-                    .arrival_country(booking.getSchedule().getFlightDetail().getArrival().getCountryDetails().getCountryName())
-                    .build();
-            bookingsCollect.add(invoice);
-        });
-        String absolutePath = ResourceUtils.getFile("classpath:AnamAIR.jrxml").getAbsolutePath();
-        JasperPrint jasperPrint = JasperFillManager.fillReport(JasperCompileManager.compileReport(absolutePath),
-                dataMap,  new JRBeanCollectionDataSource(bookingsCollect));
+        List<InvoiceDTO> bookings = new LinkedList<>();
+        List<PassengerInvoice> passengers = new LinkedList<>();
 
+        InvoiceDTO invoice = InvoiceDTO.builder()
+                .bookingCode(booking.getBookingCode())
+                .departureDate(booking.getSchedule().getDepartureDate())
+                .departureTime(booking.getSchedule().getDepartureTime())
+                .arrivalDate(booking.getSchedule().getArrivalDate())
+                .arrivalTime(booking.getSchedule().getArrivalTime())
+                .departureAirport(booking.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportName())
+                .departureAirportCode(booking.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportCode())
+                .departureCity(booking.getSchedule().getFlightDetail().getDeparture().getCityDetails().getCityName())
+                .departureCountry(booking.getSchedule().getFlightDetail().getDeparture().getCountryDetails().getCountryName())
+                .arrivalAirport(booking.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportName())
+                .arrivalAirportCode(booking.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportCode())
+                .arrivalCity(booking.getSchedule().getFlightDetail().getArrival().getCityDetails().getCityName())
+                .arrivalCountry(booking.getSchedule().getFlightDetail().getArrival().getCountryDetails().getCountryName())
+                .build();
+        bookings.add(invoice);
+        booking.getPassengersList().forEach(passenger -> {
+            PassengerInvoice listPassenger = PassengerInvoice.builder()
+                    .firstName(passenger.getFirstName())
+                    .lastName(passenger.getLastName())
+                    .gender(passenger.getGender().toString())
+                    .ageCategory(passenger.getAgeCategory().toString())
+                    .baggage(passenger.getBaggage().toString())
+                    .build();
+            passengers.add(listPassenger);
+        });
+        Map<String, Object> pdfInvoiceParams = new HashMap<>();
+        JRBeanCollectionDataSource bookingscollect = new JRBeanCollectionDataSource(bookings);
+        JRBeanCollectionDataSource passengerCollect = new JRBeanCollectionDataSource(passengers);
+        String subReportClasspath = ResourceUtils.getFile("classpath:").getAbsolutePath();
+        String absolutePath = ResourceUtils.getFile("classpath:anamairv2.jrxml").getAbsolutePath();
+        pdfInvoiceParams.put("bookingscollect", bookingscollect);
+        pdfInvoiceParams.put("passengerCollect", passengerCollect);
+        pdfInvoiceParams.put("SUB_DIR", subReportClasspath);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(JasperCompileManager.compileReport(absolutePath),
+               pdfInvoiceParams, new JREmptyDataSource());
         log.info("Info :  Has successfully created ETicket!");
         return jasperPrint;
-    }
-
-    public Map<String, Object> dataParameter(Booking bookings){
-        Map<String, Object> pdfInvoiceParams = new HashMap<>();
-        pdfInvoiceParams.put("poweredby", "ANAM AIR");
-        return pdfInvoiceParams;
     }
 
     @Override
