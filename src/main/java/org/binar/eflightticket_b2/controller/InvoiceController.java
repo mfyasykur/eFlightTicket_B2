@@ -11,14 +11,17 @@ import org.binar.eflightticket_b2.service.impl.InvoiceServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Base64;
 
 @RestController
@@ -51,15 +54,22 @@ public class InvoiceController {
     }
 
     @GetMapping("/showQRCode")
-    public ResponseEntity<ApiResponse> generateQRCode(@RequestParam(name = "bookingId") Long bookingId) throws WriterException, IOException {
+    public ResponseEntity<byte[]> getQRCode(@RequestParam(name = "bookingId") Long bookingId) throws WriterException, IOException {
 
         byte[] image;
-        image = invoiceService.getQRCodeImage(bookingId, 250, 250);
-        String qrCode = Base64.getEncoder().encodeToString(image);
+        image = invoiceService.generateQRCodeImage(bookingId, 250, 250);
+        log.info("QR Code has successfully generated");
 
-        ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "success", qrCode);
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
+    }
 
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=invoiceQRCode.PNG").body(apiResponse);
+    @GetMapping("/generateQRCode")
+    public ResponseEntity<byte[]> generateQRCode(@RequestParam Long bookingId) throws WriterException, IOException {
+
+        byte[] image;
+        image = invoiceService.generateQRCodeImage(bookingId, 250, 250);
+
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Invoice-QRCode-" + bookingId + ".png").body(image);
     }
 
 }
