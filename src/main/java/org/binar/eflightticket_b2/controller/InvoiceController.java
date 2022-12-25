@@ -27,23 +27,18 @@ public class InvoiceController {
 
 
     @GetMapping("/showticket")
-    public ResponseEntity<org.binar.eflightticket_b2.payload.ApiResponse> getEticket(HttpServletResponse response, @RequestParam(name = "bookingId") Long bookingId) throws IOException, JRException {
+    public void getEticket(HttpServletResponse response, @RequestParam(name = "bookingId") Long bookingId) throws IOException, JRException {
         JasperPrint jasperPrint = invoiceService.generateInvoice(bookingId);
-//        response.setContentType("application/x-download");
-        response.addHeader("Content-disposition", "attachment; filename=invoice_report.pdf");
+        response.addHeader("Content-disposition", "inline; filename=invoice_report.pdf");
         OutputStream out = response.getOutputStream();
-        JasperExportManager.exportReportToPdfStream(jasperPrint,out);
-        ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "success", jasperPrint);
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        JasperExportManager.exportReportToPdf(jasperPrint);
     }
 
     @GetMapping("/generateticket")
     public void generateEticketPrint(HttpServletResponse response, @RequestParam(name = "bookingId") Long bookingId) throws IOException, JRException {
         JasperPrint jasperPrint = invoiceService.generateInvoice(bookingId);
-        response.setContentType("application/x-download");
         response.addHeader("Content-disposition", "attachment; filename=eticket"+bookingId+".pdf");
         OutputStream out = response.getOutputStream();
-        JasperExportManager.exportReportToPdfStream(jasperPrint,out);
+        JasperExportManager.exportReportToPdfStream(jasperPrint, out);
     }
-
 }
