@@ -83,31 +83,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public void generateQRCodeImage(Long bookingId, int width, int height, String filePath) throws WriterException, IOException {
+    public byte[] generateQRCodeImage(Long bookingId, int width, int height) throws WriterException, IOException {
 
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> {
                     log.error("ERROR : Booking data not found");
-                    return new ResourceNotFoundException("Booking", "id", bookingId);
-                });
-
-        String bookingCode = booking.getBookingCode();
-        log.info("Booking code found with id: {}", booking.getId());
-
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix = qrCodeWriter.encode(bookingCode, BarcodeFormat.QR_CODE, width, height);
-
-        Path path = FileSystems.getDefault().getPath(filePath);
-        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
-    }
-
-    @Override
-    public byte[] getQRCodeImage(Long bookingId, int width, int height) throws WriterException, IOException {
-
-        Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> {
-                    log.error("ERROR : Booking data not found");
-                    return new ResourceNotFoundException("Booking", "id", bookingId);
+                    ResourceNotFoundException exception = new ResourceNotFoundException("booking", "id", bookingId);
+                    exception.setApiResponse();
+                    throw exception;
                 });
 
         String bookingCode = booking.getBookingCode();
@@ -117,9 +100,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         BitMatrix bitMatrix = qrCodeWriter.encode(bookingCode, BarcodeFormat.QR_CODE, width, height);
 
         ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
-        MatrixToImageConfig config = new MatrixToImageConfig();
+        MatrixToImageConfig config = new MatrixToImageConfig(0xffffffff, 0xff41e2ff);
 
-        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream, config);
+        MatrixToImageWriter.writeToStream(bitMatrix, "png", pngOutputStream, config);
 
         return pngOutputStream.toByteArray();
     }
