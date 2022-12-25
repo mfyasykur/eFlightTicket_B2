@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="anamairv2" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="41f7d2a0-352e-4d85-9559-40795499c317">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="passengerCollect" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="bookingscollect" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="SUB_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<rectangle>
+				<reportElement x="240" y="0" width="315" height="67" backcolor="#0A99FF" uuid="b82cf494-eab6-4b6d-9436-94b53900699f"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="240" y="0" width="315" height="80" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="7d73e332-b21d-4910-ba18-45840f5e4c24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Segoe Script" size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Anam Air ]]></text>
+			</staticText>
+			<image>
+				<reportElement x="10" y="10" width="100" height="49" uuid="32a87b0d-72d2-4935-85a0-e95a0131047e"/>
+				<imageExpression><![CDATA["https://res.cloudinary.com/eflightticketing-b2/image/upload/v1671554795/photo_6120784539962946259_y_xlkx32.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="67" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="1" y="0" width="140" height="27" uuid="54e4e16c-e25c-4d47-8674-bcce45a11a04"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Arial Black" size="14"/>
+				</textElement>
+				<text><![CDATA[Flight E-Ticket]]></text>
+			</staticText>
+			<image>
+				<reportElement x="281" y="0" width="130" height="31" uuid="92df128b-be86-44ea-9375-82a9f6e93537"/>
+				<imageExpression><![CDATA["https://res.cloudinary.com/eflightticketing-b2/image/upload/v1671597527/etiet_asset3_zs8efp.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="411" y="0" width="129" height="40" uuid="b003d2e3-e7f0-4479-834b-ad93f081e4ef"/>
+				<imageExpression><![CDATA["https://res.cloudinary.com/eflightticketing-b2/image/upload/v1671597527/etiket_asset2_zls3rz.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="140" y="5" width="140" height="50" uuid="a7de68ce-d8d2-4750-8c94-7d62c6ba9a22"/>
+				<imageExpression><![CDATA["https://res.cloudinary.com/eflightticketing-b2/image/upload/v1671597527/etiket_asset1_ok02hh.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="115" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<subreport>
+				<reportElement x="-20" y="0" width="540" height="100" uuid="d3ce8bcc-e95f-4fe8-80a1-bd7d59917541"/>
+				<dataSourceExpression><![CDATA[$P{bookingscollect}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUB_DIR}+"\\booking.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="285">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<property name="com.jaspersoft.studio.layout"/>
+			<rectangle>
+				<reportElement x="7" y="25" width="549" height="115" uuid="a4a9fb39-decd-4f1d-be81-c3fc9407a59c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="-5" width="189" height="30" uuid="f31cca92-5fe8-4898-8cda-a1245ac470a0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="16"/>
+				</textElement>
+				<text><![CDATA[Passenger Details : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="33" y="30" width="37" height="30" uuid="954c4994-754a-4272-8b08-a6a2f9d47eaf"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[tittle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="30" width="128" height="30" uuid="2486fd5f-d362-4905-b89c-93a212c790e2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="198" y="30" width="81" height="30" uuid="8c98a839-321e-490b-b2b8-f5dee23b6b00"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ticket Type]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="18" y="50" width="544" height="30" uuid="ffa11867-3f69-4bc4-a93b-150bf16a24ec"/>
+				<dataSourceExpression><![CDATA[$P{passengerCollect}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUB_DIR}+"\\passenger.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="7" y="160" width="555" height="106" uuid="41a46f31-7f63-4491-90ab-3f4f22d3572f"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<text><![CDATA[Important Notes :
+
+- To view or see details of your order, please visit the official Anam Air Group website (anamair.co.id).
+-Please arrive at the departure terminal 90 minutes before departure for domestic flights and 2 hours for international flights.
+-Check-in closes 45 minutes before departure time.
+-Please arrive at the departure gate 30 minutes before departure time.
+-Please refer to the Terms and Conditions of Anam Air for more information. Passengers/ticket holders are subject to this
+on the terms and conditions of flight set by Anam Air.]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="60" splitType="Stretch">
+			<rectangle>
+				<reportElement x="1" y="4" width="555" height="54" backcolor="#05C1FF" uuid="df3562be-1c0a-4c41-8cec-b8493365e0f0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="4" width="555" height="54" backcolor="#05C1FF" uuid="18b66ef8-d44f-4ee5-b558-386886783096"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="200" y="30" width="168" height="30" forecolor="#FFFFFF" uuid="e0eaac2b-9124-43d1-9e94-bbedff335351"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[© anam air all right reserved]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>
