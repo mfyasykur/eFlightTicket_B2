@@ -1,12 +1,16 @@
 package org.binar.eflightticket_b2.service.impl;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageConfig;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.binar.eflightticket_b2.dto.InvoiceDTO;
 import org.binar.eflightticket_b2.dto.PassengerInvoice;
-import org.binar.eflightticket_b2.dto.PassengerRequest;
 import org.binar.eflightticket_b2.entity.Booking;
-import org.binar.eflightticket_b2.entity.Passenger;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.BookingRepository;
 import org.binar.eflightticket_b2.service.InvoiceService;
@@ -16,9 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -77,5 +81,30 @@ public class InvoiceServiceImpl implements InvoiceService {
                pdfInvoiceParams, new JREmptyDataSource());
         log.info("Info :  Has successfully created ETicket!");
         return jasperPrint;
+    }
+
+    @Override
+    public byte[] generateQRCodeImage(Long bookingId, int width, int height) throws WriterException, IOException {
+
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> {
+                    log.error("ERROR : Booking data not found");
+                    ResourceNotFoundException exception = new ResourceNotFoundException("booking", "id", bookingId);
+                    exception.setApiResponse();
+                    throw exception;
+                });
+
+        String bookingCode = booking.getBookingCode();
+        log.info("Booking code found with id: {}", booking.getId());
+
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(bookingCode, BarcodeFormat.QR_CODE, width, height);
+
+        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+        MatrixToImageConfig config = new MatrixToImageConfig(0xffffffff, 0xff41e2ff);
+
+        MatrixToImageWriter.writeToStream(bitMatrix, "png", pngOutputStream, config);
+
+        return pngOutputStream.toByteArray();
     }
 }
