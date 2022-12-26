@@ -101,4 +101,15 @@ public class CountryServiceImplTest {
         Assertions.assertNotNull(actualValue);
     }
 
+    @Test
+    @DisplayName("Delete country success")
+    void deleteCountry(){
+        Country country = new Country();
+        country.setId(Long.valueOf("1"));
+        country.setCountryName("Indonesia");
+        country.setCountryCode("IDN");
+
+        Mockito.when(countryRepository.findById(1L)).thenReturn(Optional.of(country));
+        countryRepository.delete(country);
+    }
 }
