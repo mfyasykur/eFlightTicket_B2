@@ -17,12 +17,14 @@ import org.binar.eflightticket_b2.service.InvoiceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 @Service
@@ -33,7 +35,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     private BookingRepository bookingRepository;
 
     @Override
-    public JasperPrint generateInvoice(Long bookingId) throws FileNotFoundException, JRException {
+    public JasperPrint generateInvoice(Long bookingId) throws IOException, JRException {
 
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> {
@@ -72,8 +74,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         Map<String, Object> pdfInvoiceParams = new HashMap<>();
         JRBeanCollectionDataSource bookingscollect = new JRBeanCollectionDataSource(bookings);
         JRBeanCollectionDataSource passengerCollect = new JRBeanCollectionDataSource(passengers);
+        ResourceLoader resourceLoader = new DefaultResourceLoader();
+        Resource resource = resourceLoader.getResource("classpath:anamairv2.jrxml");
+        Reader reader = new InputStreamReader(resource.getInputStream());
+        String absolutePath = FileCopyUtils.copyToString(reader);
         String subReportClasspath = ResourceUtils.getFile("classpath:").getAbsolutePath();
-        String absolutePath = ResourceUtils.getFile("classpath:anamairv2.jrxml").getAbsolutePath();
         pdfInvoiceParams.put("bookingscollect", bookingscollect);
         pdfInvoiceParams.put("passengerCollect", passengerCollect);
         pdfInvoiceParams.put("SUB_DIR", subReportClasspath);
