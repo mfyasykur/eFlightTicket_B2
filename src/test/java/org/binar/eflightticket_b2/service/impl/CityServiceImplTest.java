@@ -100,4 +100,15 @@ public class CityServiceImplTest {
         Assertions.assertNotNull(actualValue);
     }
 
+    @Test
+    @DisplayName("Delete city success")
+    void deleteCity(){
+        City city = new City();
+        city.setId(Long.valueOf("1"));
+        city.setCityName("Jakarta");
+        city.setCityCode("JKT");
+
+        Mockito.when(cityRepository.findById(1L)).thenReturn(Optional.of(city));
+        cityRepository.delete(city);
+    }
 }
