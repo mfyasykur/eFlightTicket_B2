@@ -54,4 +54,17 @@ public class AirportServiceImplTest {
         return airportList;
     }
 
+    @Test
+    @DisplayName("Getting all airport Success")
+    void getAllAirport() {
+        List<Airport> airportList = getDummyData();
+        Mockito.when(airportRepository.findAll()).thenReturn(airportList);
+
+        var actualValue = airportServiceImpl.findAll();
+        Assertions.assertEquals(1, actualValue.size());
+        Assertions.assertEquals("Soekarno - Hatta", actualValue.get(0).getAirportName());
+        Assertions.assertEquals("SKH", actualValue.get(0).getAirportCode());
+    }
+
+
 }
