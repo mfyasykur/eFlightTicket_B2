@@ -52,14 +52,22 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .departureTime(booking.getSchedule().getDepartureTime())
                 .arrivalDate(booking.getSchedule().getArrivalDate())
                 .arrivalTime(booking.getSchedule().getArrivalTime())
-                .departureAirport(booking.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportName())
-                .departureAirportCode(booking.getSchedule().getFlightDetail().getDeparture().getAirportDetails().getAirportCode())
-                .departureCity(booking.getSchedule().getFlightDetail().getDeparture().getCityDetails().getCityName())
-                .departureCountry(booking.getSchedule().getFlightDetail().getDeparture().getCountryDetails().getCountryName())
-                .arrivalAirport(booking.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportName())
-                .arrivalAirportCode(booking.getSchedule().getFlightDetail().getArrival().getAirportDetails().getAirportCode())
-                .arrivalCity(booking.getSchedule().getFlightDetail().getArrival().getCityDetails().getCityName())
-                .arrivalCountry(booking.getSchedule().getFlightDetail().getArrival().getCountryDetails().getCountryName())
+                .departureAirport(booking.getSchedule().getFlightDetail()
+                        .getDeparture().getAirportDetails().getAirportName())
+                .departureAirportCode(booking.getSchedule().getFlightDetail()
+                        .getDeparture().getAirportDetails().getAirportCode())
+                .departureCity(booking.getSchedule().getFlightDetail()
+                        .getDeparture().getCityDetails().getCityName())
+                .departureCountry(booking.getSchedule().getFlightDetail()
+                        .getDeparture().getCountryDetails().getCountryName())
+                .arrivalAirport(booking.getSchedule().getFlightDetail().getArrival()
+                        .getAirportDetails().getAirportName())
+                .arrivalAirportCode(booking.getSchedule().getFlightDetail()
+                        .getArrival().getAirportDetails().getAirportCode())
+                .arrivalCity(booking.getSchedule().getFlightDetail()
+                        .getArrival().getCityDetails().getCityName())
+                .arrivalCountry(booking.getSchedule().getFlightDetail()
+                        .getArrival().getCountryDetails().getCountryName())
                 .build();
         bookings.add(invoice);
         booking.getPassengersList().forEach(passenger -> {
@@ -76,12 +84,14 @@ public class InvoiceServiceImpl implements InvoiceService {
         JRBeanCollectionDataSource bookingscollect = new JRBeanCollectionDataSource(bookings);
         JRBeanCollectionDataSource passengerCollect = new JRBeanCollectionDataSource(passengers);
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("anamairv2.jrxml");
-        String path1 = getClass().getClassLoader().getResource("booking.jasper").getPath();
-        String path2 = getClass().getClassLoader().getResource("passenger.jasper").getPath();
+        String absolutePath = ResourceUtils.getFile("classpath:booking.jasper").getAbsolutePath();
+        String absolutePath2 = ResourceUtils.getFile("classpath:passenger.jasper").getAbsolutePath();
+        String subReportPath1 = getClass().getClassLoader().getResource("booking.jasper").toString();
+        String subReportPath2 = getClass().getClassLoader().getResource("passenger.jasper").toString();
         pdfInvoiceParams.put("bookingscollect", bookingscollect);
         pdfInvoiceParams.put("passengerCollect", passengerCollect);
-        pdfInvoiceParams.put("SUB_DIR1", path1);
-        pdfInvoiceParams.put("SUB_DIR2", path2);
+        pdfInvoiceParams.put("SUB_DIR1", absolutePath);
+        pdfInvoiceParams.put("SUB_DIR2", absolutePath2);
         JasperPrint jasperPrint = JasperFillManager.fillReport(JasperCompileManager.compileReport(inputStream),
                pdfInvoiceParams, new JREmptyDataSource());
         log.info("Info :  Has successfully created ETicket!");
