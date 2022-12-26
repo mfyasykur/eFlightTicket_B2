@@ -83,4 +83,21 @@ public class AirportServiceImplTest {
         Assertions.assertEquals("SKH", actualValue.getAirportCode());
     }
 
+    @Test
+    @DisplayName("Getting airport By Id")
+    void airportFindById() {
+        Airport airport = new Airport();
+        airport.setId(Long.valueOf("1"));
+        airport.setAirportName("Soekarno - Hatta");
+        airport.setAirportCode("SKH");
+
+        Mockito.when(airportRepository.findById(Long.valueOf("1"))).thenReturn(Optional.of(airport));
+
+        var actualValue = airportServiceImpl.update(1L, airport);
+        Assertions.assertEquals(1L, actualValue.getId());
+        Assertions.assertEquals("Soekarno - Hatta", actualValue.getAirportName());
+        Assertions.assertEquals("SKH", actualValue.getAirportCode());
+        Assertions.assertNotNull(actualValue);
+    }
+
 }
