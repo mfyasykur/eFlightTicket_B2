@@ -76,10 +76,12 @@ public class InvoiceServiceImpl implements InvoiceService {
         JRBeanCollectionDataSource bookingscollect = new JRBeanCollectionDataSource(bookings);
         JRBeanCollectionDataSource passengerCollect = new JRBeanCollectionDataSource(passengers);
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("anamairv2.jrxml");
-        String subReportClasspath = ResourceUtils.getURL("target/").getPath();
+        String path1 = getClass().getClassLoader().getResource("booking.jasper").getPath();
+        String path2 = getClass().getClassLoader().getResource("passenger.jasper").getPath();
         pdfInvoiceParams.put("bookingscollect", bookingscollect);
         pdfInvoiceParams.put("passengerCollect", passengerCollect);
-        pdfInvoiceParams.put("SUB_DIR", subReportClasspath);
+        pdfInvoiceParams.put("SUB_DIR1", path1);
+        pdfInvoiceParams.put("SUB_DIR2", path2);
         JasperPrint jasperPrint = JasperFillManager.fillReport(JasperCompileManager.compileReport(inputStream),
                pdfInvoiceParams, new JREmptyDataSource());
         log.info("Info :  Has successfully created ETicket!");
