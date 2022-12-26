@@ -74,9 +74,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         Map<String, Object> pdfInvoiceParams = new HashMap<>();
         JRBeanCollectionDataSource bookingscollect = new JRBeanCollectionDataSource(bookings);
         JRBeanCollectionDataSource passengerCollect = new JRBeanCollectionDataSource(passengers);
-        ResourceLoader resourceLoader = new DefaultResourceLoader();
-        Resource resource = resourceLoader.getResource("classpath:anamairv2.jrxml");
-        InputStream inputStream = resource.getInputStream();
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("anamairv2.jrxml");
         String subReportClasspath = ResourceUtils.getFile("classpath:").getAbsolutePath();
         pdfInvoiceParams.put("bookingscollect", bookingscollect);
         pdfInvoiceParams.put("passengerCollect", passengerCollect);
