@@ -100,4 +100,15 @@ public class AirportServiceImplTest {
         Assertions.assertNotNull(actualValue);
     }
 
+    @Test
+    @DisplayName("Delete airport success")
+    void deleteAirport(){
+        Airport airport = new Airport();
+        airport.setId(Long.valueOf("1"));
+        airport.setAirportName("Soekarno - Hatta");
+        airport.setAirportCode("SKH");
+
+        Mockito.when(airportRepository.findById(1L)).thenReturn(Optional.of(airport));
+        airportRepository.delete(airport);
+    }
 }
