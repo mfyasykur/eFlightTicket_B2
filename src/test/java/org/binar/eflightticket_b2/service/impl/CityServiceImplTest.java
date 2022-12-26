@@ -83,4 +83,21 @@ public class CityServiceImplTest {
         Assertions.assertEquals("JKT", actualValue.getCityCode());
     }
 
+    @Test
+    @DisplayName("Getting city By Id")
+    void cityFindById() {
+        City city = new City();
+        city.setId(Long.valueOf("1"));
+        city.setCityName("Jakarta");
+        city.setCityCode("JKT");
+
+        Mockito.when(cityRepository.findById(Long.valueOf("1"))).thenReturn(Optional.of(city));
+
+        var actualValue = cityServiceImpl.update(1L, city);
+        Assertions.assertEquals(1L, actualValue.getId());
+        Assertions.assertEquals("Jakarta", actualValue.getCityName());
+        Assertions.assertEquals("JKT", actualValue.getCityCode());
+        Assertions.assertNotNull(actualValue);
+    }
+
 }
