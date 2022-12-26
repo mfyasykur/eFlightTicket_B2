@@ -4,8 +4,8 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="passengerCollect" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="bookingscollect" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
-	<parameter name="SUB_DIR1" class="java.lang.String"/>
-	<parameter name="SUB_DIR2" class="java.lang.String"/>
+	<parameter name="SUB_DIR1" class="java.lang.Object"/>
+	<parameter name="SUB_DIR2" class="java.lang.Object"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>

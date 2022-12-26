@@ -8,6 +8,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.binar.eflightticket_b2.dto.InvoiceDTO;
 import org.binar.eflightticket_b2.dto.PassengerInvoice;
 import org.binar.eflightticket_b2.entity.Booking;
@@ -84,14 +85,16 @@ public class InvoiceServiceImpl implements InvoiceService {
         JRBeanCollectionDataSource bookingscollect = new JRBeanCollectionDataSource(bookings);
         JRBeanCollectionDataSource passengerCollect = new JRBeanCollectionDataSource(passengers);
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("anamairv2.jrxml");
-        String absolutePath = ResourceUtils.getFile("classpath:booking.jasper").getAbsolutePath();
-        String absolutePath2 = ResourceUtils.getFile("classpath:passenger.jasper").getAbsolutePath();
-        String subReportPath1 = getClass().getClassLoader().getResource("booking.jasper").toString();
-        String subReportPath2 = getClass().getClassLoader().getResource("passenger.jasper").toString();
+        InputStream subReport1 = getClass().getClassLoader().getResourceAsStream("booking.jasper");
+        InputStream subReport2 = getClass().getClassLoader().getResourceAsStream("passenger.jasper");
+
+        JasperPrint subJasperReport1 = (JasperPrint) JRLoader.loadObject(subReport1);
+        JasperPrint subJasperReport2 = (JasperPrint) JRLoader.loadObject(subReport2);
+
         pdfInvoiceParams.put("bookingscollect", bookingscollect);
         pdfInvoiceParams.put("passengerCollect", passengerCollect);
-        pdfInvoiceParams.put("SUB_DIR1", absolutePath);
-        pdfInvoiceParams.put("SUB_DIR2", absolutePath2);
+        pdfInvoiceParams.put("SUB_DIR1", subJasperReport1);
+        pdfInvoiceParams.put("SUB_DIR2", subJasperReport2);
         JasperPrint jasperPrint = JasperFillManager.fillReport(JasperCompileManager.compileReport(inputStream),
                pdfInvoiceParams, new JREmptyDataSource());
         log.info("Info :  Has successfully created ETicket!");
