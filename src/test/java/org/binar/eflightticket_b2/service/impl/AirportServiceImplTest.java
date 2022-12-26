@@ -17,7 +17,7 @@ import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.Optional;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -66,5 +66,21 @@ public class AirportServiceImplTest {
         Assertions.assertEquals("SKH", actualValue.get(0).getAirportCode());
     }
 
+    @Test
+    @DisplayName("Update airport success")
+    void updateStudio() {
+        Airport airport = new Airport();
+        airport.setId(Long.valueOf("1"));
+        airport.setAirportName("Soekarno - Hatta");
+        airport.setAirportCode("SKH");
+
+        Mockito.when(airportRepository.findById(1L)).thenReturn(Optional.of(airport));
+        Mockito.when(airportRepository.save(airport)).thenReturn(airport);
+
+        var actualValue = airportServiceImpl.update(1L, airport);
+        Assertions.assertEquals(1L, actualValue.getId());
+        Assertions.assertEquals("Soekarno - Hatta", actualValue.getAirportName());
+        Assertions.assertEquals("SKH", actualValue.getAirportCode());
+    }
 
 }
