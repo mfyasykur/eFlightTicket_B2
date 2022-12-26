@@ -47,11 +47,22 @@ public class CityServiceImplTest {
         List<City> cityList = new ArrayList<>();
         City city = new City();
         city.setId(Long.valueOf("1"));
-        city.setCityName("Soekarno - Hatta");
-        city.setCityCode("SKH");
+        city.setCityName("Jakarta");
+        city.setCityCode("JKT");
         cityList.add(city);
         return cityList;
     }
 
+    @Test
+    @DisplayName("Getting all city Success")
+    void getAllCity() {
+        List<City> cityList = getDummyData();
+        Mockito.when(cityRepository.findAll()).thenReturn(cityList);
+
+        var actualValue = cityServiceImpl.findAll();
+        Assertions.assertEquals(1, actualValue.size());
+        Assertions.assertEquals("Jakarta", actualValue.get(0).getCityName());
+        Assertions.assertEquals("JKT", actualValue.get(0).getCityCode());
+    }
 
 }
