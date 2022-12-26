@@ -25,6 +25,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 
 @Service
@@ -75,7 +76,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         JRBeanCollectionDataSource bookingscollect = new JRBeanCollectionDataSource(bookings);
         JRBeanCollectionDataSource passengerCollect = new JRBeanCollectionDataSource(passengers);
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("anamairv2.jrxml");
-        String subReportClasspath = ResourceUtils.getFile("classpath:").getAbsolutePath();
+        String subReportClasspath = ResourceUtils.getURL("classpath:").getPath();
         pdfInvoiceParams.put("bookingscollect", bookingscollect);
         pdfInvoiceParams.put("passengerCollect", passengerCollect);
         pdfInvoiceParams.put("SUB_DIR", subReportClasspath);
