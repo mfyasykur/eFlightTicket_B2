@@ -88,8 +88,8 @@ public class InvoiceServiceImpl implements InvoiceService {
         InputStream subReport1 = getClass().getClassLoader().getResourceAsStream("booking.jasper");
         InputStream subReport2 = getClass().getClassLoader().getResourceAsStream("passenger.jasper");
 
-        JasperPrint subJasperReport1 = (JasperPrint) JRLoader.loadObject(subReport1);
-        JasperPrint subJasperReport2 = (JasperPrint) JRLoader.loadObject(subReport2);
+        JasperReport subJasperReport1 = (JasperReport) JRLoader.loadObject(subReport1);
+        JasperReport subJasperReport2 = (JasperReport) JRLoader.loadObject(subReport2);
 
         pdfInvoiceParams.put("bookingscollect", bookingscollect);
         pdfInvoiceParams.put("passengerCollect", passengerCollect);
