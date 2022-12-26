@@ -76,7 +76,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         JRBeanCollectionDataSource bookingscollect = new JRBeanCollectionDataSource(bookings);
         JRBeanCollectionDataSource passengerCollect = new JRBeanCollectionDataSource(passengers);
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("anamairv2.jrxml");
-        String subReportClasspath = ResourceUtils.getURL("").getPath();
+        String subReportClasspath = ResourceUtils.getURL("target/").getPath();
         pdfInvoiceParams.put("bookingscollect", bookingscollect);
         pdfInvoiceParams.put("passengerCollect", passengerCollect);
         pdfInvoiceParams.put("SUB_DIR", subReportClasspath);
