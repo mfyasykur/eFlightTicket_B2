@@ -48,10 +48,23 @@ public class CountryServiceImplTest {
         List<Country> countryList = new ArrayList<>();
         Country country = new Country();
         country.setId(Long.valueOf("1"));
-        country.setCountryName("Soekarno - Hatta");
-        country.setCountryCode("SKH");
+        country.setCountryName("Indonesia");
+        country.setCountryCode("IDN");
         countryList.add(country);
         return countryList;
     }
+
+    @Test
+    @DisplayName("Getting all country Success")
+    void getAllCountry() {
+        List<Country> countryList = getDummyData();
+        Mockito.when(countryRepository.findAll()).thenReturn(countryList);
+
+        var actualValue = countryServiceImpl.findAll();
+        Assertions.assertEquals(1, actualValue.size());
+        Assertions.assertEquals("Indonesia", actualValue.get(0).getCountryName());
+        Assertions.assertEquals("IDN", actualValue.get(0).getCountryCode());
+    }
+
 
 }
