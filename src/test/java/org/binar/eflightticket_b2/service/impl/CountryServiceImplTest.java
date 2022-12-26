@@ -17,6 +17,7 @@ import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -66,5 +67,21 @@ public class CountryServiceImplTest {
         Assertions.assertEquals("IDN", actualValue.get(0).getCountryCode());
     }
 
+    @Test
+    @DisplayName("Update country success")
+    void updateStudio() {
+        Country country = new Country();
+        country.setId(Long.valueOf("1"));
+        country.setCountryName("Indonesia");
+        country.setCountryCode("IDN");
+
+        Mockito.when(countryRepository.findById(1L)).thenReturn(Optional.of(country));
+        Mockito.when(countryRepository.save(country)).thenReturn(country);
+
+        var actualValue = countryServiceImpl.update(1L, country);
+        Assertions.assertEquals(1L, actualValue.getId());
+        Assertions.assertEquals("Indonesia", actualValue.getCountryName());
+        Assertions.assertEquals("IDN", actualValue.getCountryCode());
+    }
 
 }
