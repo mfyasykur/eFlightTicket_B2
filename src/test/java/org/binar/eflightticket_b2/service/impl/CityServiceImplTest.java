@@ -15,6 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class CityServiceImplTest {
@@ -39,5 +42,16 @@ public class CityServiceImplTest {
         Mockito.when(cityRepository.save(city)).thenReturn(city);
         Assertions.assertEquals(city, cityServiceImpl.add(city));
     }
+    
+    public static List<City> getDummyData() {
+        List<City> cityList = new ArrayList<>();
+        City city = new City();
+        city.setId(Long.valueOf("1"));
+        city.setCityName("Soekarno - Hatta");
+        city.setCityCode("SKH");
+        cityList.add(city);
+        return cityList;
+    }
+
 
 }
