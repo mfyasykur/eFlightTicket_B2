@@ -15,8 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-//import java.util.ArrayList;
-//import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 //import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,6 +42,16 @@ public class AirportServiceImplTest {
         airport.setAirportCode("SKH");
         Mockito.when(airportRepository.save(airport)).thenReturn(airport);
         Assertions.assertEquals(airport, airportServiceImpl.add(airport));
+    }
+
+    public static List<Airport> getDummyData() {
+        List<Airport> airportList = new ArrayList<>();
+        Airport airport = new Airport();
+        airport.setId(Long.valueOf("1"));
+        airport.setAirportName("Soekarno - Hatta");
+        airport.setAirportCode("SKH");
+        airportList.add(airport);
+        return airportList;
     }
 
 }
