@@ -17,6 +17,7 @@ import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -63,6 +64,23 @@ public class CityServiceImplTest {
         Assertions.assertEquals(1, actualValue.size());
         Assertions.assertEquals("Jakarta", actualValue.get(0).getCityName());
         Assertions.assertEquals("JKT", actualValue.get(0).getCityCode());
+    }
+
+    @Test
+    @DisplayName("Update city success")
+    void updateStudio() {
+        City city = new City();
+        city.setId(Long.valueOf("1"));
+        city.setCityName("Jakarta");
+        city.setCityCode("JKT");
+
+        Mockito.when(cityRepository.findById(1L)).thenReturn(Optional.of(city));
+        Mockito.when(cityRepository.save(city)).thenReturn(city);
+
+        var actualValue = cityServiceImpl.update(1L, city);
+        Assertions.assertEquals(1L, actualValue.getId());
+        Assertions.assertEquals("Jakarta", actualValue.getCityName());
+        Assertions.assertEquals("JKT", actualValue.getCityCode());
     }
 
 }
