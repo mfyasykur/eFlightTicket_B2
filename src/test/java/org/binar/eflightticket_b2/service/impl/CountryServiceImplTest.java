@@ -84,4 +84,21 @@ public class CountryServiceImplTest {
         Assertions.assertEquals("IDN", actualValue.getCountryCode());
     }
 
+    @Test
+    @DisplayName("Getting country By Id")
+    void countryFindById() {
+        Country country = new Country();
+        country.setId(Long.valueOf("1"));
+        country.setCountryName("Indonesia");
+        country.setCountryCode("IDN");
+
+        Mockito.when(countryRepository.findById(Long.valueOf("1"))).thenReturn(Optional.of(country));
+
+        var actualValue = countryServiceImpl.update(1L, country);
+        Assertions.assertEquals(1L, actualValue.getId());
+        Assertions.assertEquals("Indonesia", actualValue.getCountryName());
+        Assertions.assertEquals("IDN", actualValue.getCountryCode());
+        Assertions.assertNotNull(actualValue);
+    }
+
 }
