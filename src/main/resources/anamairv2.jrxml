@@ -4,7 +4,8 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="passengerCollect" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="bookingscollect" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
-	<parameter name="SUB_DIR" class="java.lang.String"/>
+	<parameter name="SUB_DIR1" class="java.lang.Object"/>
+	<parameter name="SUB_DIR2" class="java.lang.Object"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -60,7 +61,7 @@
 			<subreport>
 				<reportElement x="-20" y="0" width="540" height="100" uuid="d3ce8bcc-e95f-4fe8-80a1-bd7d59917541"/>
 				<dataSourceExpression><![CDATA[$P{bookingscollect}]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUB_DIR}+"\\booking.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUB_DIR1}]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="285">
@@ -100,7 +101,7 @@
 			<subreport>
 				<reportElement x="18" y="50" width="544" height="30" uuid="ffa11867-3f69-4bc4-a93b-150bf16a24ec"/>
 				<dataSourceExpression><![CDATA[$P{passengerCollect}]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUB_DIR}+"\\passenger.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUB_DIR2}]]></subreportExpression>
 			</subreport>
 			<staticText>
 				<reportElement x="7" y="160" width="555" height="106" uuid="41a46f31-7f63-4491-90ab-3f4f22d3572f"/>

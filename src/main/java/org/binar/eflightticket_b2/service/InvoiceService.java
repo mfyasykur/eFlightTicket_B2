@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public interface InvoiceService {
-    JasperPrint generateInvoice(Long bookingId) throws FileNotFoundException, JRException;
+    JasperPrint generateInvoice(Long bookingId) throws IOException, JRException;
 
     public byte[] generateQRCodeImage(Long bookingId, int width, int height) throws WriterException, IOException;
 
