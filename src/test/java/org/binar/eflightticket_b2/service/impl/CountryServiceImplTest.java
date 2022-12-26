@@ -15,6 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class CountryServiceImplTest {
@@ -38,6 +41,17 @@ public class CountryServiceImplTest {
         country.setCountryCode("IDN");
         Mockito.when(countryRepository.save(country)).thenReturn(country);
         Assertions.assertEquals(country, countryServiceImpl.add(country));
+    }
+
+
+    public static List<Country> getDummyData() {
+        List<Country> countryList = new ArrayList<>();
+        Country country = new Country();
+        country.setId(Long.valueOf("1"));
+        country.setCountryName("Soekarno - Hatta");
+        country.setCountryCode("SKH");
+        countryList.add(country);
+        return countryList;
     }
 
 }
