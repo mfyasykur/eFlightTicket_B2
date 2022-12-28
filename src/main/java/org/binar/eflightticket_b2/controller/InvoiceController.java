@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Base64;
 
 @RestController
 @RequestMapping("/invoice")
@@ -44,13 +45,14 @@ public class InvoiceController {
     }
 
     @GetMapping("/showQRCode")
-    public ResponseEntity<byte[]> getQRCode(@RequestParam(name = "bookingId") Long bookingId) throws WriterException, IOException {
+    public String getQRCode(@RequestParam(name = "bookingId") Long bookingId) throws WriterException, IOException {
 
         byte[] image;
         image = invoiceService.generateQRCodeImage(bookingId, 250, 250);
+        String qrCode = Base64.getEncoder().encodeToString(image);
         log.info("QR Code has successfully generated");
 
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
+        return qrCode;
     }
 
     @GetMapping("/generateQRCode")
