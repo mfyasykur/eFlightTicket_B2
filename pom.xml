@@ -9,7 +9,7 @@
     </parent>
     <groupId>org.binar</groupId>
     <artifactId>eFlightTicket_B2</artifactId>
-  <version>1.3.2-SNAPSHOT</version>
+  <version>1.3.3-SNAPSHOT</version>
     <name>eFlightTicket_B2</name>
     <description>eFlightTicket_B2</description>
     <properties>
@@ -157,7 +157,7 @@
     <scm>
         <connection>scm:git:git@github.com:mfyasykur/eFlightTicket_B2.git</connection>
         <developerConnection>scm:git:git@github.com:mfyasykur/eFlightTicket_B2.git</developerConnection>
-      <tag>anamair-1.4.0</tag>
+      <tag>anamair-1.3.2</tag>
   </scm>
 
 </project>
