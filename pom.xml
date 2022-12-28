@@ -123,6 +123,12 @@
             <artifactId>javase</artifactId>
             <version>3.5.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.9.0</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
