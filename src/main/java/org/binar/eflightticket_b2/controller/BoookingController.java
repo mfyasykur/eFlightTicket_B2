@@ -42,6 +42,8 @@ public class BoookingController {
                 .dueValid(booking.getDueValid())
                 .passengers(collectedPassengerRequests)
                 .finalPrice(booking.getFinalPrice())
+                .paymentMethod(booking.getPaymentMethod())
+                .paymentCode(booking.getPaymentCode())
                 .build();
         ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponse);
         return new ResponseEntity<>(success, HttpStatus.OK);
@@ -56,6 +58,9 @@ public class BoookingController {
                 .userId(paymentBooking.getUsers().getId())
                 .isSuccess(paymentBooking.getIsSuccess())
                 .isValid(paymentBooking.getIsValid())
+                .paymentMethod(paymentBooking.getPaymentMethod())
+                .finalPrice(paymentBooking.getFinalPrice())
+                .paymentCode(paymentBooking.getPaymentCode())
                 .build();
         ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponse);
         return new ResponseEntity<>(success, HttpStatus.OK);
@@ -75,6 +80,9 @@ public class BoookingController {
                     .schedule(scheduleDTO)
                     .dueValid(booking.getDueValid())
                     .passengers(collectedPassengerRequests)
+                    .paymentMethod(booking.getPaymentMethod())
+                    .finalPrice(booking.getFinalPrice())
+                    .paymentCode(booking.getPaymentCode())
                     .build();
         }).toList();
         ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponses);
@@ -95,6 +103,9 @@ public class BoookingController {
                     .schedule(scheduleDTO)
                     .dueValid(booking.getDueValid())
                     .passengers(collectedPassengerRequests)
+                    .paymentMethod(booking.getPaymentMethod())
+                    .finalPrice(booking.getFinalPrice())
+                    .paymentCode(booking.getPaymentCode())
                     .build();
         }).toList();
         ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponses);
@@ -115,6 +126,9 @@ public class BoookingController {
                 .dueValid(booking.getDueValid())
                 .passengers(collectedPassengerRequests)
                 .finalPrice(booking.getFinalPrice())
+                .paymentMethod(booking.getPaymentMethod())
+                .finalPrice(booking.getFinalPrice())
+                .paymentCode(booking.getPaymentCode())
                 .build();
         ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponse);
         return new ResponseEntity<>(success, HttpStatus.OK);

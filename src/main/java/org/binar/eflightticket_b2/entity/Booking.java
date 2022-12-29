@@ -44,6 +44,8 @@ public class Booking extends BaseEntity {
 
     private Integer finalPrice;
 
+    private String paymentCode;
+
 
 
 }

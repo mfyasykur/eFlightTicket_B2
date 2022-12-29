@@ -36,7 +36,6 @@ public class UsersDTO {
     @Size(min = 2, max = 20, message = "lastName length must be minimum 2 and maximum 20 character")
     private String lastName;
 
-    @JsonIgnore
     private List<String> role;
 
     private String phoneNumber;
