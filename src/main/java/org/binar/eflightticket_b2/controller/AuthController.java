@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.binar.eflightticket_b2.service.UserService;
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +57,8 @@ public class AuthController {
 
         Users userByEmail = userService.getUserByEmail(loginRequest.getEmail());
         UsersDTO usersDTO = userService.mapToDTO(userByEmail);
+        List<String> stringRole = userByEmail.getRoles().stream().map(Role::getName).toList();
+        usersDTO.setRole(stringRole);
 
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
             String accessToken = JWT.create()
