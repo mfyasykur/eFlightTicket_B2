@@ -43,7 +43,8 @@ public class BookingServiceImpl implements BookingService {
     public Booking addBooking(BookingRequest bookingRequest) {
         Users users = userService.getUserById(bookingRequest.getUserId());
         Schedule scheduleById = scheduleService.getScheduleById(bookingRequest.getScheduleId());
-        String bookingCode = RandomStringUtils.randomAlphanumeric(7);
+        String bookingCode ="ANAM"+RandomStringUtils.randomAlphanumeric(7).toUpperCase();
+        String paymentCode ="AN"+RandomStringUtils.randomAlphanumeric(10).toUpperCase();
         List<Passenger> mappedPassengers = bookingRequest.getPassengerRequests().stream().map(passengerService::mapToEntity).toList();
         List<Passenger> passengers = passengerRepository.saveAllAndFlush(mappedPassengers);
         Integer schedulePrice = scheduleById.getNetPrice();
@@ -60,6 +61,7 @@ public class BookingServiceImpl implements BookingService {
                 .dueValid(dueDate)
                 .passengersList(passengers)
                 .finalPrice(finalPrice)
+                .paymentCode(paymentCode)
                 .build();
         String msg = String.format("%s pesananmu dengan kode booking %s berhasil dibuat. Segera lakukan pembayaran sebelum" +
                 "batas waktunya. Happy Trip", users
