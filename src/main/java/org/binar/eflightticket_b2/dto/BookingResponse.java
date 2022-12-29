@@ -36,4 +36,6 @@ public class BookingResponse {
 
     private String paymentMethod;
 
+    private String paymentCode;
+
 }
