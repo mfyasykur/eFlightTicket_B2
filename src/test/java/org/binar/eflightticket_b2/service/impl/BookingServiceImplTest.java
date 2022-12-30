@@ -187,6 +187,13 @@ class BookingServiceImplTest {
     }
 
     @Test
+    void getAllBookingHistoryByUserFailed() {
+        when(bookingRepository.findAllByUsersId(1l)).thenReturn(Optional.empty());
+        Assertions.assertThatThrownBy(()-> bookingService.getAllBookingHistory(1l))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
+    @Test
     void getBookingHistoryByBookingIdSuccess() {
         Booking booking = new Booking();
         booking.setIsSuccess(true);
