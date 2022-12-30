@@ -4,6 +4,7 @@ import org.binar.eflightticket_b2.dto.CityDTO;
 import org.binar.eflightticket_b2.entity.City;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.CityRepository;
+import org.binar.eflightticket_b2.repository.CountryRepository;
 import org.binar.eflightticket_b2.service.CityService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -19,6 +20,10 @@ public class CityServiceImpl implements CityService {
 
     private static final String ENTITY = "city";
     private final Logger log =  LoggerFactory.getLogger(CityServiceImpl.class);
+
+    public CityServiceImpl(CityRepository cityRepository) {
+        this.cityRepository = cityRepository;
+    }
     @Autowired
     CityRepository cityRepository;
 

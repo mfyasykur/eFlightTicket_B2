@@ -4,6 +4,7 @@ import org.binar.eflightticket_b2.dto.AirportDTO;
 import org.binar.eflightticket_b2.entity.Airport;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.AirportRepository;
+import org.binar.eflightticket_b2.repository.CountryRepository;
 import org.binar.eflightticket_b2.service.AirportService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -21,6 +22,9 @@ public class AirportServiceImpl implements AirportService {
     private static final String ENTITY = "airport";
     private final Logger log =  LoggerFactory.getLogger(AirportServiceImpl.class);
 
+    public AirportServiceImpl(AirportRepository airportRepository) {
+        this.airportRepository = airportRepository;
+    }
     @Autowired
     AirportRepository airportRepository;
 
