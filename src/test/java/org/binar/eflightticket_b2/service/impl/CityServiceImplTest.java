@@ -43,8 +43,8 @@ public class CityServiceImplTest {
     void addCity() {
         City city = new City();
         city.setId(1L);
-        city.setCityName("Indonesia");
-        city.setCityCode("IDN");
+        city.setCityName("Jakarta");
+        city.setCityCode("JKT");
 
         Mockito.when(cityRepository.save(any(City.class))).thenReturn(city);
         cityService.add(city);
@@ -56,8 +56,8 @@ public class CityServiceImplTest {
         List<City> cityList = new ArrayList<>();
         City city = new City();
         city.setId(1L);
-        city.setCityName("Indonesia");
-        city.setCityCode("IDN");
+        city.setCityName("Jakarta");
+        city.setCityCode("JKT");
         cityList.add(city);
         return cityList;
     }
@@ -71,16 +71,16 @@ public class CityServiceImplTest {
 
         var actualValue = cityService.findAll();
         Assertions.assertEquals(1L, actualValue.size());
-        Assertions.assertEquals("Indonesia", actualValue.get(0).getCityName());
-        Assertions.assertEquals("IDN", actualValue.get(0).getCityCode());
+        Assertions.assertEquals("Jakarta", actualValue.get(0).getCityName());
+        Assertions.assertEquals("JKT", actualValue.get(0).getCityCode());
     }
     @Test
     @DisplayName("Getting city by Id Success")
     void findCityById(){
         City city = new City();
         city.setId(1L);
-        city.setCityName("Indonesia");
-        city.setCityCode("IDN");
+        city.setCityName("Jakarta");
+        city.setCityCode("JKT");
 
         given(cityRepository.findById(city.getId())).willReturn(Optional.of(city));
         cityService.findById(city.getId());
@@ -89,8 +89,8 @@ public class CityServiceImplTest {
 
         var actualValue = cityService.findById(1L);
         Assertions.assertEquals(1L, actualValue.getId());
-        Assertions.assertEquals("Indonesia", actualValue.getCityName());
-        Assertions.assertEquals("IDN", actualValue.getCityCode());
+        Assertions.assertEquals("Jakarta", actualValue.getCityName());
+        Assertions.assertEquals("JKT", actualValue.getCityCode());
         Assertions.assertNotNull(actualValue);
     }
 
@@ -99,17 +99,17 @@ public class CityServiceImplTest {
     void findCityByCode() throws ResourceNotFoundException{
         City city = new City();
         city.setId(1L);
-        city.setCityName("Indonesia");
-        city.setCityCode("IDN");
+        city.setCityName("Jakarta");
+        city.setCityCode("JKT");
         given(cityRepository.findByCityCode(city.getCityCode())).willReturn(city);
 
         cityService.findByCityCode(city.getCityCode());
         Mockito.verify(cityRepository).findByCityCode(city.getCityCode());
 
-        var actualValue = cityService.findByCityCode("IDN");
+        var actualValue = cityService.findByCityCode("JKT");
         Assertions.assertEquals(1L, actualValue.getId());
-        Assertions.assertEquals("Indonesia", actualValue.getCityName());
-        Assertions.assertEquals("IDN", actualValue.getCityCode());
+        Assertions.assertEquals("Jakarta", actualValue.getCityName());
+        Assertions.assertEquals("JKT", actualValue.getCityCode());
         Assertions.assertNotNull(actualValue);
     }
 
@@ -118,16 +118,16 @@ public class CityServiceImplTest {
     void update() throws ResourceNotFoundException{
         City city = new City();
         city.setId(1L);
-        city.setCityName("Indonesia");
-        city.setCityCode("IDN");
+        city.setCityName("Jakarta");
+        city.setCityCode("JKT");
         cityRepository.save(city);
         given(cityRepository.findById(city.getId())).willReturn(Optional.of(city));
         Mockito.verify(cityRepository).save(city);
 
         var actualValue = cityService.update(1L, city);
         Assertions.assertEquals(1L, actualValue.getId());
-        Assertions.assertEquals("Indonesia", actualValue.getCityName());
-        Assertions.assertEquals("IDN", actualValue.getCityCode());
+        Assertions.assertEquals("Jakarta", actualValue.getCityName());
+        Assertions.assertEquals("JKT", actualValue.getCityCode());
         Assertions.assertNotNull(actualValue);
     }
 
@@ -136,16 +136,16 @@ public class CityServiceImplTest {
     void deleteCity() throws ResourceNotFoundException{
         City city = new City();
         city.setId(1L);
-        city.setCityName("Indonesia");
-        city.setCityCode("IDN");
+        city.setCityName("Jakarta");
+        city.setCityCode("JKT");
         given(cityRepository.findById(1L)).willReturn(Optional.of(city));
         cityRepository.delete(city);
         Mockito.verify(cityRepository).delete(city);
 
         var actualValue = cityService.delete(1L);
         Assertions.assertEquals(1L, actualValue.getId());
-        Assertions.assertEquals("Indonesia", actualValue.getCityName());
-        Assertions.assertEquals("IDN", actualValue.getCityCode());
+        Assertions.assertEquals("Jakarta", actualValue.getCityName());
+        Assertions.assertEquals("JKT", actualValue.getCityCode());
         Assertions.assertNotNull(actualValue);
     }
 
@@ -162,8 +162,8 @@ public class CityServiceImplTest {
     void mapToDtoTest() {
         City city = new City();
         city.setId(1L);
-        city.setCityName("Indonesia");
-        city.setCityCode("IDN");
+        city.setCityName("Jakarta");
+        city.setCityCode("JKT");
 
         CityDTO cityDTO = cityService.mapToDto(city);
 
@@ -178,8 +178,8 @@ public class CityServiceImplTest {
     void mapToEntityTest() {
         CityDTO cityDTO = new CityDTO();
         cityDTO.setId(1L);
-        cityDTO.setCityName("Indonesia");
-        cityDTO.setCityCode("IDN");
+        cityDTO.setCityName("Jakarta");
+        cityDTO.setCityCode("JKT");
 
         City city = cityService.mapToEntity(cityDTO);
 

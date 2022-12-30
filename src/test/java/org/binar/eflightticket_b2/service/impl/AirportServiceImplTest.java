@@ -43,8 +43,8 @@ public class AirportServiceImplTest {
     void addAirport() {
         Airport airport = new Airport();
         airport.setId(1L);
-        airport.setAirportName("Indonesia");
-        airport.setAirportCode("IDN");
+        airport.setAirportName("Soekarno - Hatta");
+        airport.setAirportCode("SKH");
 
         Mockito.when(airportRepository.save(any(Airport.class))).thenReturn(airport);
         airportService.add(airport);
@@ -56,8 +56,8 @@ public class AirportServiceImplTest {
         List<Airport> airportList = new ArrayList<>();
         Airport airport = new Airport();
         airport.setId(1L);
-        airport.setAirportName("Indonesia");
-        airport.setAirportCode("IDN");
+        airport.setAirportName("Soekarno - Hatta");
+        airport.setAirportCode("SKH");
         airportList.add(airport);
         return airportList;
     }
@@ -71,16 +71,16 @@ public class AirportServiceImplTest {
 
         var actualValue = airportService.findAll();
         Assertions.assertEquals(1L, actualValue.size());
-        Assertions.assertEquals("Indonesia", actualValue.get(0).getAirportName());
-        Assertions.assertEquals("IDN", actualValue.get(0).getAirportCode());
+        Assertions.assertEquals("Soekarno - Hatta", actualValue.get(0).getAirportName());
+        Assertions.assertEquals("SKH", actualValue.get(0).getAirportCode());
     }
     @Test
     @DisplayName("Getting airport by Id Success")
     void findAirportById(){
         Airport airport = new Airport();
         airport.setId(1L);
-        airport.setAirportName("Indonesia");
-        airport.setAirportCode("IDN");
+        airport.setAirportName("Soekarno - Hatta");
+        airport.setAirportCode("SKH");
 
         given(airportRepository.findById(airport.getId())).willReturn(Optional.of(airport));
         airportService.findById(airport.getId());
@@ -89,8 +89,8 @@ public class AirportServiceImplTest {
 
         var actualValue = airportService.findById(1L);
         Assertions.assertEquals(1L, actualValue.getId());
-        Assertions.assertEquals("Indonesia", actualValue.getAirportName());
-        Assertions.assertEquals("IDN", actualValue.getAirportCode());
+        Assertions.assertEquals("Soekarno - Hatta", actualValue.getAirportName());
+        Assertions.assertEquals("SKH", actualValue.getAirportCode());
         Assertions.assertNotNull(actualValue);
     }
 
@@ -99,17 +99,17 @@ public class AirportServiceImplTest {
     void findAirportByCode() throws ResourceNotFoundException{
         Airport airport = new Airport();
         airport.setId(1L);
-        airport.setAirportName("Indonesia");
-        airport.setAirportCode("IDN");
+        airport.setAirportName("Soekarno - Hatta");
+        airport.setAirportCode("SKH");
         given(airportRepository.findByAirportCode(airport.getAirportCode())).willReturn(airport);
 
         airportService.findByAirportCode(airport.getAirportCode());
         Mockito.verify(airportRepository).findByAirportCode(airport.getAirportCode());
 
-        var actualValue = airportService.findByAirportCode("IDN");
+        var actualValue = airportService.findByAirportCode("SKH");
         Assertions.assertEquals(1L, actualValue.getId());
-        Assertions.assertEquals("Indonesia", actualValue.getAirportName());
-        Assertions.assertEquals("IDN", actualValue.getAirportCode());
+        Assertions.assertEquals("Soekarno - Hatta", actualValue.getAirportName());
+        Assertions.assertEquals("SKH", actualValue.getAirportCode());
         Assertions.assertNotNull(actualValue);
     }
 
@@ -118,16 +118,16 @@ public class AirportServiceImplTest {
     void update() throws ResourceNotFoundException{
         Airport airport = new Airport();
         airport.setId(1L);
-        airport.setAirportName("Indonesia");
-        airport.setAirportCode("IDN");
+        airport.setAirportName("Soekarno - Hatta");
+        airport.setAirportCode("SKH");
         airportRepository.save(airport);
         given(airportRepository.findById(airport.getId())).willReturn(Optional.of(airport));
         Mockito.verify(airportRepository).save(airport);
 
         var actualValue = airportService.update(1L, airport);
         Assertions.assertEquals(1L, actualValue.getId());
-        Assertions.assertEquals("Indonesia", actualValue.getAirportName());
-        Assertions.assertEquals("IDN", actualValue.getAirportCode());
+        Assertions.assertEquals("Soekarno - Hatta", actualValue.getAirportName());
+        Assertions.assertEquals("SKH", actualValue.getAirportCode());
         Assertions.assertNotNull(actualValue);
     }
 
@@ -136,16 +136,16 @@ public class AirportServiceImplTest {
     void deleteAirport() throws ResourceNotFoundException{
         Airport airport = new Airport();
         airport.setId(1L);
-        airport.setAirportName("Indonesia");
-        airport.setAirportCode("IDN");
+        airport.setAirportName("Soekarno - Hatta");
+        airport.setAirportCode("SKH");
         given(airportRepository.findById(1L)).willReturn(Optional.of(airport));
         airportRepository.delete(airport);
         Mockito.verify(airportRepository).delete(airport);
 
         var actualValue = airportService.delete(1L);
         Assertions.assertEquals(1L, actualValue.getId());
-        Assertions.assertEquals("Indonesia", actualValue.getAirportName());
-        Assertions.assertEquals("IDN", actualValue.getAirportCode());
+        Assertions.assertEquals("Soekarno - Hatta", actualValue.getAirportName());
+        Assertions.assertEquals("SKH", actualValue.getAirportCode());
         Assertions.assertNotNull(actualValue);
     }
 
@@ -162,8 +162,8 @@ public class AirportServiceImplTest {
     void mapToDtoTest() {
         Airport airport = new Airport();
         airport.setId(1L);
-        airport.setAirportName("Indonesia");
-        airport.setAirportCode("IDN");
+        airport.setAirportName("Soekarno - Hatta");
+        airport.setAirportCode("SKH");
 
         AirportDTO airportDTO = airportService.mapToDto(airport);
 
@@ -178,8 +178,8 @@ public class AirportServiceImplTest {
     void mapToEntityTest() {
         AirportDTO airportDTO = new AirportDTO();
         airportDTO.setId(1L);
-        airportDTO.setAirportName("Indonesia");
-        airportDTO.setAirportCode("IDN");
+        airportDTO.setAirportName("Soekarno - Hatta");
+        airportDTO.setAirportCode("SKH");
 
         Airport airport = airportService.mapToEntity(airportDTO);
 
