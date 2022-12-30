@@ -35,5 +35,9 @@ class NotificationServiceImplTest {
 
     @Test
     void addNotification() {
+        Notification notification = new Notification();
+        notification.setId(1l);
+        when(notificationRepository.save(notification)).thenReturn(notification);
+        notificationService.addNotification(notification);
     }
 }
