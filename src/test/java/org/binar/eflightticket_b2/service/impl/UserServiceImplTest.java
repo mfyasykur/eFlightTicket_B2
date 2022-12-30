@@ -258,6 +258,43 @@ class UserServiceImplTest {
     }
 
     @Test
+    void updateUserFailedWhenUserIdNotFound() {
+
+        Users users = new Users();
+        users.setId(111l);
+        users.setFirstName("haris");
+        users.setLastName("aulia");
+        users.setEmail("haris.aulia@gmail.com");
+        users.setPassword("some-password");
+
+        when(userRepository.findUsersById(anyLong())).thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.updateUser(users, anyLong()))
+                .isInstanceOf(ResourceNotFoundException.class);
+        verify(userRepository, times(1)).findUsersById(anyLong());
+    }
+
+    @Test
+    void updateUserFailedWhenEmailHasTaken() {
+
+        Users users = new Users();
+        users.setId(111l);
+        users.setFirstName("haris");
+        users.setLastName("aulia");
+        users.setEmail("haris.aulia@gmail.com");
+        users.setPassword("some-password");
+
+        when(userRepository.findUsersById(anyLong())).thenReturn(Optional.of(users));
+
+        when(userRepository.findUsersByEmail(anyString())).thenReturn(Optional.of(users));
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.updateUser(users, anyLong()))
+                .isInstanceOf(BadRequestException.class);
+        verify(userRepository, times(1)).findUsersById(anyLong());
+        verify(userRepository, times(1)).findUsersByEmail(anyString());
+    }
+
+    @Test
     @Disabled
     void uploadImage() throws IOException {
         Users users = new Users();
