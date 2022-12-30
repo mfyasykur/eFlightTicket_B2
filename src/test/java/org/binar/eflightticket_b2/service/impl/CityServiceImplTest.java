@@ -4,7 +4,6 @@ import org.binar.eflightticket_b2.dto.CityDTO;
 import org.binar.eflightticket_b2.entity.City;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.CityRepository;
-import org.binar.eflightticket_b2.service.CityService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,17 +19,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class CityServiceImplTest {
 
-    @Mock private CityRepository cityRepository;
+    @Mock
+    CityRepository cityRepository;
 
-    private CityService cityService;
+    private CityServiceImpl cityService;
 
     @BeforeEach
     void setUp() {
@@ -101,10 +102,10 @@ public class CityServiceImplTest {
         city.setId(1L);
         city.setCityName("Jakarta");
         city.setCityCode("JKT");
-        given(cityRepository.findByCityCode(city.getCityCode())).willReturn(city);
+        given(cityRepository.findCityByCode(city.getCityCode())).willReturn(Optional.of(city));
 
         cityService.findByCityCode(city.getCityCode());
-        Mockito.verify(cityRepository).findByCityCode(city.getCityCode());
+        Mockito.verify(cityRepository).findCityByCode(city.getCityCode());
 
         var actualValue = cityService.findByCityCode("JKT");
         Assertions.assertEquals(1L, actualValue.getId());
@@ -114,8 +115,18 @@ public class CityServiceImplTest {
     }
 
     @Test
+    @DisplayName("Find city by Code Not Found")
+    void findCityByCodeNotFound(){
+        when(cityRepository.findCityByCode(anyString())).thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> cityService.findByCityCode(anyString()))
+                .isInstanceOf(ResourceNotFoundException.class);
+        Mockito.verify(cityRepository, times(1)).findCityByCode(anyString());
+    }
+
+    @Test
     @DisplayName("Update city Success")
-    void update() throws ResourceNotFoundException{
+    void updateCitySuccess() throws ResourceNotFoundException{
         City city = new City();
         city.setId(1L);
         city.setCityName("Jakarta");
@@ -132,8 +143,23 @@ public class CityServiceImplTest {
     }
 
     @Test
+    @DisplayName("Update city Not Found")
+    void updateCityNotFound(){
+        City city = new City();
+        city.setId(1L);
+        city.setCityName("Jakarta");
+        city.setCityCode("JKT");
+
+        when(cityRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> cityService.update(11L, city))
+                .isInstanceOf(ResourceNotFoundException.class);
+        Mockito.verify(cityRepository, times(1)).findById(11L);
+    }
+
+    @Test
     @DisplayName("Delete city Success")
-    void deleteCity() throws ResourceNotFoundException{
+    void deleteCitySuccess() throws ResourceNotFoundException{
         City city = new City();
         city.setId(1L);
         city.setCityName("Jakarta");
@@ -147,6 +173,16 @@ public class CityServiceImplTest {
         Assertions.assertEquals("Jakarta", actualValue.getCityName());
         Assertions.assertEquals("JKT", actualValue.getCityCode());
         Assertions.assertNotNull(actualValue);
+    }
+
+    @Test
+    @DisplayName("Delete city Not Found")
+    void deleteCityNotFound(){
+        when(cityRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> cityService.delete(11L))
+                .isInstanceOf(ResourceNotFoundException.class);
+        Mockito.verify(cityRepository, times(1)).findById(11L);
     }
 
     @Test
