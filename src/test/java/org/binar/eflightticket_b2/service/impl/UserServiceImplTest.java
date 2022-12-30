@@ -8,6 +8,7 @@ import org.binar.eflightticket_b2.dto.UsersDTO;
 import org.binar.eflightticket_b2.entity.Notification;
 import org.binar.eflightticket_b2.entity.Role;
 import org.binar.eflightticket_b2.entity.Users;
+import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.NotificationRepository;
 import org.binar.eflightticket_b2.repository.RoleRepository;
 import org.binar.eflightticket_b2.repository.UserRepository;
@@ -24,6 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.File;
@@ -70,8 +72,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    @Disabled
-    void loadUserByUsernameSuccess() {
+    void loadUserByEmailSuccess() {
         Users users = new Users();
         users.setId(111l);
         users.setFirstName("haris");
@@ -82,6 +83,19 @@ class UserServiceImplTest {
         UserDetails userDetails = userService.loadUserByUsername("haris.aulia@gmail.com");
         System.out.println(users.getEmail() +  " "+ userDetails.getUsername());
         Assertions.assertEquals(users.getEmail(), userDetails.getUsername());
+        verify(userRepository, times(1)).findUsersByEmail("haris.aulia@gmail.com");
+    }
+
+    @Test
+    void loadUserByEmailisNotFound() {
+
+        when(userRepository.findUsersByEmail("haris.aulia@gmail.com")).thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() ->
+            userService.loadUserByUsername("haris.aulia@gmail.com")
+        ).isInstanceOf(UsernameNotFoundException.class);
+
+
         verify(userRepository, times(1)).findUsersByEmail("haris.aulia@gmail.com");
     }
 
