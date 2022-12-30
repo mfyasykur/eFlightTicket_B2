@@ -179,6 +179,15 @@ class UserServiceImplTest {
     }
 
     @Test
+    void getUserByEmailFailedNotFound() {
+        when(userRepository.findUsersByEmail(anyString())).thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.getUserByEmail(anyString()))
+                .isInstanceOf(ResourceNotFoundException.class);
+        verify(userRepository, times(1)).findUsersByEmail(anyString());
+    }
+
+    @Test
     void getUserByIdSuccess() {
         Users users = new Users();
         users.setId(111l);
