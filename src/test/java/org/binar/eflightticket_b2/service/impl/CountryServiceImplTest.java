@@ -4,7 +4,6 @@ import org.binar.eflightticket_b2.dto.CountryDTO;
 import org.binar.eflightticket_b2.entity.Country;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.CountryRepository;
-import org.binar.eflightticket_b2.service.CountryService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,17 +19,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class CountryServiceImplTest {
 
-    @Mock private CountryRepository countryRepository;
+    @Mock
+    CountryRepository countryRepository;
 
-    private CountryService countryService;
+    private CountryServiceImpl countryService;
 
     @BeforeEach
     void setUp() {
@@ -101,10 +102,10 @@ public class CountryServiceImplTest {
         country.setId(1L);
         country.setCountryName("Indonesia");
         country.setCountryCode("IDN");
-        given(countryRepository.findByCountryCode(country.getCountryCode())).willReturn(country);
+        given(countryRepository.findCountryByCode(country.getCountryCode())).willReturn(Optional.of(country));
 
         countryService.findByCountryCode(country.getCountryCode());
-        Mockito.verify(countryRepository).findByCountryCode(country.getCountryCode());
+        Mockito.verify(countryRepository).findCountryByCode(country.getCountryCode());
 
         var actualValue = countryService.findByCountryCode("IDN");
         Assertions.assertEquals(1L, actualValue.getId());
@@ -114,8 +115,18 @@ public class CountryServiceImplTest {
     }
 
     @Test
+    @DisplayName("Find country by Code Not Found")
+    void findCountryByCodeNotFound(){
+        when(countryRepository.findCountryByCode(anyString())).thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> countryService.findByCountryCode(anyString()))
+                .isInstanceOf(ResourceNotFoundException.class);
+        Mockito.verify(countryRepository, times(1)).findCountryByCode(anyString());
+    }
+
+    @Test
     @DisplayName("Update country Success")
-    void update() throws ResourceNotFoundException{
+    void updateCountrySuccess() throws ResourceNotFoundException{
         Country country = new Country();
         country.setId(1L);
         country.setCountryName("Indonesia");
@@ -132,8 +143,23 @@ public class CountryServiceImplTest {
     }
 
     @Test
+    @DisplayName("Update country Not Found")
+    void updateCountryNotFound(){
+        Country country = new Country();
+        country.setId(1L);
+        country.setCountryName("Indonesia");
+        country.setCountryCode("IDN");
+
+        when(countryRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> countryService.update(11L, country))
+                .isInstanceOf(ResourceNotFoundException.class);
+        Mockito.verify(countryRepository, times(1)).findById(11L);
+    }
+
+    @Test
     @DisplayName("Delete country Success")
-    void deleteCountry() throws ResourceNotFoundException{
+    void deleteCountrySuccess() throws ResourceNotFoundException{
         Country country = new Country();
         country.setId(1L);
         country.setCountryName("Indonesia");
@@ -147,6 +173,16 @@ public class CountryServiceImplTest {
         Assertions.assertEquals("Indonesia", actualValue.getCountryName());
         Assertions.assertEquals("IDN", actualValue.getCountryCode());
         Assertions.assertNotNull(actualValue);
+    }
+
+    @Test
+    @DisplayName("Delete country Not Found")
+    void deleteCountryNotFound(){
+        when(countryRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> countryService.delete(11L))
+                .isInstanceOf(ResourceNotFoundException.class);
+        Mockito.verify(countryRepository, times(1)).findById(11L);
     }
 
     @Test
