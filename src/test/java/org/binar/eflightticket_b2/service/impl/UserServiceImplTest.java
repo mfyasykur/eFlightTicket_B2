@@ -1,6 +1,8 @@
 package org.binar.eflightticket_b2.service.impl;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.Uploader;
+import com.cloudinary.utils.ObjectUtils;
 import org.binar.eflightticket_b2.dto.UserDetailRequest;
 import org.binar.eflightticket_b2.dto.UsersDTO;
 import org.binar.eflightticket_b2.entity.Notification;
@@ -20,9 +22,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import static org.mockito.BDDMockito.*;
 
@@ -46,6 +54,7 @@ class UserServiceImplTest {
     @Mock
     Cloudinary cloudinary;
 
+
     @Mock
     ModelMapper modelMapper;
 
@@ -62,7 +71,18 @@ class UserServiceImplTest {
 
     @Test
     @Disabled
-    void loadUserByUsername() {
+    void loadUserByUsernameSuccess() {
+        Users users = new Users();
+        users.setId(111l);
+        users.setFirstName("haris");
+        users.setLastName("aulia");
+        users.setEmail("haris.aulia@gmail.com");
+        users.setPassword("some-password");
+        when(userRepository.findUsersByEmail("haris.aulia@gmail.com")).thenReturn(Optional.of(users));
+        UserDetails userDetails = userService.loadUserByUsername("haris.aulia@gmail.com");
+        System.out.println(users.getEmail() +  " "+ userDetails.getUsername());
+        Assertions.assertEquals(users.getEmail(), userDetails.getUsername());
+        verify(userRepository, times(1)).findUsersByEmail("haris.aulia@gmail.com");
     }
 
     @Test
@@ -136,7 +156,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserById() {
+    void getUserByIdSuccess() {
         Users users = new Users();
         users.setId(111l);
         users.setFirstName("haris");
@@ -169,7 +189,29 @@ class UserServiceImplTest {
     }
 
     @Test
-    void uploadImage() {
+    @Disabled
+    void uploadImage() throws IOException {
+        Users users = new Users();
+        users.setId(111l);
+        users.setFirstName("haris");
+        users.setLastName("aulia");
+        users.setEmail("haris.aulia@gmail.com");
+        users.setPassword("some-password");
+        users.setPhotoProfile("http://image.cloud-based.com");
+
+        MockMultipartFile mockMultipartFile = new MockMultipartFile(
+                "data", "some-image.png",
+                "image", "some-image.jpg".getBytes());
+
+        when(userRepository.findUsersById(anyLong())).thenReturn(Optional.of(users));
+        File file = new File(System.getProperty("java.io.tmpdir"));
+        Map<String, String> map = new HashMap<>();
+        map.put("url", "http://imageprofile.cloud-based.com");
+        Map upload = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+//        when(upload).thenReturn(map);
+
+//        when(userService.uploadImage(mockMultipartFile, 111l )).thenReturn(users);
+        Users restrievedUser = userService.uploadImage(mockMultipartFile, 111l);
     }
 
     @Test
@@ -178,17 +220,57 @@ class UserServiceImplTest {
 
     @Test
     void mapToDTO() {
+        UsersDTO userDTO = UsersDTO.builder()
+                .id(111L)
+                .firstName("haris")
+                .lastName("aulia")
+                .email("haris.aulia@gmail.com")
+                .password("some-password")
+                .build();
+        Users users = new Users();
+        when(userService.mapToDTO(users)).thenReturn(userDTO);
+        UsersDTO convertedUsersDTO = userService.mapToDTO(users);
+        Assertions.assertEquals(userDTO.getEmail(), convertedUsersDTO.getEmail());
     }
 
     @Test
     void mapToEntity() {
+        Users users = new Users();
+        users.setId(111l);
+        users.setFirstName("haris");
+        users.setLastName("aulia");
+        users.setEmail("haris.aulia@gmail.com");
+        users.setPassword("some-password");
+        UsersDTO usersDTO = new UsersDTO();
+
+        when(userService.mapToEntity(usersDTO)).thenReturn(users);
+        Users convertedUser = userService.mapToEntity(usersDTO);
+        Assertions.assertEquals(users.getEmail(), convertedUser.getEmail());
+
     }
 
     @Test
     void mapToUserDetailReq() {
+        UserDetailRequest userDetailRequest = new UserDetailRequest(
+                "haris.aulia@gmail.com", "some-password");
+        Users users = new Users();
+        when(userService.mapToUserDetailReq(users)).thenReturn(userDetailRequest);
+        UserDetailRequest convertedUserDetailRequest = userService.mapToUserDetailReq(users);
+        Assertions.assertEquals(userDetailRequest.getEmail(), convertedUserDetailRequest.getEmail());
     }
 
     @Test
     void testMapToEntity() {
+        Users users = new Users();
+        users.setId(111l);
+        users.setFirstName("haris");
+        users.setLastName("aulia");
+        users.setEmail("haris.aulia@gmail.com");
+        users.setPassword("some-password");
+        UserDetailRequest userDetailRequest = new UserDetailRequest();
+
+        when(userService.mapToEntity(userDetailRequest)).thenReturn(users);
+        Users convertedUser = userService.mapToEntity(userDetailRequest);
+        Assertions.assertEquals(users.getEmail(),convertedUser.getEmail());
     }
 }
