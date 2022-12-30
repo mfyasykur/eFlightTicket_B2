@@ -4,12 +4,10 @@ import org.binar.eflightticket_b2.dto.AirportDTO;
 import org.binar.eflightticket_b2.entity.Airport;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.AirportRepository;
-import org.binar.eflightticket_b2.repository.CountryRepository;
 import org.binar.eflightticket_b2.service.AirportService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,8 +23,8 @@ public class AirportServiceImpl implements AirportService {
     public AirportServiceImpl(AirportRepository airportRepository) {
         this.airportRepository = airportRepository;
     }
-    @Autowired
-    AirportRepository airportRepository;
+
+    private final AirportRepository airportRepository;
 
     @Override
     public Airport add(Airport airport) {
@@ -86,15 +84,15 @@ public class AirportServiceImpl implements AirportService {
 
     @Override
     public Airport findByAirportCode(String airportCode) {
-        Airport byAirportCode = airportRepository.findByAirportCode(airportCode);
-        if (byAirportCode != null) {
-            log.info("Has successfully found country data from code " + airportCode);
-            return byAirportCode;
-        }
-        ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "airportCode", airportCode);
-        log.info("Error");
-        exception.setApiResponse();
-        throw exception;
+        Airport byAirportCode = airportRepository.findAirportByCode(airportCode)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "airportCode", airportCode);
+                    log.info("Error");
+                    exception.setApiResponse();
+                    throw exception;
+                });
+        log.info("Has successfully found airport data from code " + airportCode);
+        return byAirportCode;
     }
 
     ModelMapper mapper = new ModelMapper();
