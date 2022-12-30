@@ -154,6 +154,15 @@ class BookingServiceImplTest {
 
     @Test
     void successBookingHistory() {
+        Booking booking = new Booking();
+        booking.setIsSuccess(true);
+        booking.setId(1l);
+        Booking booking2 = new Booking();
+        booking.setIsSuccess(true);
+        booking.setId(1l);
+        List<Booking> booking1 = List.of(booking, booking2);
+        when(bookingRepository.findAllByUsersIdAndIsSuccess(1l,true)).thenReturn(Optional.of(booking1));
+        bookingService.successBookingHistory(1l,true);
     }
 
     @Test
