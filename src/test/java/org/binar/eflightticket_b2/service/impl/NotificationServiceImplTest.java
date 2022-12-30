@@ -1,6 +1,8 @@
 package org.binar.eflightticket_b2.service.impl;
 
+import org.assertj.core.api.Assertions;
 import org.binar.eflightticket_b2.entity.Notification;
+import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.NotificationRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +33,14 @@ class NotificationServiceImplTest {
         List<Notification> listOfNotification = List.of(notification, notification2);
         when(notificationRepository.findAllByUsersId(anyLong())).thenReturn(Optional.of(listOfNotification));
         notificationService.getAllNotification(anyLong());
+    }
+
+    @Test
+    void getAllNotificationFailed() {
+        when(notificationRepository.findAllByUsersId(anyLong())).thenReturn(Optional.empty());
+        Assertions.assertThatThrownBy(()->  notificationService.getAllNotification(anyLong()))
+                .isInstanceOf(ResourceNotFoundException.class);
+       ;
     }
 
     @Test
