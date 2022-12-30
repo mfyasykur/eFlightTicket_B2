@@ -18,6 +18,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.BDDMockito.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -121,6 +123,21 @@ class BookingServiceImplTest {
         PaymentDTO paymentDTO = new PaymentDTO(1l , "INDOMARET");
         Booking booking = new Booking();
         booking.setIsSuccess(true);
+        booking.setId(1l);
+        when(bookingRepository.findById(paymentDTO.getBookingId())).thenReturn(Optional.of(booking));
+
+        Assertions.assertThatThrownBy(()->bookingService.payment(paymentDTO))
+                .isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    void paymentFailedWhenBookingCodeIsNotValid() {
+        PaymentDTO paymentDTO = new PaymentDTO(1l , "INDOMARET");
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime dueDate = now.minusHours(5);
+        Booking booking = new Booking();
+        booking.setIsSuccess(true);
+        booking.setDueValid(dueDate);
         booking.setId(1l);
         when(bookingRepository.findById(paymentDTO.getBookingId())).thenReturn(Optional.of(booking));
 
