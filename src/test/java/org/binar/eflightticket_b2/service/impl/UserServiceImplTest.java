@@ -88,7 +88,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void loadUserByEmailisNotFound() {
+    void loadUserByEmailIsNotFound() {
 
         when(userRepository.findUsersByEmail("haris.aulia@gmail.com")).thenReturn(Optional.empty());
 
@@ -161,6 +161,42 @@ class UserServiceImplTest {
                 .isInstanceOf(BadRequestException.class);
 
         verify(userRepository, times(1)).findUsersByEmail(userDTO.getEmail());
+
+    }
+
+    @Test
+    void registerUserFailedRoleNotFound() {
+        UsersDTO userDTO = UsersDTO.builder()
+                .id(111L)
+                .firstName("haris")
+                .lastName("aulia")
+                .email("haris.aulia@gmail.com")
+                .password("some-password")
+                .build();
+
+        Users users = new Users();
+        users.setId(111l);
+        users.setFirstName("haris");
+        users.setLastName("aulia");
+        users.setEmail("haris.aulia@gmail.com");
+        users.setPassword("some-password");
+        List<String> roleUsers = List.of("ROLE_USERS");
+        List<String> roleUsersAdmin = List.of("ROLE_ADMIN");
+
+        when(userRepository.findUsersByEmail(userDTO.getEmail())).thenReturn(Optional.empty());
+
+        when(roleRepository.findRoleByName("ROLE_USERS")).thenReturn(Optional.empty());
+
+        when(roleRepository.findRoleByName("ROLE_ADMIN")).thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.addUser(users, roleUsers))
+                .isInstanceOf(ResourceNotFoundException.class);
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.addUser(users, roleUsersAdmin))
+                .isInstanceOf(ResourceNotFoundException.class);
+
+        verify(userRepository, times(2)).findUsersByEmail(userDTO.getEmail());
+        verify(roleRepository, times(2)).findRoleByName(anyString());
 
     }
 
