@@ -154,6 +154,15 @@ class UserServiceImplTest {
     }
 
     @Test
+    void deleteUserFailedIdNotFound() {
+        when(userRepository.findUsersById(anyLong())).thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.deleteUser(11l))
+                .isInstanceOf(ResourceNotFoundException.class);
+        verify(userRepository, times(1)).findUsersById(11l);
+    }
+
+    @Test
     void getUserByEmailSuccess() {
         Users users = new Users();
         users.setId(111l);
