@@ -8,7 +8,6 @@ import org.binar.eflightticket_b2.service.CountryService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,8 +19,8 @@ public class CountryServiceImpl implements CountryService {
 
     private static final String ENTITY = "country";
     private final Logger log =  LoggerFactory.getLogger(CountryServiceImpl.class);
-    @Autowired
-    CountryRepository countryRepository;
+
+    private final CountryRepository countryRepository;
 
     public CountryServiceImpl(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
@@ -87,15 +86,15 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Country findByCountryCode(String countryCode) {
-        Country byCountryCode = countryRepository.findByCountryCode(countryCode);
-        if (byCountryCode != null) {
-            log.info("Has successfully found country data from code " + countryCode);
-            return byCountryCode;
-        }
-        ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "countryCode", countryCode);
-        log.info("Error");
-        exception.setApiResponse();
-        throw exception;
+        Country byCountryCode = countryRepository.findCountryByCode(countryCode)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "countryCode", countryCode);
+                    log.info("Error");
+                    exception.setApiResponse();
+                    throw exception;
+                });
+        log.info("Has successfully found country data from code " + countryCode);
+        return byCountryCode;
     }
     ModelMapper mapper = new ModelMapper();
 
