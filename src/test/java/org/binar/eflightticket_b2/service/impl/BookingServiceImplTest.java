@@ -116,6 +116,17 @@ class BookingServiceImplTest {
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
+    @Test
+    void paymentFailedWhenBookingHasPaid() {
+        PaymentDTO paymentDTO = new PaymentDTO(1l , "INDOMARET");
+        Booking booking = new Booking();
+        booking.setIsSuccess(true);
+        booking.setId(1l);
+        when(bookingRepository.findById(paymentDTO.getBookingId())).thenReturn(Optional.of(booking));
+
+        Assertions.assertThatThrownBy(()->bookingService.payment(paymentDTO))
+                .isInstanceOf(BadRequestException.class);
+    }
 
     @Test
     void successBookingHistory() {
