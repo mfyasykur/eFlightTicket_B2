@@ -201,4 +201,13 @@ class BookingServiceImplTest {
         when(bookingRepository.findBookingById(1l)).thenReturn(Optional.of(booking));
         bookingService.getBookingHistory(1l);
     }
+
+    @Test
+    void getBookingHistoryByBookingIdFailed() {
+
+        when(bookingRepository.findBookingById(1l)).thenReturn(Optional.empty());
+        Assertions.assertThatThrownBy(()->  bookingService.getBookingHistory(1l))
+                .isInstanceOf(ResourceNotFoundException.class);
+       ;
+    }
 }
