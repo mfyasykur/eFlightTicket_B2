@@ -4,12 +4,10 @@ import org.binar.eflightticket_b2.dto.CityDTO;
 import org.binar.eflightticket_b2.entity.City;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.CityRepository;
-import org.binar.eflightticket_b2.repository.CountryRepository;
 import org.binar.eflightticket_b2.service.CityService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -24,8 +22,8 @@ public class CityServiceImpl implements CityService {
     public CityServiceImpl(CityRepository cityRepository) {
         this.cityRepository = cityRepository;
     }
-    @Autowired
-    CityRepository cityRepository;
+
+    private final CityRepository cityRepository;
 
     @Override
     public City add(City city) {
@@ -87,15 +85,15 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City findByCityCode(String cityCode) {
-        City byCityCode = cityRepository.findByCityCode(cityCode);
-        if (byCityCode != null) {
-            log.info("Has successfully found country data from code " + cityCode);
-            return byCityCode;
-        }
-        ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "cityCode", cityCode);
-        log.info("Error");
-        exception.setApiResponse();
-        throw exception;
+        City byCityCode = cityRepository.findCityByCode(cityCode)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "cityCode", cityCode);
+                    log.info("Error");
+                    exception.setApiResponse();
+                    throw exception;
+                });
+        log.info("Has successfully found city data from code " + cityCode);
+        return byCityCode;
     }
     ModelMapper mapper = new ModelMapper();
 
