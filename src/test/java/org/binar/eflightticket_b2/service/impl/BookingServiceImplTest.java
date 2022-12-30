@@ -136,7 +136,6 @@ class BookingServiceImplTest {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime dueDate = now.minusHours(5);
         Booking booking = new Booking();
-        booking.setIsSuccess(true);
         booking.setDueValid(dueDate);
         booking.setId(1l);
         when(bookingRepository.findById(paymentDTO.getBookingId())).thenReturn(Optional.of(booking));
