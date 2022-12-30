@@ -23,6 +23,10 @@ public class CountryServiceImpl implements CountryService {
     @Autowired
     CountryRepository countryRepository;
 
+    public CountryServiceImpl(CountryRepository countryRepository) {
+        this.countryRepository = countryRepository;
+    }
+
     @Override
     public Country add(Country country) {
         log.info("Has successfully created country data!");
