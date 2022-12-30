@@ -1,11 +1,15 @@
 package org.binar.eflightticket_b2.service.impl;
 
+import org.assertj.core.api.Assertions;
 import org.binar.eflightticket_b2.dto.BookingRequest;
 import org.binar.eflightticket_b2.dto.PassengerRequest;
+import org.binar.eflightticket_b2.dto.PaymentDTO;
 import org.binar.eflightticket_b2.entity.Booking;
 import org.binar.eflightticket_b2.entity.Passenger;
 import org.binar.eflightticket_b2.entity.Schedule;
 import org.binar.eflightticket_b2.entity.Users;
+import org.binar.eflightticket_b2.exception.BadRequestException;
+import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -104,6 +108,14 @@ class BookingServiceImplTest {
     @Test
     void payment() {
     }
+
+    @Test
+    void paymentFailedWhenBookingIdNotFound() {
+        PaymentDTO paymentDTO = new PaymentDTO(1l , "INDOMARET");
+        Assertions.assertThatThrownBy(()->bookingService.payment(paymentDTO))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
 
     @Test
     void successBookingHistory() {
