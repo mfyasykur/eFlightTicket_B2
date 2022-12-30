@@ -8,6 +8,7 @@ import org.binar.eflightticket_b2.dto.UsersDTO;
 import org.binar.eflightticket_b2.entity.Notification;
 import org.binar.eflightticket_b2.entity.Role;
 import org.binar.eflightticket_b2.entity.Users;
+import org.binar.eflightticket_b2.exception.BadRequestException;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.NotificationRepository;
 import org.binar.eflightticket_b2.repository.RoleRepository;
@@ -134,6 +135,33 @@ class UserServiceImplTest {
         verify(userRepository, times(1)).findUsersByEmail(userDTO.getEmail());
         verify(userRepository, times(1)).save(users);
         verify(roleRepository, times(1)).findRoleByName("ROLE_USERS");
+    }
+
+    @Test
+    void registerUserFailedUserHasTaken() {
+        UsersDTO userDTO = UsersDTO.builder()
+                .id(111L)
+                .firstName("haris")
+                .lastName("aulia")
+                .email("haris.aulia@gmail.com")
+                .password("some-password")
+                .build();
+
+        Users users = new Users();
+        users.setId(111l);
+        users.setFirstName("haris");
+        users.setLastName("aulia");
+        users.setEmail("haris.aulia@gmail.com");
+        users.setPassword("some-password");
+        List<String> roleUsers = List.of("ROLE_USERS");
+
+        when(userRepository.findUsersByEmail(userDTO.getEmail())).thenReturn(Optional.of(users));
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.addUser(users, roleUsers))
+                .isInstanceOf(BadRequestException.class);
+
+        verify(userRepository, times(1)).findUsersByEmail(userDTO.getEmail());
+
     }
 
     @Test
