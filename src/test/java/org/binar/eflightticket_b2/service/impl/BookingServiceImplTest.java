@@ -179,6 +179,11 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingHistory() {
+    void getBookingHistoryByBookingIdSuccess() {
+        Booking booking = new Booking();
+        booking.setIsSuccess(true);
+        booking.setId(1l);
+        when(bookingRepository.findBookingById(1l)).thenReturn(Optional.of(booking));
+        bookingService.getBookingHistory(1l);
     }
 }
