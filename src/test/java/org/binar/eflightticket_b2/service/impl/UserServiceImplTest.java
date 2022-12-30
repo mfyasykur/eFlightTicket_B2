@@ -106,6 +106,11 @@ class UserServiceImplTest {
         userRole.setId(1l);
         userRole.setName("ROLE_USERS");
 
+        Role adminRole = new Role();
+        userRole.setId(2l);
+        userRole.setName("ROLE_ADMIN");
+
+
         UsersDTO userDTO = UsersDTO.builder()
                 .id(111L)
                 .firstName("haris")
@@ -121,20 +126,24 @@ class UserServiceImplTest {
         users.setEmail("haris.aulia@gmail.com");
         users.setPassword("some-password");
         List<String> roleUsers = List.of("ROLE_USERS");
+        List<String> roleUsersAdmin = List.of("ROLE_ADMIN");
 
         when(userRepository.findUsersByEmail(userDTO.getEmail())).thenReturn(Optional.empty());
 
         when(roleRepository.findRoleByName("ROLE_USERS")).thenReturn(Optional.of(userRole));
+        when(roleRepository.findRoleByName("ROLE_ADMIN")).thenReturn(Optional.of(adminRole));
 
         when(userRepository.save(any(Users.class))).thenReturn(users);
 
         Users savedUser = userService.addUser(users, roleUsers);
+        Users savedUserAdmin = userService.addUser(users, roleUsersAdmin);
+        Users savedUserDefault = userService.addUser(users, null);
+
         System.out.println(savedUser);
-        Assertions.assertEquals(userDTO.getEmail(), savedUser.getEmail());
-        Assertions.assertEquals(roleUsers.get(0), savedUser.getRoles().get(0).getName());
-        verify(userRepository, times(1)).findUsersByEmail(userDTO.getEmail());
-        verify(userRepository, times(1)).save(users);
-        verify(roleRepository, times(1)).findRoleByName("ROLE_USERS");
+
+        verify(userRepository, times(3)).findUsersByEmail(userDTO.getEmail());
+        verify(userRepository, times(3)).save(users);
+        verify(roleRepository, times(3)).findRoleByName(anyString());
     }
 
     @Test
