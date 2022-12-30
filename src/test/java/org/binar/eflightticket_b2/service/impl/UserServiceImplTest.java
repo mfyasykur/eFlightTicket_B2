@@ -204,6 +204,15 @@ class UserServiceImplTest {
     }
 
     @Test
+    void getUserByIdFailedIdNotFound() {
+        when(userRepository.findUsersById(anyLong())).thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.getUserById(anyLong()))
+                .isInstanceOf(ResourceNotFoundException.class);
+        verify(userRepository, times(1)).findUsersById(anyLong());
+    }
+
+    @Test
     void updateUserSuccess() {
 
         Users users = new Users();
