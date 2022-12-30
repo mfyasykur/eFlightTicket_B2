@@ -108,7 +108,15 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void payment() {
+    void paymentSuccess() {
+        PaymentDTO paymentDTO = new PaymentDTO(1l , "INDOMARET");
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime dueDate = now.plusHours(2);
+        Booking booking = new Booking();
+        booking.setId(1l);
+        booking.setDueValid(dueDate);
+        when(bookingRepository.findById(paymentDTO.getBookingId())).thenReturn(Optional.of(booking));
+        Booking payment = bookingService.payment(paymentDTO);
     }
 
     @Test
