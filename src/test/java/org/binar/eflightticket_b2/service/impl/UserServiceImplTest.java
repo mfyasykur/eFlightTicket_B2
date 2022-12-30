@@ -366,6 +366,40 @@ class UserServiceImplTest {
     }
 
     @Test
+    void uploadImageFailedUserNotFound() throws IOException {
+        MockMultipartFile mockMultipartFile = new MockMultipartFile(
+                "data", "some-image.png",
+                "image", "some-image.jpg".getBytes());
+
+        when(userRepository.findUsersById(anyLong())).thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.uploadImage(mockMultipartFile, 111l))
+                .isInstanceOf(ResourceNotFoundException.class);
+        verify(userRepository, times(1)).findUsersById(anyLong());
+      }
+
+    @Test
+    void uploadImageFailedNotImageExtension() throws IOException {
+        Users users = new Users();
+        users.setId(111l);
+        users.setFirstName("haris");
+        users.setLastName("aulia");
+        users.setEmail("haris.aulia@gmail.com");
+        users.setPassword("some-password");
+        users.setPhotoProfile("http://image.cloud-based.com");
+
+        MockMultipartFile mockMultipartFile = new MockMultipartFile(
+                "data", "some-image.png",
+                "video", "some-image.jpg".getBytes());
+
+        when(userRepository.findUsersById(anyLong())).thenReturn(Optional.of(users));
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.uploadImage(mockMultipartFile, 111l))
+                .isInstanceOf(BadRequestException.class);
+        verify(userRepository, times(1)).findUsersById(anyLong());
+    }
+
+    @Test
     void multipartToFile() {
     }
 
