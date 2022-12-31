@@ -1,7 +1,6 @@
 package org.binar.eflightticket_b2.controller;
 
 import org.binar.eflightticket_b2.dto.ScheduleDTO;
-import org.binar.eflightticket_b2.dto.ScheduleFilterResponse;
 import org.binar.eflightticket_b2.dto.ScheduleRequest;
 import org.binar.eflightticket_b2.entity.Schedule;
 import org.binar.eflightticket_b2.payload.ApiResponse;
