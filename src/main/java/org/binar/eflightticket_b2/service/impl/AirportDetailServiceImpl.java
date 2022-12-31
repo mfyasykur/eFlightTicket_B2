@@ -39,6 +39,10 @@ public class AirportDetailServiceImpl implements AirportDetailService {
     @Autowired
     CountryRepository countryRepository;
 
+    public AirportDetailServiceImpl(AirportDetailRepository airportDetailRepository) {
+        this.airportDetailRepository = airportDetailRepository;
+    }
+
     @Override
     public AirportDetail add(Long countryId, Long cityId, Long airportId) {
 
