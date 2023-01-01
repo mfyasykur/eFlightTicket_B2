@@ -56,27 +56,30 @@ public class InvoiceServiceImplTest {
         flightDetail.setDeparture(airportDetail);
         Schedule schedule = Schedule.builder().flightDetail(flightDetail).build();
 
+        GENDER mrs = GENDER.MRS;
+        GENDER mr = GENDER.MR;
+
         Passenger passenger = new Passenger();
         passenger.setId(1l);
         passenger.setFirstName("Harisatul");
         passenger.setLastName("Aulia");
-        passenger.setGender(GENDER.MR);
+        passenger.setGender(mr);
         passenger.setAgeCategory(AGE.ADULT);
         passenger.setBaggage(BAGGAGE.KG5);
         Passenger passenger2 = new Passenger();
-        passenger.setId(2l);
-        passenger.setFirstName("Annisa");
-        passenger.setLastName("Moreska");
-        passenger.setGender(GENDER.MR);
-        passenger.setAgeCategory(AGE.ADULT);
-        passenger.setBaggage(BAGGAGE.KG5);
+        passenger2.setId(2l);
+        passenger2.setFirstName("Annisa");
+        passenger2.setLastName("Moreska");
+        passenger2.setGender(mrs);
+        passenger2.setAgeCategory(AGE.ADULT);
+        passenger2.setBaggage(BAGGAGE.KG5);
         List<Passenger> listOfPassenger = List.of(passenger, passenger2);
 
         Booking booking = new Booking();
         booking.setBookingCode("ANAMJHAM12");
         booking.setId(1l);
         booking.setSchedule(schedule);
-            booking.setPassengersList(listOfPassenger);
+        booking.setPassengersList(listOfPassenger);
 
 
         when(bookingRepository.findById(anyLong())).thenReturn(Optional.of(booking));
