@@ -84,7 +84,7 @@ public class AirportServiceImpl implements AirportService {
 
     @Override
     public Airport findByAirportCode(String airportCode) {
-        Airport byAirportCode = airportRepository.findAirportByCode(airportCode)
+        Airport byAirportCode = airportRepository.findByAirportCode(airportCode)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "airportCode", airportCode);
                     log.info("Error");

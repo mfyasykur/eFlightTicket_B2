@@ -85,7 +85,7 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public City findByCityCode(String cityCode) {
-        City byCityCode = cityRepository.findCityByCode(cityCode)
+        City byCityCode = cityRepository.findByCityCode(cityCode)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "cityCode", cityCode);
                     log.info("Error");

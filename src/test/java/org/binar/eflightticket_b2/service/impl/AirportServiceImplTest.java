@@ -102,10 +102,10 @@ public class AirportServiceImplTest {
         airport.setId(1L);
         airport.setAirportName("Soekarno - Hatta");
         airport.setAirportCode("SKH");
-        given(airportRepository.findAirportByCode(airport.getAirportCode())).willReturn(Optional.of(airport));
+        given(airportRepository.findByAirportCode(airport.getAirportCode())).willReturn(Optional.of(airport));
 
         airportService.findByAirportCode(airport.getAirportCode());
-        Mockito.verify(airportRepository).findAirportByCode(airport.getAirportCode());
+        Mockito.verify(airportRepository).findByAirportCode(airport.getAirportCode());
 
         var actualValue = airportService.findByAirportCode("SKH");
         Assertions.assertEquals(1L, actualValue.getId());
@@ -117,11 +117,11 @@ public class AirportServiceImplTest {
     @Test
     @DisplayName("Find airport by Code Not Found")
     void findAirportByCodeNotFound(){
-        when(airportRepository.findAirportByCode(anyString())).thenReturn(Optional.empty());
+        when(airportRepository.findByAirportCode(anyString())).thenReturn(Optional.empty());
 
         org.assertj.core.api.Assertions.assertThatThrownBy(() -> airportService.findByAirportCode(anyString()))
                 .isInstanceOf(ResourceNotFoundException.class);
-        Mockito.verify(airportRepository, times(1)).findAirportByCode(anyString());
+        Mockito.verify(airportRepository, times(1)).findByAirportCode(anyString());
     }
 
     @Test
