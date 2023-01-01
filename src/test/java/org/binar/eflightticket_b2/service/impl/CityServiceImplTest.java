@@ -102,10 +102,10 @@ public class CityServiceImplTest {
         city.setId(1L);
         city.setCityName("Jakarta");
         city.setCityCode("JKT");
-        given(cityRepository.findCityByCode(city.getCityCode())).willReturn(Optional.of(city));
+        given(cityRepository.findByCityCode(city.getCityCode())).willReturn(Optional.of(city));
 
         cityService.findByCityCode(city.getCityCode());
-        Mockito.verify(cityRepository).findCityByCode(city.getCityCode());
+        Mockito.verify(cityRepository).findByCityCode(city.getCityCode());
 
         var actualValue = cityService.findByCityCode("JKT");
         Assertions.assertEquals(1L, actualValue.getId());
@@ -117,11 +117,11 @@ public class CityServiceImplTest {
     @Test
     @DisplayName("Find city by Code Not Found")
     void findCityByCodeNotFound(){
-        when(cityRepository.findCityByCode(anyString())).thenReturn(Optional.empty());
+        when(cityRepository.findByCityCode(anyString())).thenReturn(Optional.empty());
 
         org.assertj.core.api.Assertions.assertThatThrownBy(() -> cityService.findByCityCode(anyString()))
                 .isInstanceOf(ResourceNotFoundException.class);
-        Mockito.verify(cityRepository, times(1)).findCityByCode(anyString());
+        Mockito.verify(cityRepository, times(1)).findByCityCode(anyString());
     }
 
     @Test
