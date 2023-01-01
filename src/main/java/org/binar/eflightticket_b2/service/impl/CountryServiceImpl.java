@@ -86,7 +86,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Country findByCountryCode(String countryCode) {
-        Country byCountryCode = countryRepository.findCountryByCode(countryCode)
+        Country byCountryCode = countryRepository.findByCountryCode(countryCode)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "countryCode", countryCode);
                     log.info("Error");
