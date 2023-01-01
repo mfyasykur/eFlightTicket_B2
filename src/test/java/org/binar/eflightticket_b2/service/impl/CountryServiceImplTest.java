@@ -102,10 +102,10 @@ public class CountryServiceImplTest {
         country.setId(1L);
         country.setCountryName("Indonesia");
         country.setCountryCode("IDN");
-        given(countryRepository.findCountryByCode(country.getCountryCode())).willReturn(Optional.of(country));
+        given(countryRepository.findByCountryCode(country.getCountryCode())).willReturn(Optional.of(country));
 
         countryService.findByCountryCode(country.getCountryCode());
-        Mockito.verify(countryRepository).findCountryByCode(country.getCountryCode());
+        Mockito.verify(countryRepository).findByCountryCode(country.getCountryCode());
 
         var actualValue = countryService.findByCountryCode("IDN");
         Assertions.assertEquals(1L, actualValue.getId());
@@ -117,11 +117,11 @@ public class CountryServiceImplTest {
     @Test
     @DisplayName("Find country by Code Not Found")
     void findCountryByCodeNotFound(){
-        when(countryRepository.findCountryByCode(anyString())).thenReturn(Optional.empty());
+        when(countryRepository.findByCountryCode(anyString())).thenReturn(Optional.empty());
 
         org.assertj.core.api.Assertions.assertThatThrownBy(() -> countryService.findByCountryCode(anyString()))
                 .isInstanceOf(ResourceNotFoundException.class);
-        Mockito.verify(countryRepository, times(1)).findCountryByCode(anyString());
+        Mockito.verify(countryRepository, times(1)).findByCountryCode(anyString());
     }
 
     @Test
