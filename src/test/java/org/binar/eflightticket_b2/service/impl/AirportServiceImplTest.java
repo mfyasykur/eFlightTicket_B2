@@ -102,10 +102,10 @@ public class AirportServiceImplTest {
         airport.setId(1L);
         airport.setAirportName("Soekarno - Hatta");
         airport.setAirportCode("SKH");
-        given(airportRepository.findAirportByCode(airport.getAirportCode())).willReturn(Optional.of(airport));
+        given(airportRepository.findByAirportCode(airport.getAirportCode())).willReturn(Optional.of(airport));
 
         airportService.findByAirportCode(airport.getAirportCode());
-        Mockito.verify(airportRepository).findAirportByCode(airport.getAirportCode());
+        Mockito.verify(airportRepository).findByAirportCode(airport.getAirportCode());
 
         var actualValue = airportService.findByAirportCode("SKH");
         Assertions.assertEquals(1L, actualValue.getId());
