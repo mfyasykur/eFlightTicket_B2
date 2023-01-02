@@ -7,3 +7,4 @@ Group 2 Final Project
 
 # ERD
 
+![AnamAir ERD](https://user-images.githubusercontent.com/70531267/210228595-1e5a8d8e-9dbb-45f6-8627-bb32aff193bb.png)
