@@ -169,7 +169,7 @@
     <scm>
         <connection>scm:git:git@github.com:mfyasykur/eFlightTicket_B2.git</connection>
         <developerConnection>scm:git:git@github.com:mfyasykur/eFlightTicket_B2.git</developerConnection>
-      <tag>anamair-1.3.3</tag>
+      <tag>anamair-1.5.0</tag>
   </scm>
 
 </project>
