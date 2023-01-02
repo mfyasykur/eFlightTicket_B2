@@ -18,26 +18,20 @@ import org.binar.eflightticket_b2.service.InvoiceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.ResourceUtils;
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
-    private final static Logger log =  LoggerFactory.getLogger(InvoiceServiceImpl.class);
+    private static final Logger log =  LoggerFactory.getLogger(InvoiceServiceImpl.class);
     
     @Autowired
     private BookingRepository bookingRepository;
 
     @Override
-    public JasperPrint generateInvoice(Long bookingId) throws IOException, JRException {
+    public JasperPrint generateInvoice(Long bookingId) throws JRException {
 
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> {

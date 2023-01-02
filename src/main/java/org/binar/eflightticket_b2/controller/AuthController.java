@@ -37,6 +37,8 @@ public class AuthController {
 
     private final Logger log = LoggerFactory.getLogger(AuthController.class);
 
+    private static final String ACCESS_TOKEN = "access_token";
+
     private final AuthenticationManager authenticationManager;
 
     private final UserService userService;
@@ -77,12 +79,12 @@ public class AuthController {
                     .sign(algorithm);
             log.info("Info :  successfully generated refresh token user");
             HashMap<String, Object> tokens = new HashMap<>();
-            tokens.put("access_token", accessToken);
+            tokens.put(ACCESS_TOKEN, accessToken);
             tokens.put("refresh_token", refreshToken);
             tokens.put("data", usersDTO);
             ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "Successfully Login", tokens);
             return ResponseEntity.ok()
-                    .header("access_token", accessToken)
+                    .header(ACCESS_TOKEN, accessToken)
                     .body(apiResponse);
 
     }
@@ -123,7 +125,7 @@ public class AuthController {
                         .withClaim("roles", userByEmail.getRoles().stream().map(Role::getName).toList())
                         .sign(algorithm);
                 HashMap<String, String> tokens = new HashMap<>();
-                tokens.put("access_token", accessToken);
+                tokens.put(ACCESS_TOKEN, accessToken);
                 tokens.put("refresh_token", refreshToken);
                 response.setContentType(APPLICATION_JSON_VALUE);
                 ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "Successfully created new access token",tokens);

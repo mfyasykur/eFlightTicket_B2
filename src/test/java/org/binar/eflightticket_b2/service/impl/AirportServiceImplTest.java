@@ -119,7 +119,7 @@ public class AirportServiceImplTest {
     void findAirportByCodeNotFound(){
         when(airportRepository.findByAirportCode(anyString())).thenReturn(Optional.empty());
 
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> airportService.findByAirportCode(anyString()))
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> airportService.findByAirportCode("airportCode"))
                 .isInstanceOf(ResourceNotFoundException.class);
         Mockito.verify(airportRepository, times(1)).findByAirportCode(anyString());
     }

@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class NotificationServiceImplTest {
@@ -27,9 +26,9 @@ class NotificationServiceImplTest {
     @Test
     void getAllNotificationSuccess() {
         Notification notification = new Notification();
-        notification.setId(1l);
+        notification.setId(1L);
         Notification notification2 = new Notification();
-        notification.setId(2l);
+        notification.setId(2L);
         List<Notification> listOfNotification = List.of(notification, notification2);
         when(notificationRepository.findAllByUsersId(anyLong())).thenReturn(Optional.of(listOfNotification));
         notificationService.getAllNotification(anyLong());
@@ -38,7 +37,7 @@ class NotificationServiceImplTest {
     @Test
     void getAllNotificationFailed() {
         when(notificationRepository.findAllByUsersId(anyLong())).thenReturn(Optional.empty());
-        Assertions.assertThatThrownBy(()->  notificationService.getAllNotification(anyLong()))
+        Assertions.assertThatThrownBy(()->  notificationService.getAllNotification(1L))
                 .isInstanceOf(ResourceNotFoundException.class);
        ;
     }
@@ -46,7 +45,7 @@ class NotificationServiceImplTest {
     @Test
     void addNotification() {
         Notification notification = new Notification();
-        notification.setId(1l);
+        notification.setId(1L);
         when(notificationRepository.save(notification)).thenReturn(notification);
         notificationService.addNotification(notification);
     }

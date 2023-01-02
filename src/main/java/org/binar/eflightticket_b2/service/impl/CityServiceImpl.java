@@ -17,6 +17,7 @@ import java.util.List;
 public class CityServiceImpl implements CityService {
 
     private static final String ENTITY = "city";
+    private static final String ERROR = "Error Not Found: city with ID {}";
     private final Logger log =  LoggerFactory.getLogger(CityServiceImpl.class);
 
     public CityServiceImpl(CityRepository cityRepository) {
@@ -36,7 +37,7 @@ public class CityServiceImpl implements CityService {
         City result = cityRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
@@ -55,7 +56,7 @@ public class CityServiceImpl implements CityService {
         City result = cityRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
@@ -75,11 +76,11 @@ public class CityServiceImpl implements CityService {
         City city = cityRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
-        log.info("Has successfully found city data from id " + id);
+        log.info("Has successfully found city data from id {}", id);
         return city;
     }
 
@@ -92,7 +93,7 @@ public class CityServiceImpl implements CityService {
                     exception.setApiResponse();
                     throw exception;
                 });
-        log.info("Has successfully found city data from code " + cityCode);
+        log.info("Has successfully found city data from code {}", cityCode);
         return byCityCode;
     }
     ModelMapper mapper = new ModelMapper();

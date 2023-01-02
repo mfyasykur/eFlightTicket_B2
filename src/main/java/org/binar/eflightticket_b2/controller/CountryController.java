@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/country")
@@ -50,7 +49,7 @@ public class CountryController {
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponse> findAll(){
         List<CountryDTO> result = countryService.findAll().stream().map(country -> countryService.mapToDto(country))
-                .collect(Collectors.toList());
+                .toList();
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE,
                 "Successfully retrieved all country",

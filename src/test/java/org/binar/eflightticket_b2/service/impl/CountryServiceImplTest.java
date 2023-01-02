@@ -119,7 +119,7 @@ public class CountryServiceImplTest {
     void findCountryByCodeNotFound(){
         when(countryRepository.findByCountryCode(anyString())).thenReturn(Optional.empty());
 
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> countryService.findByCountryCode(anyString()))
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> countryService.findByCountryCode("countryCode"))
                 .isInstanceOf(ResourceNotFoundException.class);
         Mockito.verify(countryRepository, times(1)).findByCountryCode(anyString());
     }

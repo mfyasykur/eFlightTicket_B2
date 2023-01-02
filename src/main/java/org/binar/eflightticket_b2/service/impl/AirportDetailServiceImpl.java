@@ -88,7 +88,7 @@ public class AirportDetailServiceImpl implements AirportDetailService {
         AirportDetail result = airportDetailRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info("Error Not Found: AirportDetail with ID {}", id);
                     exception.setApiResponse();
                     throw exception;
                 });
@@ -111,11 +111,11 @@ public class AirportDetailServiceImpl implements AirportDetailService {
         AirportDetail airportDetail= airportDetailRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info("Error Not Found: AirportDetail with ID {}", id);
                     exception.setApiResponse();
                     throw exception;
                 });
-        log.info("Has successfully found airportDetail data from id " + id);
+        log.info("Has successfully found airportDetail data from id {}", id);
         return airportDetail;
     }
 

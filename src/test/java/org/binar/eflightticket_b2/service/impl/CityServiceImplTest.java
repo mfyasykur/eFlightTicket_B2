@@ -119,7 +119,7 @@ public class CityServiceImplTest {
     void findCityByCodeNotFound(){
         when(cityRepository.findByCityCode(anyString())).thenReturn(Optional.empty());
 
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> cityService.findByCityCode(anyString()))
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> cityService.findByCityCode("cityCode"))
                 .isInstanceOf(ResourceNotFoundException.class);
         Mockito.verify(cityRepository, times(1)).findByCityCode(anyString());
     }

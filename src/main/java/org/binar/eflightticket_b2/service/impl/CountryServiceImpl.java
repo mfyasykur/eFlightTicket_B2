@@ -18,6 +18,7 @@ import java.util.List;
 public class CountryServiceImpl implements CountryService {
 
     private static final String ENTITY = "country";
+    private static final String ERROR = "Error Not Found: country with ID {}";
     private final Logger log =  LoggerFactory.getLogger(CountryServiceImpl.class);
 
     private final CountryRepository countryRepository;
@@ -37,7 +38,7 @@ public class CountryServiceImpl implements CountryService {
         Country result = countryRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
@@ -56,7 +57,7 @@ public class CountryServiceImpl implements CountryService {
         Country result = countryRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
@@ -76,11 +77,11 @@ public class CountryServiceImpl implements CountryService {
         Country country = countryRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
-        log.info("Has successfully found country data from id " + id);
+        log.info("Has successfully found country data from id {}", id);
         return country;
     }
 
@@ -93,7 +94,7 @@ public class CountryServiceImpl implements CountryService {
                     exception.setApiResponse();
                     throw exception;
                 });
-        log.info("Has successfully found country data from code " + countryCode);
+        log.info("Has successfully found country data from code {}", countryCode);
         return byCountryCode;
     }
     ModelMapper mapper = new ModelMapper();

@@ -1,11 +1,9 @@
 package org.binar.eflightticket_b2.service.impl;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.Uploader;
 import com.cloudinary.utils.ObjectUtils;
 import org.binar.eflightticket_b2.dto.UserDetailRequest;
 import org.binar.eflightticket_b2.dto.UsersDTO;
-import org.binar.eflightticket_b2.entity.Notification;
 import org.binar.eflightticket_b2.entity.Role;
 import org.binar.eflightticket_b2.entity.Users;
 import org.binar.eflightticket_b2.exception.BadRequestException;
@@ -21,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.mock.web.MockMultipartFile;
@@ -36,8 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import static org.mockito.BDDMockito.*;
-
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -75,7 +70,7 @@ class UserServiceImplTest {
     @Test
     void loadUserByEmailSuccess() {
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
@@ -103,11 +98,11 @@ class UserServiceImplTest {
     @Test
     void registerUserSuccess() {
         Role userRole = new Role();
-        userRole.setId(1l);
+        userRole.setId(1L);
         userRole.setName("ROLE_USERS");
 
         Role adminRole = new Role();
-        userRole.setId(2l);
+        userRole.setId(2L);
         userRole.setName("ROLE_ADMIN");
 
 
@@ -120,7 +115,7 @@ class UserServiceImplTest {
                 .build();
 
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
@@ -136,8 +131,8 @@ class UserServiceImplTest {
         when(userRepository.save(any(Users.class))).thenReturn(users);
 
         Users savedUser = userService.addUser(users, roleUsers);
-        Users savedUserAdmin = userService.addUser(users, roleUsersAdmin);
-        Users savedUserDefault = userService.addUser(users, null);
+        userService.addUser(users, roleUsersAdmin);
+        userService.addUser(users, null);
 
         System.out.println(savedUser);
 
@@ -157,7 +152,7 @@ class UserServiceImplTest {
                 .build();
 
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
@@ -184,7 +179,7 @@ class UserServiceImplTest {
                 .build();
 
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
@@ -212,7 +207,7 @@ class UserServiceImplTest {
     @Test
     void deleteUserSuccess() {
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
@@ -230,15 +225,15 @@ class UserServiceImplTest {
     void deleteUserFailedIdNotFound() {
         when(userRepository.findUsersById(anyLong())).thenReturn(Optional.empty());
 
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.deleteUser(11l))
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.deleteUser(11L))
                 .isInstanceOf(ResourceNotFoundException.class);
-        verify(userRepository, times(1)).findUsersById(11l);
+        verify(userRepository, times(1)).findUsersById(11L);
     }
 
     @Test
     void getUserByEmailSuccess() {
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
@@ -255,7 +250,7 @@ class UserServiceImplTest {
     void getUserByEmailFailedNotFound() {
         when(userRepository.findUsersByEmail(anyString())).thenReturn(Optional.empty());
 
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.getUserByEmail(anyString()))
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.getUserByEmail("email"))
                 .isInstanceOf(ResourceNotFoundException.class);
         verify(userRepository, times(1)).findUsersByEmail(anyString());
     }
@@ -263,7 +258,7 @@ class UserServiceImplTest {
     @Test
     void getUserByIdSuccess() {
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
@@ -271,16 +266,16 @@ class UserServiceImplTest {
 
         when(userRepository.findUsersById(anyLong())).thenReturn(Optional.of(users));
 
-        Users retrievedUser = userService.getUserById(111l);
+        Users retrievedUser = userService.getUserById(111L);
         Assertions.assertEquals(users.getEmail(), retrievedUser.getEmail());
-        verify(userRepository, times(1)).findUsersById(111l);
+        verify(userRepository, times(1)).findUsersById(111L);
     }
 
     @Test
     void getUserByIdFailedIdNotFound() {
         when(userRepository.findUsersById(anyLong())).thenReturn(Optional.empty());
 
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.getUserById(anyLong()))
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.getUserById(1L))
                 .isInstanceOf(ResourceNotFoundException.class);
         verify(userRepository, times(1)).findUsersById(anyLong());
     }
@@ -289,7 +284,7 @@ class UserServiceImplTest {
     void updateUserSuccess() {
 
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
@@ -298,7 +293,7 @@ class UserServiceImplTest {
         when(userRepository.findUsersById(anyLong())).thenReturn(Optional.of(users));
         when(userRepository.save(any(Users.class))).thenReturn(users);
 
-        Users updatedUser = userService.updateUser(users, 111l);
+        Users updatedUser = userService.updateUser(users, 111L);
         Assertions.assertEquals(users.getEmail(), updatedUser.getEmail());
     }
 
@@ -306,7 +301,7 @@ class UserServiceImplTest {
     void updateUserFailedWhenUserIdNotFound() {
 
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
@@ -314,7 +309,7 @@ class UserServiceImplTest {
 
         when(userRepository.findUsersById(anyLong())).thenReturn(Optional.empty());
 
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.updateUser(users, anyLong()))
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.updateUser(users, 1L))
                 .isInstanceOf(ResourceNotFoundException.class);
         verify(userRepository, times(1)).findUsersById(anyLong());
     }
@@ -323,7 +318,7 @@ class UserServiceImplTest {
     void updateUserFailedWhenEmailHasTaken() {
 
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
@@ -333,7 +328,7 @@ class UserServiceImplTest {
 
         when(userRepository.findUsersByEmail(anyString())).thenReturn(Optional.of(users));
 
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.updateUser(users, anyLong()))
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.updateUser(users, 1L))
                 .isInstanceOf(BadRequestException.class);
         verify(userRepository, times(1)).findUsersById(anyLong());
         verify(userRepository, times(1)).findUsersByEmail(anyString());
@@ -343,7 +338,7 @@ class UserServiceImplTest {
     @Disabled
     void uploadImage() throws IOException {
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
@@ -358,11 +353,9 @@ class UserServiceImplTest {
         File file = new File(System.getProperty("java.io.tmpdir"));
         Map<String, String> map = new HashMap<>();
         map.put("url", "http://imageprofile.cloud-based.com");
-        Map upload = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
-//        when(upload).thenReturn(map);
+        cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
 
-//        when(userService.uploadImage(mockMultipartFile, 111l )).thenReturn(users);
-        Users restrievedUser = userService.uploadImage(mockMultipartFile, 111l);
+        userService.uploadImage(mockMultipartFile, 111l);
     }
 
     @Test
@@ -373,7 +366,7 @@ class UserServiceImplTest {
 
         when(userRepository.findUsersById(anyLong())).thenReturn(Optional.empty());
 
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.uploadImage(mockMultipartFile, 111l))
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.uploadImage(mockMultipartFile, 111L))
                 .isInstanceOf(ResourceNotFoundException.class);
         verify(userRepository, times(1)).findUsersById(anyLong());
       }
@@ -381,7 +374,7 @@ class UserServiceImplTest {
     @Test
     void uploadImageFailedNotImageExtension() throws IOException {
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
@@ -394,7 +387,7 @@ class UserServiceImplTest {
 
         when(userRepository.findUsersById(anyLong())).thenReturn(Optional.of(users));
 
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.uploadImage(mockMultipartFile, 111l))
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> userService.uploadImage(mockMultipartFile, 111L))
                 .isInstanceOf(BadRequestException.class);
         verify(userRepository, times(1)).findUsersById(anyLong());
     }
@@ -421,7 +414,7 @@ class UserServiceImplTest {
     @Test
     void mapToEntity() {
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
@@ -447,7 +440,7 @@ class UserServiceImplTest {
     @Test
     void testMapToEntity() {
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");

@@ -23,8 +23,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
 class BookingServiceImplTest {
 
@@ -81,25 +79,25 @@ class BookingServiceImplTest {
         List<Passenger> listOfPassenger = List.of(budi, ani);
 
         Users users = new Users();
-        users.setId(111l);
+        users.setId(111L);
         users.setFirstName("haris");
         users.setLastName("aulia");
         users.setEmail("haris.aulia@gmail.com");
         users.setPassword("some-password");
 
         Schedule schedule = new Schedule();
-        schedule.setId(1l);
+        schedule.setId(1L);
         schedule.setNetPrice(500_000);
 
         BookingRequest bookingRequest = new BookingRequest();
-        bookingRequest.setScheduleId(1l);
-        bookingRequest.setUserId(1l);
+        bookingRequest.setScheduleId(1L);
+        bookingRequest.setUserId(1L);
         bookingRequest.setPassengerRequests(listOfRequestPassenger);
 
         Booking build = Booking.builder().bookingCode("some-code").build();
 
-        given(userService.getUserById(1l)).willReturn(users);
-        given(scheduleService.getScheduleById(1l)).willReturn(schedule);
+        given(userService.getUserById(1L)).willReturn(users);
+        given(scheduleService.getScheduleById(1L)).willReturn(schedule);
 
 
         Booking booking = bookingService.addBooking(bookingRequest);
@@ -109,11 +107,11 @@ class BookingServiceImplTest {
 
     @Test
     void paymentSuccess() {
-        PaymentDTO paymentDTO = new PaymentDTO(1l , "INDOMARET");
+        PaymentDTO paymentDTO = new PaymentDTO(1L, "INDOMARET");
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime dueDate = now.plusHours(2);
         Booking booking = new Booking();
-        booking.setId(1l);
+        booking.setId(1L);
         booking.setDueValid(dueDate);
         when(bookingRepository.findById(paymentDTO.getBookingId())).thenReturn(Optional.of(booking));
         Booking payment = bookingService.payment(paymentDTO);
@@ -121,17 +119,17 @@ class BookingServiceImplTest {
 
     @Test
     void paymentFailedWhenBookingIdNotFound() {
-        PaymentDTO paymentDTO = new PaymentDTO(1l , "INDOMARET");
+        PaymentDTO paymentDTO = new PaymentDTO(1L, "INDOMARET");
         Assertions.assertThatThrownBy(()->bookingService.payment(paymentDTO))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
     void paymentFailedWhenBookingHasPaid() {
-        PaymentDTO paymentDTO = new PaymentDTO(1l , "INDOMARET");
+        PaymentDTO paymentDTO = new PaymentDTO(1L, "INDOMARET");
         Booking booking = new Booking();
         booking.setIsSuccess(true);
-        booking.setId(1l);
+        booking.setId(1L);
         when(bookingRepository.findById(paymentDTO.getBookingId())).thenReturn(Optional.of(booking));
 
         Assertions.assertThatThrownBy(()->bookingService.payment(paymentDTO))
@@ -140,12 +138,12 @@ class BookingServiceImplTest {
 
     @Test
     void paymentFailedWhenBookingCodeIsNotValid() {
-        PaymentDTO paymentDTO = new PaymentDTO(1l , "INDOMARET");
+        PaymentDTO paymentDTO = new PaymentDTO(1L, "INDOMARET");
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime dueDate = now.minusHours(5);
         Booking booking = new Booking();
         booking.setDueValid(dueDate);
-        booking.setId(1l);
+        booking.setId(1L);
         when(bookingRepository.findById(paymentDTO.getBookingId())).thenReturn(Optional.of(booking));
 
         Assertions.assertThatThrownBy(()->bookingService.payment(paymentDTO))
@@ -156,20 +154,20 @@ class BookingServiceImplTest {
     void succesOnGetAllsuccessBookingHistory() {
         Booking booking = new Booking();
         booking.setIsSuccess(true);
-        booking.setId(1l);
+        booking.setId(1L);
         Booking booking2 = new Booking();
         booking.setIsSuccess(true);
-        booking.setId(1l);
+        booking.setId(1L);
         List<Booking> booking1 = List.of(booking, booking2);
-        when(bookingRepository.findAllByUsersIdAndIsSuccess(1l,true)).thenReturn(Optional.of(booking1));
-        bookingService.successBookingHistory(1l,true);
+        when(bookingRepository.findAllByUsersIdAndIsSuccess(1L,true)).thenReturn(Optional.of(booking1));
+        bookingService.successBookingHistory(1L,true);
     }
 
 
     @Test
-    void failedOnGetAllsuccessBookingHistory() {
-        when(bookingRepository.findAllByUsersIdAndIsSuccess(1l,true)).thenReturn(Optional.empty());
-        Assertions.assertThatThrownBy(()->bookingService.successBookingHistory(1l,true))
+    void failedOnGetAllSuccessBookingHistory() {
+        when(bookingRepository.findAllByUsersIdAndIsSuccess(1L,true)).thenReturn(Optional.empty());
+        Assertions.assertThatThrownBy(()->bookingService.successBookingHistory(1L,true))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
@@ -177,19 +175,19 @@ class BookingServiceImplTest {
     void getAllBookingHistoryByUserSuccess() {
         Booking booking = new Booking();
         booking.setIsSuccess(true);
-        booking.setId(1l);
+        booking.setId(1L);
         Booking booking2 = new Booking();
         booking.setIsSuccess(true);
-        booking.setId(1l);
+        booking.setId(1L);
         List<Booking> booking1 = List.of(booking, booking2);
-        when(bookingRepository.findAllByUsersId(1l)).thenReturn(Optional.of(booking1));
-        bookingService.getAllBookingHistory(1l);
+        when(bookingRepository.findAllByUsersId(1L)).thenReturn(Optional.of(booking1));
+        bookingService.getAllBookingHistory(1L);
     }
 
     @Test
     void getAllBookingHistoryByUserFailed() {
-        when(bookingRepository.findAllByUsersId(1l)).thenReturn(Optional.empty());
-        Assertions.assertThatThrownBy(()-> bookingService.getAllBookingHistory(1l))
+        when(bookingRepository.findAllByUsersId(1L)).thenReturn(Optional.empty());
+        Assertions.assertThatThrownBy(()-> bookingService.getAllBookingHistory(1L))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
@@ -197,16 +195,16 @@ class BookingServiceImplTest {
     void getBookingHistoryByBookingIdSuccess() {
         Booking booking = new Booking();
         booking.setIsSuccess(true);
-        booking.setId(1l);
-        when(bookingRepository.findBookingById(1l)).thenReturn(Optional.of(booking));
-        bookingService.getBookingHistory(1l);
+        booking.setId(1L);
+        when(bookingRepository.findBookingById(1L)).thenReturn(Optional.of(booking));
+        bookingService.getBookingHistory(1L);
     }
 
     @Test
     void getBookingHistoryByBookingIdFailed() {
 
-        when(bookingRepository.findBookingById(1l)).thenReturn(Optional.empty());
-        Assertions.assertThatThrownBy(()->  bookingService.getBookingHistory(1l))
+        when(bookingRepository.findBookingById(1L)).thenReturn(Optional.empty());
+        Assertions.assertThatThrownBy(()->  bookingService.getBookingHistory(1L))
                 .isInstanceOf(ResourceNotFoundException.class);
        ;
     }

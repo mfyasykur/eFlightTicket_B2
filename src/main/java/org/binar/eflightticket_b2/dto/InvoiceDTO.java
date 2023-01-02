@@ -2,8 +2,6 @@ package org.binar.eflightticket_b2.dto;
 
 import lombok.*;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
