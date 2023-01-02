@@ -9,34 +9,25 @@ import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.FlightDetailRepository;
 import org.binar.eflightticket_b2.repository.RouteRepository;
 import org.binar.eflightticket_b2.repository.ScheduleRepository;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.cglib.core.Local;
+import org.springframework.data.domain.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -236,26 +227,85 @@ class ScheduleServiceImplTest {
         verify(scheduleRepository).findAll();
     }
 
-//    @Test
-//    @DisplayName("Get All Schedules By Default Filter SUCCESS")
-//    void getAllSchedulesByDefaultFilterSuccess() {
-//
-//        List<Schedule> scheduleList = List.of(new Schedule(), new Schedule());
-//        Page<Schedule> schedulePage= Mockito.mock(Page.class);
-//
-//        String departureCityName = "Jakarta";
-//        String arrivalCityName = "Denpasar";
-//        LocalDate departureDate = LocalDate.parse("2022-12-31");
-//        Schedule.FlightClass flightClass = Schedule.FlightClass.valueOf("ECONOMY");
-//        String[] sort = {"departureTime", "asc"};
-//        Pageable paging = PageRequest.of(0, 2, Sort.by(sort));
-//
-//        when(scheduleRepository.findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDateAndFlightClassOrderByNetPrice(departureCityName, arrivalCityName, departureDate, flightClass, paging)).thenReturn(schedulePage);
-//
-//        scheduleService.getAllSchedulesByDefaultFilter(departureCityName, arrivalCityName, departureDate, flightClass.toString(), 0, 2, sort);
-//
-//        verify(scheduleRepository).findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDateAndFlightClassOrderByNetPrice(departureCityName, arrivalCityName, departureDate, flightClass, paging);
-//    }
+    @Test
+    @DisplayName("Get All Schedules By Default Filter FAILED")
+    void getAllSchedulesByDefaultFilterNotFound() {
+
+        List<Schedule> scheduleList = List.of(new Schedule(), new Schedule());
+        Page<Schedule> schedulePage= new PageImpl<>(scheduleList);
+
+
+        String departureCityName = "Jakarta";
+        String arrivalCityName = "Denpasar";
+        LocalDate departureDate = LocalDate.parse("2022-12-31");
+        Schedule.FlightClass flightClass = Schedule.FlightClass.valueOf("ECONOMY");
+        String[] sort = {"departureTime", "asc"};
+        int page = 0;
+        int size = 2;
+        Pageable paging = PageRequest.of(page, size, Sort.by(sort));
+
+        when(scheduleRepository.findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDateAndFlightClassOrderByNetPrice(departureCityName, arrivalCityName, departureDate, flightClass, paging))
+                .thenReturn(schedulePage);
+
+        assertThatThrownBy(() -> scheduleService.getAllSchedulesByDefaultFilter(departureCityName, arrivalCityName, departureDate, flightClass.toString(), page, size, sort))
+                .isInstanceOf(NullPointerException.class);
+
+        verify(scheduleRepository).findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDateAndFlightClassOrderByNetPrice(anyString(), anyString(), any(), any(), any());
+    }
+
+    @Test
+    @DisplayName("Get All Schedules By Default Filter WITHOUT FLIGHTCLASS FAILED")
+    void getAllSchedulesByDefaultFilterWithoutFlightClassNotFound() {
+
+        List<Schedule> scheduleList = List.of(new Schedule(), new Schedule());
+        Page<Schedule> schedulePage= new PageImpl<>(scheduleList);
+
+
+        String departureCityName = "Jakarta";
+        String arrivalCityName = "Denpasar";
+        LocalDate departureDate = LocalDate.parse("2022-12-31");
+        Schedule.FlightClass flightClass = Schedule.FlightClass.valueOf("ECONOMY");
+        String[] sort = {"departureTime", "asc"};
+        int page = 0;
+        int size = 2;
+        Pageable paging = PageRequest.of(page, size, Sort.by(sort));
+
+        when(scheduleRepository.findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDate(departureCityName, arrivalCityName, departureDate, paging))
+                .thenReturn(schedulePage);
+
+        assertThatThrownBy(() -> scheduleService.getAllSchedulesByDefaultFilterWithoutFlightClass(departureCityName, arrivalCityName, departureDate, page, size, sort))
+                .isInstanceOf(NullPointerException.class);
+
+        verify(scheduleRepository).findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDate(anyString(), anyString(), any(), any());
+    }
+
+    @Test
+    @DisplayName("Get Available Schedules Filtered by Departure Time FAILED")
+    void getAvailableSchedulesFilteredByDepartureTimeFailed() {
+
+        List<Schedule> scheduleList = List.of(new Schedule(), new Schedule());
+        Page<Schedule> schedulePage= new PageImpl<>(scheduleList);
+
+
+        String departureCityName = "Jakarta";
+        String arrivalCityName = "Denpasar";
+        LocalDate departureDate = LocalDate.parse("2022-12-31");
+        Schedule.FlightClass flightClass = Schedule.FlightClass.valueOf("ECONOMY");
+        LocalTime startTime = LocalTime.parse("09:00:00");
+        LocalTime endTime = LocalTime.parse("10:00:00");
+        String[] sort = {"departureTime", "asc"};
+        int page = 0;
+        int size = 2;
+        Pageable paging = PageRequest.of(page, size, Sort.by(sort));
+
+        when(scheduleRepository.findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDateAndFlightClassAndDepartureTimeBetween(departureCityName, arrivalCityName, departureDate, flightClass, startTime, endTime, paging))
+                .thenReturn(schedulePage);
+
+        assertThatThrownBy(() -> scheduleService.getAvailableSchedulesFilteredByDepartureTime(departureCityName, arrivalCityName, departureDate, String.valueOf(flightClass), "A", page, size, sort))
+                .isInstanceOf(NullPointerException.class);
+
+        verify(scheduleRepository).findAllByRoute_Departure_CityDetails_CityNameAndRoute_Arrival_CityDetails_CityNameAndDepartureDateAndFlightClassAndDepartureTimeBetween(anyString(), anyString(), any(), any(), any(), any(), any());
+    }
 
     @Test
     @DisplayName("Get Schedule By Id SUCCESS")

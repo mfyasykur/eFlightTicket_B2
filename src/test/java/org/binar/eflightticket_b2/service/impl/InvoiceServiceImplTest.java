@@ -94,7 +94,7 @@ class InvoiceServiceImplTest {
 
         when(bookingRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        Assertions.assertThatThrownBy(()->invoiceService.generateInvoice(anyLong()))
+        Assertions.assertThatThrownBy(()->invoiceService.generateInvoice(1L))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
