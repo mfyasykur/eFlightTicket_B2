@@ -172,8 +172,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             errorMessage.put(ERROR, "email has taken");
             throw new BadRequestException(errorMessage);
         }else {
+            String encryptedPassword = bCryptPasswordEncoder.encode(users.getPassword());
             retrievedUser.setEmail(users.getEmail());
-            retrievedUser.setPassword(users.getPassword());
+            retrievedUser.setPassword(encryptedPassword);
             userRepository.save(retrievedUser);
         }
         return retrievedUser;
