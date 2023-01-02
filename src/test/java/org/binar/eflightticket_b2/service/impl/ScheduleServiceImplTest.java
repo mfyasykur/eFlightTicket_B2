@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.modelmapper.ModelMapper;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.*;
 
 import java.time.LocalDate;
@@ -264,7 +263,6 @@ class ScheduleServiceImplTest {
         String departureCityName = "Jakarta";
         String arrivalCityName = "Denpasar";
         LocalDate departureDate = LocalDate.parse("2022-12-31");
-        Schedule.FlightClass flightClass = Schedule.FlightClass.valueOf("ECONOMY");
         String[] sort = {"departureTime", "asc"};
         int page = 0;
         int size = 2;
