@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/aircraft")
@@ -49,7 +48,7 @@ public class AircraftController {
     public ResponseEntity<ApiResponse> getAllAircraft() {
 
         List<AircraftDTO> result = aircraftService.getAllAircraft().stream().map(aircraft -> aircraftService.mapToDto(aircraft))
-                .collect(Collectors.toList());
+                .toList();
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE,
                 "successfully retrieved all aircraft",

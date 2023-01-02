@@ -18,6 +18,7 @@ import java.util.List;
 public class AirportServiceImpl implements AirportService {
 
     private static final String ENTITY = "airport";
+    private static final String ERROR = "Error Not Found: airport with ID {}";
     private final Logger log =  LoggerFactory.getLogger(AirportServiceImpl.class);
 
     public AirportServiceImpl(AirportRepository airportRepository) {
@@ -37,7 +38,7 @@ public class AirportServiceImpl implements AirportService {
         Airport result = airportRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
@@ -54,7 +55,7 @@ public class AirportServiceImpl implements AirportService {
         Airport result = airportRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
@@ -74,11 +75,11 @@ public class AirportServiceImpl implements AirportService {
         Airport airport = airportRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
-        log.info("Has successfully found airport data from id " + id);
+        log.info("Has successfully found airport data from id {}", id);
         return airport;
     }
 
@@ -91,7 +92,7 @@ public class AirportServiceImpl implements AirportService {
                     exception.setApiResponse();
                     throw exception;
                 });
-        log.info("Has successfully found airport data from code " + airportCode);
+        log.info("Has successfully found airport data from code {}", airportCode);
         return byAirportCode;
     }
 

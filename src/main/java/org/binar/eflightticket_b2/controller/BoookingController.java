@@ -16,6 +16,8 @@ import java.util.List;
 @RestController
 public class BoookingController {
 
+    private static final String SUCCESS = "success";
+
     private final BookingService bookingService;
 
     private final ScheduleService scheduleService;
@@ -45,7 +47,7 @@ public class BoookingController {
                 .paymentMethod(booking.getPaymentMethod())
                 .paymentCode(booking.getPaymentCode())
                 .build();
-        ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponse);
+        ApiResponse success = new ApiResponse(Boolean.TRUE, SUCCESS, bookingResponse);
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
 
@@ -62,7 +64,7 @@ public class BoookingController {
                 .finalPrice(paymentBooking.getFinalPrice())
                 .paymentCode(paymentBooking.getPaymentCode())
                 .build();
-        ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponse);
+        ApiResponse success = new ApiResponse(Boolean.TRUE, SUCCESS, bookingResponse);
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
 
@@ -85,7 +87,7 @@ public class BoookingController {
                     .paymentCode(booking.getPaymentCode())
                     .build();
         }).toList();
-        ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponses);
+        ApiResponse success = new ApiResponse(Boolean.TRUE, SUCCESS, bookingResponses);
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
 
@@ -108,7 +110,7 @@ public class BoookingController {
                     .paymentCode(booking.getPaymentCode())
                     .build();
         }).toList();
-        ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponses);
+        ApiResponse success = new ApiResponse(Boolean.TRUE, SUCCESS, bookingResponses);
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
 
@@ -130,7 +132,7 @@ public class BoookingController {
                 .finalPrice(booking.getFinalPrice())
                 .paymentCode(booking.getPaymentCode())
                 .build();
-        ApiResponse success = new ApiResponse(Boolean.TRUE, "success", bookingResponse);
+        ApiResponse success = new ApiResponse(Boolean.TRUE, SUCCESS, bookingResponse);
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
 }

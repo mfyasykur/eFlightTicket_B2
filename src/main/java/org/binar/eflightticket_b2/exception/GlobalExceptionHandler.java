@@ -23,10 +23,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class GlobalExceptionHandler {
 
     private final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final String DESCRIPTION = "check for valid data";
 
     @ExceptionHandler({ValidationException.class})
     public ResponseEntity<APIError> validationException(ValidationException exception, HttpServletRequest request) {
-        log.error("validation exception : " + exception.getLocalizedMessage() + " for " + request.getRequestURI());
+        log.error("validation exception : {} for {}", exception.getLocalizedMessage(), request.getRequestURI());
 
         return new ResponseEntity<>(
                 APIError.builder()
@@ -46,7 +47,7 @@ public class GlobalExceptionHandler {
             Exception exception,
             HttpServletRequest httpServletRequest
     ) {
-        log.error("exception : " + exception.getLocalizedMessage() + " for " + httpServletRequest.getRequestURI());
+        log.error("exception : {} for {}", exception.getLocalizedMessage(), httpServletRequest.getRequestURI());
 
         return new ResponseEntity<>(
                 APIError.builder()
@@ -74,7 +75,7 @@ public class GlobalExceptionHandler {
                         .message(errorMessage)
                         .path(request.getRequestURI())
                         .request(request.getMethod())
-                        .description("check for valid data")
+                        .description(DESCRIPTION)
                         .build(), BAD_REQUEST
         );
     }
@@ -90,7 +91,7 @@ public class GlobalExceptionHandler {
                         .message(ex.getErrorMessage())
                         .path(request.getRequestURI())
                         .request(request.getMethod())
-                        .description("check for valid data")
+                        .description(DESCRIPTION)
                         .build(), BAD_REQUEST
         );
     }
@@ -108,7 +109,7 @@ public class GlobalExceptionHandler {
                         .message(ex.getMessageMap())
                         .path(request.getRequestURI())
                         .request(request.getMethod())
-                        .description("check for valid data")
+                        .description(DESCRIPTION)
                         .build(), NOT_FOUND
         );
     }

@@ -115,7 +115,7 @@ public class AirportDetailServiceImpl implements AirportDetailService {
                     exception.setApiResponse();
                     throw exception;
                 });
-        log.info("Has successfully found airportDetail data from id " + id);
+        log.info("Has successfully found airportDetail data from id {}", id);
         return airportDetail;
     }
 

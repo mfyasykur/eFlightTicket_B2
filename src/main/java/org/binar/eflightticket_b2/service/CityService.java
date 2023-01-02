@@ -15,8 +15,6 @@ public interface CityService {
 
     City findByCityCode(String countryCode);
 
-//    City addCity(Long countryId, City city);
-
 
     CityDTO mapToDto(City city);
     City mapToEntity(CityDTO cityDTO);
