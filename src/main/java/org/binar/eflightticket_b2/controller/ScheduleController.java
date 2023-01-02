@@ -1,7 +1,6 @@
 package org.binar.eflightticket_b2.controller;
 
 import org.binar.eflightticket_b2.dto.ScheduleDTO;
-import org.binar.eflightticket_b2.dto.ScheduleFilterResponse;
 import org.binar.eflightticket_b2.dto.ScheduleRequest;
 import org.binar.eflightticket_b2.entity.Schedule;
 import org.binar.eflightticket_b2.payload.ApiResponse;
@@ -16,11 +15,13 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/schedule")
 public class ScheduleController {
+
+    static final String MESSAGE = "successfully retrieved all schedules searched by departure: ";
+    static final String WARN = "Flight not found. Please choose another schedule.";
 
     @Autowired
     private ScheduleService scheduleService;
@@ -41,7 +42,7 @@ public class ScheduleController {
     public ResponseEntity<ApiResponse> getAllSchedules() {
 
         List<ScheduleDTO> result = scheduleService.getAllSchedules().stream().map(schedule -> scheduleService.mapToDto(schedule))
-                .collect(Collectors.toList());
+                .toList();
 
         if (!result.isEmpty()) {
 
@@ -74,14 +75,14 @@ public class ScheduleController {
 
                 ApiResponse apiResponse = new ApiResponse(
                         Boolean.TRUE,
-                        "successfully retrieved all schedules searched by departure: " + departureCityName + ", arrival: " + arrivalCityName + ", date: " + departureDate + ", flight class: " + flightClass + ", with page = " + page + ", size = " + size + ", sort by " + Arrays.toString(sort),
+                        MESSAGE + departureCityName + ", arrival: " + arrivalCityName + ", date: " + departureDate + ", flight class: " + flightClass + ", with page = " + page + ", size = " + size + ", sort by " + Arrays.toString(sort),
                         result
                 );
 
                 return new ResponseEntity<>(apiResponse, HttpStatus.OK);
             }
 
-            return new ResponseEntity<>(new ApiResponse(Boolean.TRUE, "Flight not found. Please choose another schedule.", result), HttpStatus.OK);
+            return new ResponseEntity<>(new ApiResponse(Boolean.TRUE, WARN, result), HttpStatus.OK);
     }
 
     @GetMapping("/get/all/search/")
@@ -100,14 +101,14 @@ public class ScheduleController {
 
             ApiResponse apiResponse = new ApiResponse(
                     Boolean.TRUE,
-                    "successfully retrieved all schedules searched by departure: " + departureCityName + ", arrival: " + arrivalCityName + ", date: " + departureDate + ", with page = " + page + ", size = " + size + ", sort by " + Arrays.toString(sort),
+                    MESSAGE + departureCityName + ", arrival: " + arrivalCityName + ", date: " + departureDate + ", with page = " + page + ", size = " + size + ", sort by " + Arrays.toString(sort),
                     result
             );
 
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(new ApiResponse(Boolean.TRUE, "Flight not found. Please choose another schedule.", result), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(Boolean.TRUE, WARN, result), HttpStatus.OK);
     }
 
     @GetMapping("/get/all/filter/time")
@@ -128,14 +129,14 @@ public class ScheduleController {
 
             ApiResponse apiResponse = new ApiResponse(
                     Boolean.TRUE,
-                    "successfully retrieved all schedules searched by departure: " + departureCityName + ", arrival: " + arrivalCityName + ", date: " + departureDate + ", flight class: " + flightClass + ", filtered by time range type: " + timeRange + ", with page = " + page + ", size = " + size + ", sort by " + Arrays.toString(sort),
+                    MESSAGE + departureCityName + ", arrival: " + arrivalCityName + ", date: " + departureDate + ", flight class: " + flightClass + ", filtered by time range type: " + timeRange + ", with page = " + page + ", size = " + size + ", sort by " + Arrays.toString(sort),
                     result
             );
 
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(new ApiResponse(Boolean.TRUE, "Flight not found. Please choose another schedule.", result), HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(Boolean.TRUE, WARN, result), HttpStatus.OK);
     }
 
     @GetMapping("/get/{id}")

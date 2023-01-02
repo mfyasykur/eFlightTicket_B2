@@ -1,13 +1,10 @@
 package org.binar.eflightticket_b2.service;
 
 import org.binar.eflightticket_b2.dto.ScheduleDTO;
-import org.binar.eflightticket_b2.dto.ScheduleFilterResponse;
 import org.binar.eflightticket_b2.dto.ScheduleRequest;
 import org.binar.eflightticket_b2.entity.Schedule;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 public interface ScheduleService {

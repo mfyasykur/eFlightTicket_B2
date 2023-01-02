@@ -8,7 +8,6 @@ import org.binar.eflightticket_b2.service.CityService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -18,9 +17,14 @@ import java.util.List;
 public class CityServiceImpl implements CityService {
 
     private static final String ENTITY = "city";
+    private static final String ERROR = "Error Not Found: city with ID {}";
     private final Logger log =  LoggerFactory.getLogger(CityServiceImpl.class);
-    @Autowired
-    CityRepository cityRepository;
+
+    public CityServiceImpl(CityRepository cityRepository) {
+        this.cityRepository = cityRepository;
+    }
+
+    private final CityRepository cityRepository;
 
     @Override
     public City add(City city) {
@@ -33,7 +37,7 @@ public class CityServiceImpl implements CityService {
         City result = cityRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
@@ -52,7 +56,7 @@ public class CityServiceImpl implements CityService {
         City result = cityRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
@@ -72,25 +76,25 @@ public class CityServiceImpl implements CityService {
         City city = cityRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
-        log.info("Has successfully found city data from id " + id);
+        log.info("Has successfully found city data from id {}", id);
         return city;
     }
 
     @Override
     public City findByCityCode(String cityCode) {
-        City byCityCode = cityRepository.findByCityCode(cityCode);
-        if (byCityCode != null) {
-            log.info("Has successfully found country data from code " + cityCode);
-            return byCityCode;
-        }
-        ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "cityCode", cityCode);
-        log.info("Error");
-        exception.setApiResponse();
-        throw exception;
+        City byCityCode = cityRepository.findByCityCode(cityCode)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "cityCode", cityCode);
+                    log.info("Error");
+                    exception.setApiResponse();
+                    throw exception;
+                });
+        log.info("Has successfully found city data from code {}", cityCode);
+        return byCityCode;
     }
     ModelMapper mapper = new ModelMapper();
 

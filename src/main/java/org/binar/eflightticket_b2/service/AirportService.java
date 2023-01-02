@@ -12,7 +12,6 @@ public interface AirportService {
     List<Airport> findAll();
     Airport findById(Long id);
 
-//    Airport addAirport(Long cityId, Airport airport);
     Airport findByAirportCode(String countryCode);
 
 

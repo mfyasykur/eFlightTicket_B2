@@ -8,7 +8,6 @@ import org.binar.eflightticket_b2.service.CountryService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,9 +18,14 @@ import java.util.List;
 public class CountryServiceImpl implements CountryService {
 
     private static final String ENTITY = "country";
+    private static final String ERROR = "Error Not Found: country with ID {}";
     private final Logger log =  LoggerFactory.getLogger(CountryServiceImpl.class);
-    @Autowired
-    CountryRepository countryRepository;
+
+    private final CountryRepository countryRepository;
+
+    public CountryServiceImpl(CountryRepository countryRepository) {
+        this.countryRepository = countryRepository;
+    }
 
     @Override
     public Country add(Country country) {
@@ -34,7 +38,7 @@ public class CountryServiceImpl implements CountryService {
         Country result = countryRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
@@ -53,7 +57,7 @@ public class CountryServiceImpl implements CountryService {
         Country result = countryRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
@@ -73,25 +77,25 @@ public class CountryServiceImpl implements CountryService {
         Country country = countryRepository.findById(id)
                 .orElseThrow(() -> {
                     ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "id", id.toString());
-                    log.info("Error");
+                    log.info(ERROR, id);
                     exception.setApiResponse();
                     throw exception;
                 });
-        log.info("Has successfully found country data from id " + id);
+        log.info("Has successfully found country data from id {}", id);
         return country;
     }
 
     @Override
     public Country findByCountryCode(String countryCode) {
-        Country byCountryCode = countryRepository.findByCountryCode(countryCode);
-        if (byCountryCode != null) {
-            log.info("Has successfully found country data from code " + countryCode);
-            return byCountryCode;
-        }
-        ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "countryCode", countryCode);
-        log.info("Error");
-        exception.setApiResponse();
-        throw exception;
+        Country byCountryCode = countryRepository.findByCountryCode(countryCode)
+                .orElseThrow(() -> {
+                    ResourceNotFoundException exception = new ResourceNotFoundException(ENTITY, "countryCode", countryCode);
+                    log.info("Error");
+                    exception.setApiResponse();
+                    throw exception;
+                });
+        log.info("Has successfully found country data from code {}", countryCode);
+        return byCountryCode;
     }
     ModelMapper mapper = new ModelMapper();
 

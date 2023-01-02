@@ -1,7 +1,6 @@
 package org.binar.eflightticket_b2.service.impl;
 
 import org.binar.eflightticket_b2.entity.Notification;
-import org.binar.eflightticket_b2.entity.Users;
 import org.binar.eflightticket_b2.exception.ResourceNotFoundException;
 import org.binar.eflightticket_b2.repository.NotificationRepository;
 import org.binar.eflightticket_b2.service.NotificationService;

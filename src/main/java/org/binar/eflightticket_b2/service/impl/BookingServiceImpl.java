@@ -22,6 +22,8 @@ public class BookingServiceImpl implements BookingService {
 
 
     private final Logger log =  LoggerFactory.getLogger(BookingServiceImpl.class);
+    private static final String ERROR = "error";
+    private static final String BOOKING_STRING = "bookings";
     private final BookingRepository bookingRepository;
     private final UserService userService;
     private final ScheduleService scheduleService;
@@ -74,7 +76,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Booking payment(PaymentDTO paymentDTO) {
         Booking booking = bookingRepository.findById(paymentDTO.getBookingId()).orElseThrow(() -> {
-            log.error("booking not found with booking id " + paymentDTO.getBookingId());
+            log.error("booking not found with booking id {}", paymentDTO.getBookingId());
             throw new ResourceNotFoundException("Booking", "id", paymentDTO.getBookingId());
         });
 
@@ -109,9 +111,9 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Booking> successBookingHistory(Long userId, Boolean isSuccess) {
         return bookingRepository.findAllByUsersIdAndIsSuccess(userId, true).orElseThrow(() -> {
-            ResourceNotFoundException ex = new ResourceNotFoundException("bookings", "userId", userId);
+            ResourceNotFoundException ex = new ResourceNotFoundException(BOOKING_STRING, "userId", userId);
             ex.setApiResponse();
-            log.info(ex.getMessageMap().get("error"));
+            log.info(ex.getMessageMap().get(ERROR));
             throw ex;
         });
     }
@@ -120,9 +122,9 @@ public class BookingServiceImpl implements BookingService {
     public List<Booking> getAllBookingHistory(Long userId) {
         return bookingRepository.findAllByUsersId(userId).orElseThrow(
                 () -> {
-                    ResourceNotFoundException ex = new ResourceNotFoundException("bookings", "userId", userId);
+                    ResourceNotFoundException ex = new ResourceNotFoundException(BOOKING_STRING, "userId", userId);
                     ex.setApiResponse();
-                    log.info(ex.getMessageMap().get("error"));
+                    log.info(ex.getMessageMap().get(ERROR));
                     throw ex;
                 }
         );
@@ -132,9 +134,9 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Booking getBookingHistory(Long bookingId) {
         return bookingRepository.findBookingById(bookingId).orElseThrow(() -> {
-            ResourceNotFoundException ex = new ResourceNotFoundException("bookings", "booking", bookingId);
+            ResourceNotFoundException ex = new ResourceNotFoundException(BOOKING_STRING, "booking", bookingId);
             ex.setApiResponse();
-            log.info(ex.getMessageMap().get("error"));
+            log.info(ex.getMessageMap().get(ERROR));
             throw ex;
         });
     }

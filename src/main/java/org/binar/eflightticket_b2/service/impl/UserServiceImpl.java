@@ -36,8 +36,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final Logger log =  LoggerFactory.getLogger(UserServiceImpl.class);
     private static final String ERROR  = "ERROR";
-    private ModelMapper mapper;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private static final String EMAIL_LOG = "email has taken";
+    private final ModelMapper mapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleRepository roleRepository;
     private final Cloudinary cloudinary;
     private final NotificationService notificationService;
@@ -71,21 +72,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public Users addUser(Users users, List<String> user) {
         if (userRepository.findUsersByEmail(users.getEmail()).isPresent()){
-            log.info("email has taken");
+            log.info(EMAIL_LOG);
             HashMap<String, String> errorMessage = new HashMap<>();
-            errorMessage.put(ERROR, "email has taken");
+            errorMessage.put(ERROR, EMAIL_LOG);
             throw new BadRequestException(errorMessage);
         }
 
-        List<String> reqRole = user;
         List<Role> roles = new LinkedList<>();
 
-        if (reqRole == null){
+        if (user == null){
             Role userRole = roleRepository.findRoleByName(ROLE_USERS).orElseThrow();
-            log.info(INFO + users.getId() + " has assigned to ROLE_USER");
+            log.info(INFO + "{} has assigned to ROLE_USER", users.getId());
             roles.add(userRole);
         }else{
-            reqRole.forEach(role -> {
+            user.forEach(role -> {
                 if (ROLE_ADMIN.equals(role)) {
                     Role adminRole = roleRepository.findRoleByName(ROLE_ADMIN).orElseThrow(
                             () -> {
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                                 throw new ResourceNotFoundException("Role", "role", ROLE_ADMIN);
                             });
                     roles.add(adminRole);
-                    log.info("Info : " + users.getId() + " has assigned to ROLE_ADMIN");
+                    log.info("Info : {} has assigned to ROLE_ADMIN", users.getId());
                 } else {
                     Role userRole = roleRepository.findRoleByName(ROLE_USERS).orElseThrow(
                             () -> {
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                                 throw new ResourceNotFoundException("Role", "role", ROLE_USERS);
                             });
                     roles.add(userRole);
-                    log.info("Info : " + users.getId() + " has assigned to ROLE_USERS");
+                    log.info("Info : {} has assigned to ROLE_USERS", users.getId());
                 }
             });
         }
@@ -125,11 +125,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .orElseThrow(() -> {
                     ResourceNotFoundException ex = new ResourceNotFoundException("id", id.toString(), String.class);
                     ex.setApiResponse();
-                    log.info(ex.getMessageMap().get("error"));
+                    log.info(ex.getMessageMap().get(ERROR));
                     throw ex;
                 });
         userRepository.delete(user);
-        log.info("succcessfully delete data user in database");
+        log.info("successfully delete data user in database");
         return user;
     }
 
@@ -140,10 +140,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .orElseThrow(() -> {
                     ResourceNotFoundException ex = new ResourceNotFoundException("email", email, String.class);
                     ex.setApiResponse();
-                    log.info(ex.getMessageMap().get("error"));
+                    log.info(ex.getMessageMap().get(ERROR));
                     throw ex;
                 });
-        log.info("succcessfully retrieve data user in database");
+        log.info("successfully retrieve data user in database");
         return user;
     }
 
@@ -152,7 +152,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findUsersById(id).orElseThrow(() -> {
             ResourceNotFoundException ex = new ResourceNotFoundException("id", id.toString(), String.class);
             ex.setApiResponse();
-            log.info(ex.getMessageMap().get("error"));
+            log.info(ex.getMessageMap().get(ERROR));
             throw ex;
         });
     }
@@ -162,18 +162,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Users retrievedUser = userRepository.findUsersById(id).orElseThrow(() -> {
             ResourceNotFoundException ex = new ResourceNotFoundException("id", id.toString(), String.class);
             ex.setApiResponse();
-            log.info(ex.getMessageMap().get("error"));
+            log.info(ex.getMessageMap().get(ERROR));
             throw ex;
         });
         boolean isEmailPresent = userRepository.findUsersByEmail(users.getEmail()).isPresent();
         if (isEmailPresent){
-            log.info("email has taken");
+            log.info(EMAIL_LOG);
             HashMap<String, String> errorMessage = new HashMap<>();
-            errorMessage.put(ERROR, "email has taken");
+            errorMessage.put(ERROR, EMAIL_LOG);
             throw new BadRequestException(errorMessage);
         }else {
+            String encryptedPassword = bCryptPasswordEncoder.encode(users.getPassword());
             retrievedUser.setEmail(users.getEmail());
-            retrievedUser.setPassword(users.getPassword());
+            retrievedUser.setPassword(encryptedPassword);
             userRepository.save(retrievedUser);
         }
         return retrievedUser;

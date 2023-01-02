@@ -48,7 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().configurationSource(request -> {
             CorsConfiguration cors = new CorsConfiguration();
-            cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
+            cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
             cors.setAllowedHeaders(Collections.singletonList("*"));
             cors.setAllowedOrigins(Collections.singletonList("*"));
             cors.setMaxAge(3600L);
@@ -59,8 +59,83 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("/api/auth/**").permitAll();
+        //user
         http.authorizeRequests()
-                .antMatchers(HttpMethod.DELETE, "/api/users/delete/**")
+                .antMatchers(HttpMethod.DELETE, "/users/delete/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.DELETE, "/schedule/delete/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        //schedule
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/schedule/get/all")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/schedule/add/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        //route
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.DELETE, "/route/delete/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/route/get/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/route/add")
+                .hasAnyAuthority("ROLE_ADMIN");
+        //city
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.DELETE, "/city/delete/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.PUT, "/city/update/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/city/add")
+                .hasAnyAuthority("ROLE_ADMIN");
+        //aircraft
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.DELETE, "/aircraft/delete/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.PUT, "/aircraft/update/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/aircraft/add")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/aircraft/get/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        //airport
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.DELETE, "/airport/delete/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.PUT, "/airport/update/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/airport/add")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/airport/get/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        //flightDetail
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.DELETE, "/flightDetail/delete/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/flightDetail/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/flightDetail/get/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+
+        //AirportDetail
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.DELETE, "/airportDetail/delete/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/airportDetail/add")
                 .hasAnyAuthority("ROLE_ADMIN");
         http.addFilterBefore(new AuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

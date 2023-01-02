@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/route")
@@ -37,7 +36,7 @@ public class RouteController {
     public ResponseEntity<ApiResponse> getAllRoute() {
 
         List<RouteDTO> result = routeService.getAllRoutes().stream().map(route -> routeService.mapToDto(route))
-                .collect(Collectors.toList());
+                .toList();
 
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE,
