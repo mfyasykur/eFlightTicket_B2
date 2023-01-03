@@ -201,6 +201,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return users;
     }
 
+    @Override
+    public Users addPhoneNumber(Long id, String phoneNumber) {
+        Users users = userRepository.findUsersById(id).orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("id", id.toString(), String.class);
+            ex.setApiResponse();
+            log.info(ex.getMessageMap().get("error"));
+            throw ex;
+        });
+        users.setPhoneNumber(phoneNumber);
+        return userRepository.save(users);
+    }
+
     public static File multipartToFile(MultipartFile multipart, String fileName) throws IllegalStateException, IOException {
         File convertFile = new File(System.getProperty("java.io.tmpdir")+"/"+fileName);
         multipart.transferTo(convertFile);

@@ -73,6 +73,18 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, OK);
     }
 
+    @PostMapping("users/phone")
+    public ResponseEntity<ApiResponse> addPhoneNumber(@Valid @RequestParam("id") Long id,
+                                                   @RequestParam("phone") String phone) throws IOException {
+        Users users = userService.addPhoneNumber(id, phone);
+        UsersDTO usersDTO = userService.mapToDTO(users);
+        ApiResponse apiResponse = new ApiResponse(
+                Boolean.TRUE
+                , "Successfully uploaded profile picture user with id : " +users.getId(), usersDTO);
+        log.info("Successfully uploaded profile picture user with id {} ", users.getId());
+        return new ResponseEntity<>(apiResponse, OK);
+    }
+
 
 
 
