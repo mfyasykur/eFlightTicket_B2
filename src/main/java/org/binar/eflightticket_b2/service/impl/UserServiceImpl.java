@@ -198,7 +198,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         File file = multipartToFile(multipartFile, multipartFile.getName());
         Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
         users.setPhotoProfile(uploadResult.get("url").toString());
-        return users;
+        Users savedUser = userRepository.save(users);
+        return savedUser;
     }
 
     @Override
