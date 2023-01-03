@@ -81,7 +81,7 @@ public class UserController {
         ApiResponse apiResponse = new ApiResponse(
                 Boolean.TRUE
                 , "Successfully uploaded profile picture user with id : " +users.getId(), usersDTO);
-        log.info("Successfully uploaded profile picture user with id {} ", users.getId());
+        log.info("Successfully update phoneNumber user with id {} ", users.getId());
         return new ResponseEntity<>(apiResponse, OK);
     }
 
