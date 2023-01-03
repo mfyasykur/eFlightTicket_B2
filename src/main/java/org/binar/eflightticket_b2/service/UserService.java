@@ -17,6 +17,7 @@ public interface UserService {
     Users getUserById(Long id);
     Users updateUser(Users users, Long id);
     Users uploadImage(MultipartFile multipartFile, Long id) throws IOException;
+    Users addPhoneNumber(Long id, String phoneNumber);
 
     UsersDTO mapToDTO(Users users);
     Users mapToEntity(UsersDTO usersDTO);
