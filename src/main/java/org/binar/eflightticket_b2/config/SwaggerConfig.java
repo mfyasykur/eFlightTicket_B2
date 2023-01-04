@@ -43,7 +43,7 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("ANAM AIR")
                         .description("E-Flight Ticket Reservation REST API")
-                        .version("v1.0.0")
+                        .version("v1.3.3")
                 ).servers(List.of(anamAir, anamAirStaging, railwayStaging, localHost))
 
                 .addSecurityItem(new SecurityRequirement()
