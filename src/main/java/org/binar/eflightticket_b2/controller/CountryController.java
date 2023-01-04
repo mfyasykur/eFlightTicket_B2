@@ -1,5 +1,6 @@
 package org.binar.eflightticket_b2.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.binar.eflightticket_b2.dto.CountryDTO;
 import org.binar.eflightticket_b2.entity.Country;
 import org.binar.eflightticket_b2.payload.ApiResponse;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/country")
+@Tag(name = "Country", description = "Country Controller | Contains: Add, Update by ID, Get All, Get by ID, Get by Country Code, Delete by ID")
 public class CountryController {
 
     @Autowired

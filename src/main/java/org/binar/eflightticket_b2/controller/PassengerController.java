@@ -1,5 +1,6 @@
 package org.binar.eflightticket_b2.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.binar.eflightticket_b2.dto.PassengerRequest;
 import org.binar.eflightticket_b2.entity.Passenger;
 import org.binar.eflightticket_b2.payload.ApiResponse;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Tag(name = "Passenger", description = "Passenger Controller | Contains: Add, Add All")
 public class PassengerController {
 
 

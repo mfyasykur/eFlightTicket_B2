@@ -1,5 +1,6 @@
 package org.binar.eflightticket_b2.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.binar.eflightticket_b2.dto.RouteDTO;
 import org.binar.eflightticket_b2.dto.RouteRequest;
 import org.binar.eflightticket_b2.entity.Route;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/route")
+@Tag(name = "Route", description = "Route Controller | Contains: Add, Get All, Get by ID, Delete by ID")
 public class RouteController {
 
     @Autowired
