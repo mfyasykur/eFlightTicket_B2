@@ -165,6 +165,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             log.info(ex.getMessageMap().get(ERROR));
             throw ex;
         });
+
         boolean isEmailPresent = userRepository.findUsersByEmail(users.getEmail()).isPresent();
         if (isEmailPresent){
             log.info(EMAIL_LOG);
@@ -172,11 +173,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             errorMessage.put(ERROR, EMAIL_LOG);
             throw new BadRequestException(errorMessage);
         }else {
-            String encryptedPassword = bCryptPasswordEncoder.encode(users.getPassword());
-            retrievedUser.setEmail(users.getEmail());
-            retrievedUser.setPassword(encryptedPassword);
-            userRepository.save(retrievedUser);
-        }
+            if (bCryptPasswordEncoder.matches(users.getPassword(), retrievedUser.getPassword())){
+                String encryptedPassword = bCryptPasswordEncoder.encode(users.getPassword());
+                retrievedUser.setEmail(users.getEmail());
+                retrievedUser.setPassword(encryptedPassword);
+                userRepository.save(retrievedUser);
+            }else {
+                HashMap<String, String> errorMessage = new HashMap<>();
+                errorMessage.put(ERROR, "Password doesn't match");
+                throw new BadRequestException(errorMessage);
+            }
+         }
         return retrievedUser;
     }
 
