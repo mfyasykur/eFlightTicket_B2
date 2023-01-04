@@ -1,5 +1,6 @@
 package org.binar.eflightticket_b2.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.binar.eflightticket_b2.dto.UserDetailRequest;
 import org.binar.eflightticket_b2.dto.UsersDTO;
 import org.binar.eflightticket_b2.entity.Users;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
+@Tag(name = "Users", description = "Users Controller | Contains: Update by Email, Get by ID, Delete by ID, Upload by ID")
 public class UserController {
 
     public UserController(UserService userService) {

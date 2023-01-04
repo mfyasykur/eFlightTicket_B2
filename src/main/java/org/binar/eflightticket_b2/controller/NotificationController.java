@@ -1,5 +1,6 @@
 package org.binar.eflightticket_b2.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.binar.eflightticket_b2.entity.Notification;
 import org.binar.eflightticket_b2.payload.ApiResponse;
 import org.binar.eflightticket_b2.service.NotificationService;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@Tag(name = "Notification", description = "Notification Controller | Contains: Get All")
 public class NotificationController {
 
     private final NotificationService notificationService;

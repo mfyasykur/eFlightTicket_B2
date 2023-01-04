@@ -1,5 +1,6 @@
 package org.binar.eflightticket_b2.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.binar.eflightticket_b2.dto.ScheduleDTO;
 import org.binar.eflightticket_b2.dto.ScheduleRequest;
 import org.binar.eflightticket_b2.entity.Schedule;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/schedule")
+@Tag(name = "Schedule", description = "Schedule Controller | Contains: Add, Get All, Get by ID, Get All by Default Filter, Get Default Filtered by Departure Time, Delete by ID")
 public class ScheduleController {
 
     static final String MESSAGE = "successfully retrieved all schedules searched by departure: ";
