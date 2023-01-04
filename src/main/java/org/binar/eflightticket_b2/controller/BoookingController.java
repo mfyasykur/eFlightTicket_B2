@@ -1,5 +1,6 @@
 package org.binar.eflightticket_b2.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.binar.eflightticket_b2.dto.*;
 import org.binar.eflightticket_b2.entity.Booking;
 import org.binar.eflightticket_b2.payload.ApiResponse;
@@ -14,6 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@Tag(name = "Booking", description = "Booking Controller | Contains: Add, Payment, Get by ID, Get Success History by ID, Get All Histories")
 public class BoookingController {
 
     private static final String SUCCESS = "success";

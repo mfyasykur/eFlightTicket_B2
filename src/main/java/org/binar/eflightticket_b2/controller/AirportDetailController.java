@@ -1,5 +1,6 @@
 package org.binar.eflightticket_b2.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.binar.eflightticket_b2.dto.AirportDetailDTO;
 import org.binar.eflightticket_b2.entity.AirportDetail;
 import org.binar.eflightticket_b2.payload.ApiResponse;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/airportDetail")
+@Tag(name = "Airport Detail", description = "Airport Detail Controller | Contains: Add, Update by ID, Get All, Get by ID, Delete by ID")
 public class AirportDetailController {
     @Autowired
     AirportDetailService airportDetailService;

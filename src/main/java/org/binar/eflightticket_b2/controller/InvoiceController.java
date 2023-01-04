@@ -1,6 +1,7 @@
 package org.binar.eflightticket_b2.controller;
 
 import com.google.zxing.WriterException;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -20,6 +21,7 @@ import java.util.Base64;
 
 @RestController
 @RequestMapping("/invoice")
+@Tag(name = "Invoice", description = "Invoice Controller | Contains: Show Ticket, Generate Ticket, Show QR Code, Generate QR Code")
 public class InvoiceController {
 
     private static final Logger log = LoggerFactory.getLogger(InvoiceController.class);
